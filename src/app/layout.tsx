@@ -19,7 +19,7 @@ const notoSansKR = Noto_Sans_KR({
   weight: ["300", "400", "500", "700", "900"],
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.co.kr";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.kr";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

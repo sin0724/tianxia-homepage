@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.co.kr";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.kr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
