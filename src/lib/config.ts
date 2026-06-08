@@ -22,6 +22,7 @@ export const SITE_CONFIG = {
   // 예: hero.mp4, hero.webm
   // -------------------------------------------------------
   heroVideo: "/videos/hero.mp4",
+  heroPoster: "/posters/hero-poster.jpg",
 
   // -------------------------------------------------------
   // 로고
@@ -42,16 +43,19 @@ export const SITE_CONFIG = {
       industry: "F&B",
       desc: "레스토랑, 식음료, 카페 브랜드",
       video: "/videos/about-fb.mp4",
+      poster: "/posters/about-fb-poster.jpg",
     },
     {
       industry: "뷰티",
       desc: "스킨케어, 코스메틱, 헬스케어",
       video: "/videos/about-beauty.mp4",
+      poster: "/posters/about-beauty-poster.jpg",
     },
     {
       industry: "병원",
       desc: "성형, 피부과, 메디컬 브랜드",
       video: "/videos/about-hospital.mp4",
+      poster: "/posters/about-hospital-poster.jpg",
     },
   ],
 

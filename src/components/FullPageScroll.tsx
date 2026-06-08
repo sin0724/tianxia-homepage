@@ -92,6 +92,17 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden">
+      {/* 인접 섹션 프리렌더 — 영상/이미지 미리 로드, 화면에는 안 보임 */}
+      {sections.map((section, i) => {
+        if (i === current) return null;
+        if (Math.abs(i - current) > 1) return null;
+        return (
+          <div key={`preload-${i}`} className="absolute w-0 h-0 overflow-hidden opacity-0 pointer-events-none" aria-hidden>
+            {section}
+          </div>
+        );
+      })}
+
       <AnimatePresence initial={false} custom={dir} mode="sync">
         <motion.div
           key={current}

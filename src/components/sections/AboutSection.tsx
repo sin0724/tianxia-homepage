@@ -18,6 +18,7 @@ function VideoCard({
       <video
         ref={videoRef}
         src={target.video}
+        poster={target.poster}
         autoPlay
         muted
         loop

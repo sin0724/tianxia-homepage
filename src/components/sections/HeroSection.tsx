@@ -8,6 +8,7 @@ export default function HeroSection() {
       {/* 배경 영상 */}
       <video
         src={SITE_CONFIG.heroVideo}
+        poster={SITE_CONFIG.heroPoster}
         autoPlay
         muted
         loop
