@@ -16,9 +16,9 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
   const [expanded, setExpanded] = useState<number | null>(null);
   const router = useRouter();
 
-  const markRead = async (id: number) => {
-    await fetch(`/api/admin/contacts/${id}`, { method: "PATCH" });
+  const markRead = (id: number) => {
     setItems((prev) => prev.map((c) => (c.id === id ? { ...c, isRead: true } : c)));
+    fetch(`/api/admin/contacts/${id}`, { method: "PATCH" });
   };
 
   const handleLogout = async () => {
