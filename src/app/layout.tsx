@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "티엔샤 — 대만 마케팅 전문 에이전시",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "(주)티엔샤 — 대만 마케팅 전문 에이전시",
     description: "한국 브랜드를 대만 시장으로. 현지의 감각으로 팬을 만듭니다.",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
