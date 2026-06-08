@@ -33,7 +33,7 @@ function LogoRow({
         {track.map((client, i) => (
           <div
             key={`${client.name}-${i}`}
-            className="flex-shrink-0 w-44 h-20 bg-white flex items-center justify-center px-5 py-3"
+            className="flex-shrink-0 w-28 h-14 md:w-44 md:h-20 bg-white flex items-center justify-center px-3 py-2 md:px-5 md:py-3"
             style={{ marginRight: `${GAP}px` }}
           >
             <Image
@@ -55,7 +55,7 @@ export default function ServicesSection() {
   const logos = SITE_CONFIG.clients;
 
   return (
-    <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-24 pb-10 overflow-hidden">
+    <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-20 md:pt-24 pb-6 md:pb-10 overflow-hidden">
       <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full">
 
         {/* 헤더 */}
@@ -72,7 +72,7 @@ export default function ServicesSection() {
         <div className="border-t border-zinc-800 flex-shrink-0" />
 
         {/* 로고 마퀴 — 수직 중앙 */}
-        <div className="flex-1 flex flex-col justify-center gap-5 min-h-0">
+        <div className="flex-1 flex flex-col justify-center gap-3 md:gap-5 min-h-0">
           <LogoRow logos={logos.slice(0, 8)} speed={35} />
           <LogoRow logos={logos.slice(8, 16)} speed={28} reverse />
           <LogoRow logos={logos.slice(16)} speed={42} />
