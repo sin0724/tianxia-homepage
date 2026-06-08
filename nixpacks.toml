@@ -1,5 +1,2 @@
-[phases.setup]
-nixPkgs = ["git-lfs"]
-
 [phases.install]
-cmds = ["git lfs pull", "npm install"]
+cmds = ["npm install"]

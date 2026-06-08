@@ -44,3 +44,6 @@ next-env.d.ts
 .claude/
 .agents/
 skills-lock.json
+
+# large media (upload to Railway volume separately)
+public/videos/
