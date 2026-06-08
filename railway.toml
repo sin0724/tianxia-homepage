@@ -1,7 +1,8 @@
 [build]
 builder = "nixpacks"
+buildCommand = "npm install && npx prisma generate && npm run build"
 
 [deploy]
-startCommand = "node .next/standalone/server.js"
+startCommand = "npx prisma db push --skip-generate && node .next/standalone/server.js"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3

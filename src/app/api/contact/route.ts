@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -37,6 +38,20 @@ export async function POST(req: NextRequest) {
       <p style="margin-top:24px;font-size:12px;color:#999">이 메일은 티엔샤 홈페이지 문의 폼에서 자동으로 발송되었습니다.</p>
     </div>
   `;
+
+  try {
+    await db.contact.create({
+      data: {
+        name: name.trim(),
+        phone: phone.trim(),
+        email: email.trim(),
+        inquiry: inquiry?.trim() ?? "",
+        message: message.trim(),
+      },
+    });
+  } catch (err) {
+    console.error("[contact] db error:", err);
+  }
 
   try {
     await resend.emails.send({ from: fromEmail, to: adminEmail, subject, html, replyTo: email });
