@@ -158,11 +158,6 @@ export default function WorkSection() {
                   </div>
                 </div>
 
-                {/* 하단 정보 */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 md:p-8">
-                  <p className="text-red-400/80 text-[10px] font-mono tracking-[0.25em] uppercase mb-1">{work.category}</p>
-                  <h3 className="text-lg md:text-2xl font-bold text-zinc-50">{work.title}</h3>
-                </div>
               </motion.div>
             </AnimatePresence>
           </div>
