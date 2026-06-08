@@ -41,7 +41,6 @@ export default function OfficeSection() {
                 alt="타이베이 오피스 공용 공간"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
-                unoptimized
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
@@ -58,7 +57,6 @@ export default function OfficeSection() {
                 alt="타이베이 오피스 회의실"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                unoptimized
               />
             </div>
           </div>
@@ -71,7 +69,6 @@ export default function OfficeSection() {
                 alt="타이베이 오피스 미팅 라운지"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                unoptimized
               />
             </div>
             <div className="flex-1 relative overflow-hidden bg-zinc-900 group">
@@ -80,7 +77,6 @@ export default function OfficeSection() {
                 alt="타이베이 오피스 인테리어"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                unoptimized
               />
             </div>
           </div>
