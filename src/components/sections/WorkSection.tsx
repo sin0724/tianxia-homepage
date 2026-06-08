@@ -41,10 +41,9 @@ function VideoModal({ work, onClose }: { work: Work; onClose: () => void }) {
       onClick={onClose}
     >
       <div
-        className="flex items-center justify-between px-6 md:px-10 h-14 flex-shrink-0"
+        className="flex items-center justify-end px-6 md:px-10 h-14 flex-shrink-0"
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="text-sm font-semibold text-zinc-200">{work.title}</span>
         <button onClick={onClose} className="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-colors">
           <X size={18} />
         </button>
@@ -92,12 +91,7 @@ export default function WorkSection() {
         <div className="max-w-[1400px] w-full mx-auto flex flex-col gap-0">
 
           {/* 헤더 */}
-          <motion.div
-            initial={reduce ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="flex items-end justify-between mb-4"
-          >
+          <div className="flex items-end justify-between mb-4">
             <div>
               <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">Portfolio</p>
               <h2 className="text-3xl md:text-4xl font-black tracking-tight text-zinc-50">Our Work</h2>
@@ -123,7 +117,7 @@ export default function WorkSection() {
                 <ArrowRight size={15} />
               </button>
             </div>
-          </motion.div>
+          </div>
 
           <div className="border-t border-zinc-800 mb-5" />
 

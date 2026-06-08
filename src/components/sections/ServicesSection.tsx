@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
 
@@ -53,7 +52,6 @@ function LogoRow({
 }
 
 export default function ServicesSection() {
-  const reduce = useReducedMotion();
   const logos = SITE_CONFIG.clients;
 
   return (
@@ -61,12 +59,7 @@ export default function ServicesSection() {
       <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full">
 
         {/* 헤더 */}
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="flex-shrink-0 pb-6"
-        >
+        <div className="flex-shrink-0 pb-6">
           <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
             Our Clients
           </p>
@@ -74,29 +67,19 @@ export default function ServicesSection() {
             Brands We&apos;ve{" "}
             <span className="text-red-600">Worked With</span>
           </h2>
-        </motion.div>
+        </div>
 
         <div className="border-t border-zinc-800 flex-shrink-0" />
 
         {/* 로고 마퀴 — 수직 중앙 */}
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex-1 flex flex-col justify-center gap-5 min-h-0"
-        >
+        <div className="flex-1 flex flex-col justify-center gap-5 min-h-0">
           <LogoRow logos={logos.slice(0, 8)} speed={35} />
           <LogoRow logos={logos.slice(8, 16)} speed={28} reverse />
           <LogoRow logos={logos.slice(16)} speed={42} />
-        </motion.div>
+        </div>
 
         {/* 하단 카운터 */}
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.45 }}
-          className="flex-shrink-0 border-t border-zinc-800/40 pt-5 flex items-center gap-4"
-        >
+        <div className="flex-shrink-0 border-t border-zinc-800/40 pt-5 flex items-center gap-4">
           <span className="text-2xl md:text-3xl font-black text-zinc-50">70+</span>
           <span className="text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-mono leading-tight">
             Brand<br />Partners
@@ -105,7 +88,7 @@ export default function ServicesSection() {
           <p className="text-xs text-zinc-600 max-w-[36ch] leading-relaxed">
             Trusted by leading brands across F&B, Beauty, and Medical industries.
           </p>
-        </motion.div>
+        </div>
 
       </div>
     </section>

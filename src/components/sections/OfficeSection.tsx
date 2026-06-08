@@ -1,24 +1,15 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
 export default function OfficeSection() {
-  const reduce = useReducedMotion();
 
   return (
     <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-20 pb-8 overflow-hidden">
       <div className="max-w-[1400px] w-full mx-auto flex flex-col flex-1 min-h-0">
 
         {/* 헤더 */}
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="flex items-end justify-between mb-4 flex-shrink-0"
-        >
+        <div className="flex items-end justify-between mb-4 flex-shrink-0">
           <div>
             <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">
               Our Space
@@ -32,7 +23,7 @@ export default function OfficeSection() {
             빠른 실행과 깊은 현지 이해가<br />
             가능한 이유입니다.
           </p>
-        </motion.div>
+        </div>
 
         <div className="border-t border-zinc-800 mb-5 flex-shrink-0" />
 
@@ -40,12 +31,7 @@ export default function OfficeSection() {
             왼쪽(3/5): 가로 이미지 2장 — 피처드(_03) + 회의실(_00)
             오른쪽(2/5): 세로 이미지 2장 — 미팅라운지(_02) + 인테리어(_01)
         */}
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-          className="flex-1 min-h-0 grid grid-cols-5 gap-3"
-        >
+        <div className="flex-1 min-h-0 grid grid-cols-5 gap-3">
           {/* 왼쪽: 가로 이미지 2장 (위 65% / 아래 35%) */}
           <div className="col-span-3 flex flex-col gap-3">
             {/* 피처드 */}
@@ -98,7 +84,7 @@ export default function OfficeSection() {
               />
             </div>
           </div>
-        </motion.div>
+        </div>
 
       </div>
     </section>
