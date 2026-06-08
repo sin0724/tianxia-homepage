@@ -63,6 +63,11 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
+  verification: {
+    other: {
+      "naver-site-verification": "7730f735f9649c29f09c5ef0bc101ae1c5229d35",
+    },
+  },
 };
 
 export default function RootLayout({
