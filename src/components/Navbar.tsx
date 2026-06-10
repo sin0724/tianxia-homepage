@@ -7,7 +7,7 @@ import { SITE_CONFIG } from "@/lib/config";
 
 const NAV_ITEMS = [
   { label: "소개", index: 1 },
-  { label: "브랜드", index: 2 },
+  { label: "브랜드", index: 3 },
   { label: "작업물", index: 5 },
 ];
 
