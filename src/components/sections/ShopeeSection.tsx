@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
 import { useSectionState } from "@/components/SectionContext";
 import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
@@ -31,6 +32,7 @@ const STEPS = [
 export default function ShopeeSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { isActive } = useSectionState();
+  const reduce = useReducedMotion();
 
   // 활성 섹션에서만 재생 — 숨겨진 프리로드 사본은 버퍼링만
   useEffect(() => {
@@ -43,16 +45,33 @@ export default function ShopeeSection() {
   return (
     <section className="h-[100dvh] relative overflow-hidden bg-zinc-950">
       {SITE_CONFIG.shopeeVideo && (
-        <video
-          ref={videoRef}
-          src={SITE_CONFIG.shopeeVideo}
-          poster={SITE_CONFIG.shopeePoster || undefined}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-        />
+        // Ken Burns: 머무는 동안 아주 느린 줌 인-아웃 반복
+        <motion.div
+          className="absolute inset-0"
+          animate={!reduce && isActive ? { scale: [1, 1.04] } : { scale: 1 }}
+          transition={
+            !reduce && isActive
+              ? {
+                  duration: 20,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                  delay: 1,
+                }
+              : { duration: 0.3 }
+          }
+        >
+          <video
+            ref={videoRef}
+            src={SITE_CONFIG.shopeeVideo}
+            poster={SITE_CONFIG.shopeePoster || undefined}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+          />
+        </motion.div>
       )}
 
       <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-zinc-950/20" />

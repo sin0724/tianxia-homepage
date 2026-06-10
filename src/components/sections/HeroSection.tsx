@@ -6,6 +6,7 @@ import { SpeakerSimpleX, SpeakerSimpleHigh } from "@phosphor-icons/react";
 import { SITE_CONFIG } from "@/lib/config";
 import { useSectionState } from "@/components/SectionContext";
 import { EASE_OUT } from "@/components/motion/Reveal";
+import ParallaxLayer from "@/components/motion/ParallaxLayer";
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,16 +37,36 @@ export default function HeroSection() {
         animate={{ scale: 1 }}
         transition={{ duration: 1.4, ease: EASE_OUT }}
       >
-        <video
-          ref={videoRef}
-          src={SITE_CONFIG.heroVideo}
-          poster={SITE_CONFIG.heroPoster}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-contain md:object-cover"
-        />
+        {/* Ken Burns: 머무는 동안 아주 느린 줌 인-아웃 반복 */}
+        <motion.div
+          className="absolute inset-0"
+          animate={!reduce && isActive ? { scale: [1, 1.045] } : { scale: 1 }}
+          transition={
+            !reduce && isActive
+              ? {
+                  duration: 22,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                  delay: 1.5,
+                }
+              : { duration: 0.3 }
+          }
+        >
+          {/* 마우스 패럴랙스: 커서 반대 방향으로 미세하게 미끄러짐 */}
+          <ParallaxLayer strength={14} invert>
+            <video
+              ref={videoRef}
+              src={SITE_CONFIG.heroVideo}
+              poster={SITE_CONFIG.heroPoster}
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="absolute inset-0 w-full h-full object-contain md:object-cover"
+            />
+          </ParallaxLayer>
+        </motion.div>
       </motion.div>
 
       {/* 오버레이: 진하게 시작해 옅어지며 영상이 드러남 */}

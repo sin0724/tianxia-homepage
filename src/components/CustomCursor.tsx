@@ -1,23 +1,10 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
+import { useIsTouchDevice } from "@/components/motion/useIsTouchDevice";
 
 type CursorVariant = "default" | "hover" | "play";
-
-function subscribeHoverNone(callback: () => void) {
-  const mq = window.matchMedia("(hover: none)");
-  mq.addEventListener("change", callback);
-  return () => mq.removeEventListener("change", callback);
-}
-
-function useIsTouchDevice() {
-  return useSyncExternalStore(
-    subscribeHoverNone,
-    () => window.matchMedia("(hover: none)").matches,
-    () => true // SSR에서는 터치 기기로 간주해 렌더하지 않음
-  );
-}
 
 export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
