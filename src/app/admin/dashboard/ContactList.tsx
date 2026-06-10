@@ -21,6 +21,24 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
     fetch(`/api/admin/contacts/${id}`, { method: "PATCH" });
   };
 
+  // 펼치면 자동으로 읽음 처리
+  const toggleExpand = (c: Contact) => {
+    const opening = expanded !== c.id;
+    setExpanded(opening ? c.id : null);
+    if (opening && !c.isRead) markRead(c.id);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("이 문의를 삭제할까요? 되돌릴 수 없습니다.")) return;
+    const res = await fetch(`/api/admin/contacts/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      setItems((prev) => prev.filter((c) => c.id !== id));
+      setExpanded(null);
+    } else {
+      alert("삭제에 실패했습니다.");
+    }
+  };
+
   const handleLogout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
     router.push("/admin");
@@ -40,12 +58,20 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
             </span>
           )}
         </div>
-        <button
-          onClick={handleLogout}
-          className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
-        >
-          로그아웃
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => window.location.reload()}
+            className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+          >
+            새로고침
+          </button>
+          <button
+            onClick={handleLogout}
+            className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+          >
+            로그아웃
+          </button>
+        </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 md:px-10 py-8">
@@ -77,18 +103,18 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
               >
                 {/* 요약 행 */}
                 <button
-                  onClick={() => setExpanded(expanded === c.id ? null : c.id)}
+                  onClick={() => toggleExpand(c)}
                   className="w-full px-5 py-4 flex items-center gap-4 text-left"
                 >
                   {!c.isRead && (
                     <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
                   )}
-                  <div className="flex-1 min-w-0 grid grid-cols-4 gap-3 items-center">
+                  <div className="flex-1 min-w-0 grid grid-cols-2 md:grid-cols-4 gap-3 items-center">
                     <span className={`text-sm font-semibold truncate ${c.isRead ? "text-zinc-500" : "text-zinc-100"}`}>
                       {c.name}
                     </span>
-                    <span className="text-xs text-zinc-500 truncate">{c.email}</span>
-                    <span className="text-xs text-zinc-600 truncate">{c.inquiry || "—"}</span>
+                    <span className="hidden md:block text-xs text-zinc-500 truncate">{c.email}</span>
+                    <span className="hidden md:block text-xs text-zinc-600 truncate">{c.inquiry || "—"}</span>
                     <span className="text-xs text-zinc-600 text-right">{formatDate(c.createdAt)}</span>
                   </div>
                 </button>
@@ -99,7 +125,11 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
                     <div className="pt-4 grid grid-cols-2 gap-3 text-xs mb-4">
                       <div>
                         <span className="text-zinc-600">연락처</span>
-                        <p className="text-zinc-300 mt-0.5">{c.phone}</p>
+                        <p className="text-zinc-300 mt-0.5">
+                          <a href={`tel:${c.phone}`} className="hover:text-red-400 transition-colors">
+                            {c.phone}
+                          </a>
+                        </p>
                       </div>
                       <div>
                         <span className="text-zinc-600">이메일</span>
@@ -114,14 +144,14 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
                     <p className="text-sm text-zinc-300 whitespace-pre-wrap leading-relaxed bg-zinc-950 rounded-lg p-3">
                       {c.message}
                     </p>
-                    {!c.isRead && (
+                    <div className="mt-4 flex justify-end">
                       <button
-                        onClick={() => markRead(c.id)}
-                        className="mt-4 text-xs px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-colors"
+                        onClick={() => handleDelete(c.id)}
+                        className="text-xs px-4 py-2 bg-zinc-800 hover:bg-red-900/60 text-zinc-400 hover:text-red-300 rounded-lg transition-colors"
                       >
-                        확인 완료로 표시
+                        삭제
                       </button>
-                    )}
+                    </div>
                   </div>
                 )}
               </div>

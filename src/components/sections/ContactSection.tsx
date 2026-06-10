@@ -28,6 +28,8 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       inquiry: (form.elements.namedItem("inquiry") as HTMLInputElement).value,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+      // 허니팟 — 사람은 비워두고 봇만 채움
+      company: (form.elements.namedItem("company") as HTMLInputElement).value,
     };
 
     try {
@@ -93,6 +95,16 @@ function ContactModal({ onClose }: { onClose: () => void }) {
             </motion.h2>
 
             <form onSubmit={handleSubmit}>
+              {/* 허니팟: 시각적으로 숨김 — 봇 스팸 차단용 */}
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute -left-[9999px] w-px h-px opacity-0"
+                defaultValue=""
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-7">
 
                 {/* 왼쪽 열 */}

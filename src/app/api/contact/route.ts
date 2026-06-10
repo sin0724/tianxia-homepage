@@ -1,14 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
+
+// 입력 길이 상한 — DB·메일 폭주 방지
+const MAX = { name: 100, phone: 50, email: 200, inquiry: 200, message: 5000 };
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// 알림 메일 HTML 주입 방지
+const esc = (s: string) =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 
 export async function POST(req: NextRequest) {
+  // 스팸 방지: IP당 10분에 5회
+  if (!rateLimit(`contact:${clientIp(req.headers)}`, 5, 600_000)) {
+    return NextResponse.json(
+      { error: "요청이 너무 잦습니다. 잠시 후 다시 시도해주세요." },
+      { status: 429 }
+    );
+  }
+
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
 
-  const { name, phone, email, inquiry, message } = body as Record<string, string>;
+  const { name, phone, email, inquiry, message, company } = body as Record<string, string>;
+
+  // 허니팟: 숨겨진 필드가 채워져 있으면 봇 — 조용히 성공 응답만 반환
+  if (company) return NextResponse.json({ ok: true });
 
   if (!name?.trim() || !phone?.trim() || !email?.trim() || !message?.trim()) {
     return NextResponse.json({ error: "필수 항목을 입력해주세요." }, { status: 400 });
+  }
+
+  if (
+    name.length > MAX.name ||
+    phone.length > MAX.phone ||
+    email.length > MAX.email ||
+    (inquiry?.length ?? 0) > MAX.inquiry ||
+    message.length > MAX.message
+  ) {
+    return NextResponse.json({ error: "입력 길이가 제한을 초과했습니다." }, { status: 400 });
+  }
+
+  if (!EMAIL_RE.test(email.trim())) {
+    return NextResponse.json({ error: "올바른 이메일 형식이 아닙니다." }, { status: 400 });
   }
 
   // DB 저장 (필수)
@@ -39,12 +77,12 @@ export async function POST(req: NextRequest) {
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">
         <h2 style="margin:0 0 24px;font-size:20px;border-bottom:2px solid #dc2626;padding-bottom:12px">새 문의가 접수되었습니다</h2>
         <table style="width:100%;border-collapse:collapse;font-size:14px">
-          <tr><td style="padding:10px 0;color:#666;width:100px">이름</td><td style="padding:10px 0;font-weight:600">${name}</td></tr>
-          <tr><td style="padding:10px 0;color:#666">연락처</td><td style="padding:10px 0">${phone}</td></tr>
-          <tr><td style="padding:10px 0;color:#666">이메일</td><td style="padding:10px 0"><a href="mailto:${email}" style="color:#dc2626">${email}</a></td></tr>
-          <tr><td style="padding:10px 0;color:#666">문의 분야</td><td style="padding:10px 0">${inquiry?.trim() || "—"}</td></tr>
+          <tr><td style="padding:10px 0;color:#666;width:100px">이름</td><td style="padding:10px 0;font-weight:600">${esc(name)}</td></tr>
+          <tr><td style="padding:10px 0;color:#666">연락처</td><td style="padding:10px 0">${esc(phone)}</td></tr>
+          <tr><td style="padding:10px 0;color:#666">이메일</td><td style="padding:10px 0"><a href="mailto:${esc(email)}" style="color:#dc2626">${esc(email)}</a></td></tr>
+          <tr><td style="padding:10px 0;color:#666">문의 분야</td><td style="padding:10px 0">${esc(inquiry?.trim() || "—")}</td></tr>
         </table>
-        <div style="margin-top:20px;padding:16px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.7;white-space:pre-wrap">${message}</div>
+        <div style="margin-top:20px;padding:16px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.7;white-space:pre-wrap">${esc(message)}</div>
         <p style="margin-top:24px;font-size:12px;color:#999">이 메일은 티엔샤 홈페이지 문의 폼에서 자동으로 발송되었습니다.</p>
       </div>
     `;

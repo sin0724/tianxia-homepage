@@ -2,8 +2,12 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
 const COOKIE = "admin_token";
-const getSecret = () =>
-  new TextEncoder().encode(process.env.ADMIN_JWT_SECRET ?? "change-this-secret-in-production");
+// 환경변수 미설정 시 안전하게 실패 — 공개 소스의 기본값으로 서명하지 않음
+const getSecret = () => {
+  const secret = process.env.ADMIN_JWT_SECRET;
+  if (!secret) throw new Error("ADMIN_JWT_SECRET 환경변수가 설정되지 않았습니다.");
+  return new TextEncoder().encode(secret);
+};
 
 export async function signAdminToken() {
   return new SignJWT({ role: "admin" })
