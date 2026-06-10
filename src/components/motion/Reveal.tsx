@@ -81,6 +81,49 @@ export function MaskReveal({
   );
 }
 
+/** 커튼 reveal — clip-path가 아래에서 위로 열리며 내부는 1.08→1로 줌아웃 */
+export function ClipReveal({
+  children,
+  delay = 0,
+  duration = 1,
+  className,
+}: RevealProps) {
+  const reduce = useReducedMotion();
+  const { isRevisit } = useSectionState();
+
+  if (reduce) {
+    return (
+      <Reveal delay={delay} className={className}>
+        {children}
+      </Reveal>
+    );
+  }
+
+  const transition = {
+    duration: isRevisit ? 0.6 : duration,
+    delay: BASE_DELAY + (isRevisit ? delay * 0.4 : delay),
+    ease: EASE_OUT,
+  };
+
+  return (
+    <motion.div
+      className={className}
+      initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
+      animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+      transition={transition}
+    >
+      <motion.div
+        className="absolute inset-0"
+        initial={{ scale: 1.08 }}
+        animate={{ scale: 1 }}
+        transition={transition}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /** 라인 드로잉 — 왼쪽에서 오른쪽으로 scaleX 0→1 */
 export function LineReveal({
   delay = 0,

@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { SectionProvider } from "@/components/SectionContext";
 
-const SECTION_LABELS = ["메인", "소개", "서비스", "작업물", "문의"];
+const SECTION_LABELS = ["메인", "소개", "쇼피", "브랜드", "오피스", "작업물", "문의"];
 const COOLDOWN_MS = 900;
 
 interface FullPageScrollProps {
@@ -157,12 +157,23 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
             key={i}
             onClick={() => navigate(i)}
             aria-label={`${SECTION_LABELS[i] ?? i + 1} 섹션으로 이동`}
-            className={`rounded-full transition-all duration-300 ${
-              i === current
-                ? "w-[5px] h-5 bg-red-500"
-                : "w-[5px] h-[5px] bg-zinc-600 hover:bg-zinc-400"
-            }`}
-          />
+            className="group relative flex items-center justify-center py-0.5"
+          >
+            {/* hover 시 섹션명 라벨 슬라이드-인 */}
+            <span
+              className="absolute right-4 whitespace-nowrap text-[10px] font-mono tracking-[0.15em] text-zinc-400 opacity-0 translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none"
+              aria-hidden
+            >
+              {SECTION_LABELS[i] ?? i + 1}
+            </span>
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-[5px] h-5 bg-red-500"
+                  : "w-[5px] h-[5px] bg-zinc-600 group-hover:bg-zinc-400"
+              }`}
+            />
+          </button>
         ))}
       </nav>
     </div>

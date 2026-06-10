@@ -198,7 +198,7 @@ export default function WorkSection() {
                   priority
                 />
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl">
+                  <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
                     <Play size={24} weight="fill" className="text-white ml-1" />
                   </div>
                 </div>
@@ -224,11 +224,14 @@ export default function WorkSection() {
                 transition={{ duration: 0.4, ease: EASE }}
                 className="grid grid-cols-3 gap-3"
               >
-                {pageWorks.map((w) => {
+                {pageWorks.map((w, idx) => {
                   const thumb = toThumbnailUrl(w.youtubeUrl);
                   return (
-                    <div
+                    <motion.div
                       key={w.id}
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, ease: EASE, delay: idx * 0.05 }}
                       className="aspect-video relative overflow-hidden cursor-pointer group bg-zinc-900"
                       data-cursor="play"
                       onClick={() => w.youtubeUrl && setPlaying(w)}
@@ -237,14 +240,14 @@ export default function WorkSection() {
                         src={thumb || `https://picsum.photos/seed/${w.placeholderSeed}/1280/720`}
                         alt={w.title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                        className="object-cover grayscale-[30%] transition-all duration-700 group-hover:grayscale-0 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center shadow-2xl">
+                        <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
                           <Play size={20} weight="fill" className="text-white ml-1" />
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
                 {Array.from({ length: DESKTOP_PAGE_SIZE - pageWorks.length }).map((_, i) => (

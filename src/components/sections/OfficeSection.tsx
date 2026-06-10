@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
+import { Reveal, MaskReveal, LineReveal, ClipReveal } from "@/components/motion/Reveal";
 
 export default function OfficeSection() {
 
@@ -36,12 +36,11 @@ export default function OfficeSection() {
             왼쪽(3/5): 가로 이미지 2장 — 피처드(_03) + 회의실(_00)
             오른쪽(2/5): 세로 이미지 2장 — 미팅라운지(_02) + 인테리어(_01)
         */}
-        <Reveal delay={0.24} y={24} className="flex-1 min-h-0 flex flex-col">
         <div className="flex-1 min-h-0 grid grid-cols-5 gap-3">
           {/* 왼쪽: 가로 이미지 2장 (위 65% / 아래 35%) */}
           <div className="col-span-3 flex flex-col gap-3">
             {/* 피처드 */}
-            <div className="flex-[13] relative overflow-hidden bg-zinc-900 group">
+            <ClipReveal delay={0.2} className="flex-[13] relative overflow-hidden bg-zinc-900 group">
               <Image
                 src="/company/KakaoTalk_20250207_144234154_03.jpg"
                 alt="타이베이 오피스 공용 공간"
@@ -55,39 +54,38 @@ export default function OfficeSection() {
                   Taipei, Taiwan
                 </span>
               </div>
-            </div>
+            </ClipReveal>
             {/* 회의실 (가로 이미지) */}
-            <div className="flex-[7] relative overflow-hidden bg-zinc-900 group">
+            <ClipReveal delay={0.32} className="flex-[7] relative overflow-hidden bg-zinc-900 group">
               <Image
                 src="/company/KakaoTalk_20250207_144234154.jpg"
                 alt="타이베이 오피스 회의실"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
+            </ClipReveal>
           </div>
 
           {/* 오른쪽: 세로 이미지 2장 (50% / 50%) */}
           <div className="col-span-2 flex flex-col gap-3">
-            <div className="flex-1 relative overflow-hidden bg-zinc-900 group">
+            <ClipReveal delay={0.26} className="flex-1 relative overflow-hidden bg-zinc-900 group">
               <Image
                 src="/company/KakaoTalk_20250207_144234154_02.jpg"
                 alt="타이베이 오피스 미팅 라운지"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
-            <div className="flex-1 relative overflow-hidden bg-zinc-900 group">
+            </ClipReveal>
+            <ClipReveal delay={0.38} className="flex-1 relative overflow-hidden bg-zinc-900 group">
               <Image
                 src="/company/KakaoTalk_20250207_144234154_01.jpg"
                 alt="타이베이 오피스 인테리어"
                 fill
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
+            </ClipReveal>
           </div>
         </div>
-        </Reveal>
 
       </div>
     </section>

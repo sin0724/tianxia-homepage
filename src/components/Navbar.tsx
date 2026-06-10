@@ -8,7 +8,7 @@ import { SITE_CONFIG } from "@/lib/config";
 const NAV_ITEMS = [
   { label: "소개", index: 1 },
   { label: "브랜드", index: 2 },
-  { label: "작업물", index: 4 },
+  { label: "작업물", index: 5 },
 ];
 
 function fpNavigate(index: number) {
@@ -75,7 +75,7 @@ export default function Navbar() {
           {/* CTA + 햄버거 */}
           <div className="flex items-center gap-4">
             <button
-              onClick={() => fpNavigate(5)}
+              onClick={() => fpNavigate(6)}
               className="hidden md:inline-flex items-center h-9 px-5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
             >
               문의하기
@@ -133,7 +133,7 @@ export default function Navbar() {
           <motion.button
             onClick={() => {
               setMenuOpen(false);
-              fpNavigate(5);
+              fpNavigate(6);
             }}
             className="text-left text-4xl font-bold text-red-600"
             initial={{ opacity: 0, x: -24 }}
