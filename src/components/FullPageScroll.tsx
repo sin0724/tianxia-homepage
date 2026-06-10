@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { SectionProvider } from "@/components/SectionContext";
 
 const SECTION_LABELS = ["메인", "소개", "서비스", "작업물", "문의"];
 const COOLDOWN_MS = 900;
@@ -13,7 +14,9 @@ interface FullPageScrollProps {
 export default function FullPageScroll({ sections }: FullPageScrollProps) {
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
+  const [isRevisit, setIsRevisit] = useState(false);
   const lastNavigate = useRef(0);
+  const visited = useRef<Set<number>>(new Set([0]));
   const reduce = useReducedMotion();
   const total = sections.length;
 
@@ -24,6 +27,8 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
       if (next < 0 || next >= total) return;
       lastNavigate.current = now;
       setDir(next > current ? 1 : -1);
+      setIsRevisit(visited.current.has(next));
+      visited.current.add(next);
       setCurrent(next);
     },
     [current, total]
@@ -78,10 +83,18 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
     return () => document.removeEventListener("fp-navigate", onNavigate);
   }, [navigate]);
 
+  // 깊이감 전환: 위로 가는(덮는) 쪽은 100% 이동, 뒤로 빠지는 쪽은 -30%만 후퇴하며 어두워짐
+  // "--dim"은 섹션 위 오버레이의 opacity로 연결되는 CSS 변수
   const slideVariants = {
-    enter: (d: number) => ({ y: `${d * 100}%` }),
-    center: { y: "0%" },
-    exit: (d: number) => ({ y: `${-d * 100}%` }),
+    enter: (d: number) =>
+      d > 0
+        ? { y: "100%", zIndex: 2, "--dim": 0 }
+        : { y: "-30%", zIndex: 1, "--dim": 0.45 },
+    center: { y: "0%", "--dim": 0 },
+    exit: (d: number) =>
+      d > 0
+        ? { y: "-30%", zIndex: 1, "--dim": 0.45 }
+        : { y: "100%", zIndex: 2, "--dim": 0 },
   };
 
   const fadeVariants = {
@@ -98,7 +111,9 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
         if (Math.abs(i - current) > 1) return null;
         return (
           <div key={`preload-${i}`} className="absolute w-0 h-0 overflow-hidden opacity-0 pointer-events-none" aria-hidden>
-            {section}
+            <SectionProvider value={{ isActive: false, isRevisit: true }}>
+              {section}
+            </SectionProvider>
           </div>
         );
       })}
@@ -112,12 +127,23 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
           animate="center"
           exit="exit"
           transition={{
-            duration: 0.85,
-            ease: [0.76, 0, 0.24, 1] as [number, number, number, number],
+            default: {
+              duration: 0.85,
+              ease: [0.76, 0, 0.24, 1] as [number, number, number, number],
+            },
+            zIndex: { duration: 0 },
           }}
           className="absolute inset-0 h-[100dvh] w-full"
         >
-          {sections[current]}
+          <SectionProvider value={{ isActive: true, isRevisit }}>
+            {sections[current]}
+          </SectionProvider>
+          {/* 후퇴하는 섹션을 어둡게 덮는 오버레이 — --dim 변수로 구동 */}
+          <div
+            className="absolute inset-0 bg-black pointer-events-none"
+            style={{ opacity: "var(--dim, 0)" }}
+            aria-hidden
+          />
         </motion.div>
       </AnimatePresence>
 

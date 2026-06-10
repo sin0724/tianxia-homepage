@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
+import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
 
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const GAP = 20; // px — marginRight와 동일하게 유지해야 루프가 맞음
 
 function LogoRow({
@@ -60,26 +60,32 @@ export default function ServicesSection() {
 
         {/* 헤더 */}
         <div className="flex-shrink-0 pb-6">
-          <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
-            Our Clients
-          </p>
+          <Reveal delay={0} y={12}>
+            <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
+              Our Clients
+            </p>
+          </Reveal>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.05] text-zinc-50">
-            Brands We&apos;ve{" "}
-            <span className="text-red-600">Worked With</span>
+            <MaskReveal delay={0.08}>
+              Brands We&apos;ve{" "}
+              <span className="text-red-600">Worked With</span>
+            </MaskReveal>
           </h2>
         </div>
 
-        <div className="border-t border-zinc-800 flex-shrink-0" />
+        <LineReveal delay={0.16} className="h-px bg-zinc-800 flex-shrink-0" />
 
-        {/* 로고 마퀴 — 수직 중앙 */}
-        <div className="flex-1 flex flex-col justify-center gap-3 md:gap-5 min-h-0">
-          <LogoRow logos={logos.slice(0, 8)} speed={35} />
-          <LogoRow logos={logos.slice(8, 16)} speed={28} reverse />
-          <LogoRow logos={logos.slice(16)} speed={42} />
-        </div>
+        {/* 로고 마퀴 — 수직 중앙, 그룹 단위 1회 fade */}
+        <Reveal delay={0.24} y={20} className="flex-1 min-h-0 flex flex-col">
+          <div className="flex-1 flex flex-col justify-center gap-3 md:gap-5 min-h-0">
+            <LogoRow logos={logos.slice(0, 8)} speed={35} />
+            <LogoRow logos={logos.slice(8, 16)} speed={28} reverse />
+            <LogoRow logos={logos.slice(16)} speed={42} />
+          </div>
+        </Reveal>
 
         {/* 하단 카운터 */}
-        <div className="flex-shrink-0 border-t border-zinc-800/40 pt-5 flex items-center gap-4">
+        <Reveal delay={0.32} y={16} className="flex-shrink-0 border-t border-zinc-800/40 pt-5 flex items-center gap-4">
           <span className="text-2xl md:text-3xl font-black text-zinc-50">70+</span>
           <span className="text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-mono leading-tight">
             Brand<br />Partners
@@ -88,7 +94,7 @@ export default function ServicesSection() {
           <p className="text-xs text-zinc-600 max-w-[36ch] leading-relaxed">
             Trusted by leading brands across F&B, Beauty, and Medical industries.
           </p>
-        </div>
+        </Reveal>
 
       </div>
     </section>

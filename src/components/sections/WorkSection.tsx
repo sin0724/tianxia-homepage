@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Play, X } from "@phosphor-icons/react";
+import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const DESKTOP_PAGE_SIZE = 6;
@@ -108,8 +109,12 @@ export default function WorkSection() {
           {/* 헤더 */}
           <div className="flex items-end justify-between mb-2 md:mb-4 flex-shrink-0">
             <div>
-              <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">Portfolio</p>
-              <h2 className="text-2xl md:text-4xl font-black tracking-tight text-zinc-50">Our Work</h2>
+              <Reveal delay={0} y={12}>
+                <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">Portfolio</p>
+              </Reveal>
+              <h2 className="text-2xl md:text-4xl font-black tracking-tight text-zinc-50">
+                <MaskReveal delay={0.08}>Our Work</MaskReveal>
+              </h2>
             </div>
 
             {/* 모바일 nav */}
@@ -155,11 +160,12 @@ export default function WorkSection() {
             </div>
           </div>
 
-          <div className="border-t border-zinc-800 mb-2 md:mb-4 flex-shrink-0" />
+          <LineReveal delay={0.14} className="h-px bg-zinc-800 mb-2 md:mb-4 flex-shrink-0" />
 
           {/* 모바일: 단일 카드 슬라이더 */}
+          <Reveal delay={0.2} y={20} className="md:hidden flex-1 min-h-0 max-h-[48vh]">
           <div
-            className="md:hidden flex-1 min-h-0 relative overflow-hidden max-h-[48vh]"
+            className="relative w-full h-full overflow-hidden"
             onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
             onTouchEnd={(e) => {
               const delta = touchStart - e.changedTouches[0].clientX;
@@ -198,9 +204,10 @@ export default function WorkSection() {
               </motion.div>
             </AnimatePresence>
           </div>
+          </Reveal>
 
           {/* 데스크탑: 3열 그리드 — aspect-video 유지, 세로 중앙 정렬 */}
-          <div className="hidden md:flex flex-col justify-center flex-1 min-h-0">
+          <Reveal delay={0.2} y={24} className="hidden md:flex flex-col justify-center flex-1 min-h-0">
             <AnimatePresence custom={dDir} mode="wait" initial={false}>
               <motion.div
                 key={dPage}
@@ -243,10 +250,10 @@ export default function WorkSection() {
                 ))}
               </motion.div>
             </AnimatePresence>
-          </div>
+          </Reveal>
 
           {/* 하단 도트 + CTA */}
-          <div className="mt-3 flex items-center justify-between flex-shrink-0">
+          <Reveal delay={0.3} y={12} className="mt-3 flex items-center justify-between flex-shrink-0">
             {/* 모바일 도트 */}
             <div className="flex md:hidden items-center gap-1.5">
               {works.map((_, i) => (
@@ -278,7 +285,7 @@ export default function WorkSection() {
               More work available — get in touch
               <ArrowUpRight size={13} weight="bold" />
             </button>
-          </div>
+          </Reveal>
 
         </div>
       </section>

@@ -1,12 +1,22 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SpeakerSimpleX, SpeakerSimpleHigh } from "@phosphor-icons/react";
 import { SITE_CONFIG } from "@/lib/config";
+import { useSectionState } from "@/components/SectionContext";
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  const { isActive } = useSectionState();
+
+  // 활성 섹션에서만 재생 — 숨겨진 프리로드 사본은 버퍼링만 하고 디코딩하지 않음
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (isActive) v.play().catch(() => {});
+    else v.pause();
+  }, [isActive]);
 
   const toggleMute = () => {
     if (!videoRef.current) return;
@@ -20,10 +30,10 @@ export default function HeroSection() {
         ref={videoRef}
         src={SITE_CONFIG.heroVideo}
         poster={SITE_CONFIG.heroPoster}
-        autoPlay
         muted
         loop
         playsInline
+        preload="auto"
         className="absolute inset-0 w-full h-full object-contain md:object-cover"
       />
 

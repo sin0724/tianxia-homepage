@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
 
 export default function OfficeSection() {
 
@@ -11,26 +12,31 @@ export default function OfficeSection() {
         {/* 헤더 */}
         <div className="flex items-end justify-between mb-4 flex-shrink-0">
           <div>
-            <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">
-              Our Space
-            </p>
+            <Reveal delay={0} y={12}>
+              <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">
+                Our Space
+              </p>
+            </Reveal>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight text-zinc-50">
-              타이베이 현지 오피스
+              <MaskReveal delay={0.08}>타이베이 현지 오피스</MaskReveal>
             </h2>
           </div>
-          <p className="text-xs text-zinc-500 text-right leading-[1.9] hidden md:block">
-            대만 현지에서 직접 운영하는 공간.<br />
-            빠른 실행과 깊은 현지 이해가<br />
-            가능한 이유입니다.
-          </p>
+          <Reveal delay={0.16} className="hidden md:block">
+            <p className="text-xs text-zinc-500 text-right leading-[1.9]">
+              대만 현지에서 직접 운영하는 공간.<br />
+              빠른 실행과 깊은 현지 이해가<br />
+              가능한 이유입니다.
+            </p>
+          </Reveal>
         </div>
 
-        <div className="border-t border-zinc-800 mb-5 flex-shrink-0" />
+        <LineReveal delay={0.16} className="h-px bg-zinc-800 mb-5 flex-shrink-0" />
 
         {/* 이미지 그리드
             왼쪽(3/5): 가로 이미지 2장 — 피처드(_03) + 회의실(_00)
             오른쪽(2/5): 세로 이미지 2장 — 미팅라운지(_02) + 인테리어(_01)
         */}
+        <Reveal delay={0.24} y={24} className="flex-1 min-h-0 flex flex-col">
         <div className="flex-1 min-h-0 grid grid-cols-5 gap-3">
           {/* 왼쪽: 가로 이미지 2장 (위 65% / 아래 35%) */}
           <div className="col-span-3 flex flex-col gap-3">
@@ -81,6 +87,7 @@ export default function OfficeSection() {
             </div>
           </div>
         </div>
+        </Reveal>
 
       </div>
     </section>

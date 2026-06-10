@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
 import { ArrowRight, X } from "@phosphor-icons/react";
+import { Reveal, MaskReveal } from "@/components/motion/Reveal";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -227,7 +228,6 @@ function ContactModal({ onClose }: { onClose: () => void }) {
 }
 
 export default function ContactSection() {
-  const reduce = useReducedMotion();
   const [formOpen, setFormOpen] = useState(false);
   const year = new Date().getFullYear();
 
@@ -237,33 +237,35 @@ export default function ContactSection() {
 
         {/* 메인: 타이포 + CTA */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 md:px-12 text-center">
-          <motion.div
-            initial={reduce ? undefined : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-5">
-              Contact
-            </p>
+          <div>
+            <Reveal delay={0} y={12}>
+              <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-5">
+                Contact
+              </p>
+            </Reveal>
             <h2 className="text-5xl md:text-7xl lg:text-[6.5rem] font-black tracking-tighter leading-[0.92] text-zinc-50 mb-8">
-              Next Move
+              <MaskReveal delay={0.08} duration={0.9}>Next Move</MaskReveal>
             </h2>
-            <p className="text-zinc-500 text-sm md:text-base max-w-[36ch] mx-auto mb-10 leading-relaxed">
-              대만 시장 진출의 첫 걸음.<br />
-              지금 바로 티엔샤와 함께 시작하세요.
-            </p>
-            <button
-              onClick={() => setFormOpen(true)}
-              className="inline-flex items-center gap-3 h-14 px-10 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm tracking-wide transition-colors duration-200 active:scale-[0.98]"
-            >
-              문의하기
-              <ArrowRight size={16} weight="bold" />
-            </button>
-          </motion.div>
+            <Reveal delay={0.2}>
+              <p className="text-zinc-500 text-sm md:text-base max-w-[36ch] mx-auto mb-10 leading-relaxed">
+                대만 시장 진출의 첫 걸음.<br />
+                지금 바로 티엔샤와 함께 시작하세요.
+              </p>
+            </Reveal>
+            <Reveal delay={0.3} y={16}>
+              <button
+                onClick={() => setFormOpen(true)}
+                className="inline-flex items-center gap-3 h-14 px-10 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm tracking-wide transition-colors duration-200 active:scale-[0.98]"
+              >
+                문의하기
+                <ArrowRight size={16} weight="bold" />
+              </button>
+            </Reveal>
+          </div>
         </div>
 
         {/* 하단 푸터 스트립 */}
-        <div className="border-t border-zinc-800/60 px-6 md:px-12 py-5 flex-shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <Reveal delay={0.4} y={0} className="border-t border-zinc-800/60 px-6 md:px-12 py-5 flex-shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-6 flex-wrap">
             <a
               href={`mailto:${SITE_CONFIG.company.email}`}
@@ -291,7 +293,7 @@ export default function ContactSection() {
           <p className="text-xs text-zinc-700">
             &copy; {year} {SITE_CONFIG.company.name}. All rights reserved.
           </p>
-        </div>
+        </Reveal>
 
       </section>
 
