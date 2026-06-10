@@ -15,6 +15,7 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
   const [isRevisit, setIsRevisit] = useState(false);
+  const [navCount, setNavCount] = useState(0); // 레드 라인 스윕 재트리거 키
   const lastNavigate = useRef(0);
   const visited = useRef<Set<number>>(new Set([0]));
   const reduce = useReducedMotion();
@@ -29,6 +30,7 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
       setDir(next > current ? 1 : -1);
       setIsRevisit(visited.current.has(next));
       visited.current.add(next);
+      setNavCount((c) => c + 1);
       setCurrent(next);
     },
     [current, total]
@@ -146,6 +148,49 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
           />
         </motion.div>
       </AnimatePresence>
+
+      {/* 레드 라인 스윕 — 전환 방향으로 화면을 가로질러 한 번 스쳐감 */}
+      {!reduce && navCount > 0 && (
+        <motion.div
+          key={`sweep-${navCount}`}
+          className="absolute inset-x-0 top-0 h-[2px] bg-red-600/70 z-[70] pointer-events-none"
+          initial={{ y: dir > 0 ? "100dvh" : "-2dvh", opacity: 1 }}
+          animate={{ y: dir > 0 ? "-2dvh" : "100dvh", opacity: [1, 1, 0] }}
+          transition={{
+            duration: 0.85,
+            ease: [0.76, 0, 0.24, 1] as [number, number, number, number],
+            opacity: { duration: 0.85, times: [0, 0.8, 1] },
+          }}
+          aria-hidden
+        />
+      )}
+
+      {/* 좌하단 섹션 번호 롤링 인디케이터 — 마지막(문의) 섹션에서는 숨김 */}
+      <div
+        className={`fixed left-6 md:left-10 bottom-6 z-50 pointer-events-none select-none flex items-baseline gap-1.5 transition-opacity duration-500 ${
+          current === total - 1 ? "opacity-0" : "opacity-100"
+        }`}
+        aria-hidden
+      >
+        <div className="overflow-hidden h-[1.2em] text-base md:text-lg font-mono font-bold text-zinc-50">
+          <motion.div
+            animate={{ y: `${-current * 1.2}em` }}
+            transition={{
+              duration: 0.7,
+              ease: [0.76, 0, 0.24, 1] as [number, number, number, number],
+            }}
+          >
+            {sections.map((_, i) => (
+              <div key={i} className="h-[1.2em] leading-[1.2em]">
+                {String(i + 1).padStart(2, "0")}
+              </div>
+            ))}
+          </motion.div>
+        </div>
+        <span className="text-[10px] font-mono text-zinc-600 tracking-widest">
+          / {String(total).padStart(2, "0")}
+        </span>
+      </div>
 
       {/* 우측 섹션 네비게이션 도트 */}
       <nav
