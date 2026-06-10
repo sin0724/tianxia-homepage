@@ -21,7 +21,8 @@ export const SITE_CONFIG = {
   // public/videos/ 폴더에 파일을 넣고 파일명만 수정하세요
   // 예: hero.mp4, hero.webm
   // -------------------------------------------------------
-  heroVideo: "/videos/hero_compressed.mp4",
+  // 프로덕션은 upload-videos.ps1이 압축본을 이 이름으로 업로드함
+  heroVideo: "/videos/hero.mp4",
   heroPoster: "/posters/hero-poster.jpg",
 
   // -------------------------------------------------------
@@ -49,19 +50,19 @@ export const SITE_CONFIG = {
     {
       industry: "F&B",
       desc: "레스토랑, 식음료, 카페 브랜드",
-      video: "/videos/about-fb_compressed.mp4",
+      video: "/videos/about-fb.mp4",
       poster: "/posters/about-fb-poster.jpg",
     },
     {
       industry: "뷰티",
       desc: "스킨케어, 코스메틱, 헬스케어",
-      video: "/videos/about-beauty_compressed.mp4",
+      video: "/videos/about-beauty.mp4",
       poster: "/posters/about-beauty-poster.jpg",
     },
     {
       industry: "병원",
       desc: "성형, 피부과, 메디컬 브랜드",
-      video: "/videos/about-hospital_compressed.mp4",
+      video: "/videos/about-hospital.mp4",
       poster: "/posters/about-hospital-poster.jpg",
     },
   ],
