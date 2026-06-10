@@ -7,6 +7,7 @@ import { SITE_CONFIG } from "@/lib/config";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Play, X } from "@phosphor-icons/react";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+const DESKTOP_PAGE_SIZE = 6;
 
 type Work = (typeof SITE_CONFIG.works)[0];
 
@@ -63,16 +64,25 @@ function VideoModal({ work, onClose }: { work: Work; onClose: () => void }) {
 }
 
 export default function WorkSection() {
+  // 모바일: 1개씩
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
+  // 데스크탑: 3개씩 페이지
+  const [dPage, setDPage] = useState(0);
+  const [dDir, setDDir] = useState(1);
+
   const [playing, setPlaying] = useState<Work | null>(null);
   const [touchStart, setTouchStart] = useState(0);
   const reduce = useReducedMotion();
 
   const works = SITE_CONFIG.works;
   const total = works.length;
+  const totalDPages = Math.ceil(total / DESKTOP_PAGE_SIZE);
+
   const canPrev = current > 0;
   const canNext = current < total - 1;
+  const canDPrev = dPage > 0;
+  const canDNext = dPage < totalDPages - 1;
 
   const navigate = (next: number) => {
     if (next < 0 || next >= total) return;
@@ -80,21 +90,30 @@ export default function WorkSection() {
     setCurrent(next);
   };
 
+  const navigateD = (next: number) => {
+    if (next < 0 || next >= totalDPages) return;
+    setDDir(next > dPage ? 1 : -1);
+    setDPage(next);
+  };
+
   const work = works[current];
   const thumbnail = toThumbnailUrl(work.youtubeUrl);
+  const pageWorks = works.slice(dPage * DESKTOP_PAGE_SIZE, (dPage + 1) * DESKTOP_PAGE_SIZE);
 
   return (
     <>
-      <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-20 md:pt-24 pb-6 overflow-hidden">
+      <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-20 md:pt-24 pb-3 md:pb-6 overflow-hidden">
         <div className="max-w-[1400px] w-full mx-auto flex flex-col flex-1 min-h-0">
 
           {/* 헤더 */}
-          <div className="flex items-end justify-between mb-4 flex-shrink-0">
+          <div className="flex items-end justify-between mb-2 md:mb-4 flex-shrink-0">
             <div>
               <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">Portfolio</p>
               <h2 className="text-2xl md:text-4xl font-black tracking-tight text-zinc-50">Our Work</h2>
             </div>
-            <div className="flex items-center gap-3">
+
+            {/* 모바일 nav */}
+            <div className="flex md:hidden items-center gap-3">
               <button
                 onClick={() => navigate(current - 1)}
                 disabled={!canPrev}
@@ -113,13 +132,34 @@ export default function WorkSection() {
                 <ArrowRight size={15} />
               </button>
             </div>
+
+            {/* 데스크탑 nav */}
+            <div className="hidden md:flex items-center gap-3">
+              <button
+                onClick={() => navigateD(dPage - 1)}
+                disabled={!canDPrev}
+                className="w-10 h-10 border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
+              >
+                <ArrowLeft size={15} />
+              </button>
+              <span className="text-xs font-mono text-zinc-500 w-12 text-center">
+                {dPage + 1}&nbsp;/&nbsp;{totalDPages}
+              </span>
+              <button
+                onClick={() => navigateD(dPage + 1)}
+                disabled={!canDNext}
+                className="w-10 h-10 border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
+              >
+                <ArrowRight size={15} />
+              </button>
+            </div>
           </div>
 
-          <div className="border-t border-zinc-800 mb-4 flex-shrink-0" />
+          <div className="border-t border-zinc-800 mb-2 md:mb-4 flex-shrink-0" />
 
-          {/* 카드 1장 — 전체 영역 채우기 */}
+          {/* 모바일: 단일 카드 슬라이더 */}
           <div
-            className="flex-1 min-h-0 relative overflow-hidden"
+            className="md:hidden flex-1 min-h-0 relative overflow-hidden max-h-[48vh]"
             onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
             onTouchEnd={(e) => {
               const delta = touchStart - e.changedTouches[0].clientX;
@@ -150,21 +190,65 @@ export default function WorkSection() {
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   priority
                 />
-
-                {/* 플레이 오버레이 */}
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl">
                     <Play size={24} weight="fill" className="text-white ml-1" />
                   </div>
                 </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
+          {/* 데스크탑: 3열 그리드 — aspect-video 유지, 세로 중앙 정렬 */}
+          <div className="hidden md:flex flex-col justify-center flex-1 min-h-0">
+            <AnimatePresence custom={dDir} mode="wait" initial={false}>
+              <motion.div
+                key={dPage}
+                custom={dDir}
+                variants={reduce ? undefined : {
+                  enter: (d: number) => ({ x: d > 0 ? "2%" : "-2%", opacity: 0 }),
+                  center: { x: "0%", opacity: 1 },
+                  exit: (d: number) => ({ x: d > 0 ? "-2%" : "2%", opacity: 0 }),
+                }}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.4, ease: EASE }}
+                className="grid grid-cols-3 gap-3"
+              >
+                {pageWorks.map((w) => {
+                  const thumb = toThumbnailUrl(w.youtubeUrl);
+                  return (
+                    <div
+                      key={w.id}
+                      className="aspect-video relative overflow-hidden cursor-pointer group bg-zinc-900"
+                      onClick={() => w.youtubeUrl && setPlaying(w)}
+                    >
+                      <Image
+                        src={thumb || `https://picsum.photos/seed/${w.placeholderSeed}/1280/720`}
+                        alt={w.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                      />
+                      <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center shadow-2xl">
+                          <Play size={20} weight="fill" className="text-white ml-1" />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                {Array.from({ length: DESKTOP_PAGE_SIZE - pageWorks.length }).map((_, i) => (
+                  <div key={`ghost-${i}`} className="aspect-video bg-zinc-900/20" />
+                ))}
               </motion.div>
             </AnimatePresence>
           </div>
 
           {/* 하단 도트 + CTA */}
           <div className="mt-3 flex items-center justify-between flex-shrink-0">
-            <div className="flex items-center gap-1.5">
+            {/* 모바일 도트 */}
+            <div className="flex md:hidden items-center gap-1.5">
               {works.map((_, i) => (
                 <button
                   key={i}
@@ -175,8 +259,20 @@ export default function WorkSection() {
                 />
               ))}
             </div>
+            {/* 데스크탑 도트 */}
+            <div className="hidden md:flex items-center gap-1.5">
+              {Array.from({ length: totalDPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => navigateD(i)}
+                  className={`h-[3px] rounded-full transition-all duration-300 ${
+                    i === dPage ? "w-8 bg-red-500" : "w-3 bg-zinc-700 hover:bg-zinc-500"
+                  }`}
+                />
+              ))}
+            </div>
             <button
-              onClick={() => document.dispatchEvent(new CustomEvent("fp-navigate", { detail: { index: 5 } }))}
+              onClick={() => document.dispatchEvent(new CustomEvent("fp-navigate", { detail: { index: 6 } }))}
               className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-red-500 transition-colors duration-200 font-medium"
             >
               More work available — get in touch

@@ -56,6 +56,9 @@ export default function AboutSection() {
 
         {/* 헤드라인 */}
         <div className="mb-3 md:mb-4 flex-shrink-0">
+          <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
+            KOL Marketing
+          </p>
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-zinc-50">
             Together We <span className="text-red-600">Create Value</span>
           </h2>
@@ -64,8 +67,8 @@ export default function AboutSection() {
         {/* 설명 */}
         <div className="mb-3 md:mb-8 flex-shrink-0">
           <p className="text-zinc-400 text-xs md:text-sm leading-relaxed max-w-[52ch]">
-            티엔샤는 대만 현지 네트워크와 한국 마케팅 노하우를 결합해<br />
-            F&B, 뷰티, 병원 브랜드를 대만 소비자와 연결합니다.
+            대만 현지 KOL 네트워크로 브랜드와 소비자를 연결합니다.<br />
+            F&B, 뷰티, 병원 브랜드의 대만 KOL 마케팅을 전담합니다.
           </p>
         </div>
 
