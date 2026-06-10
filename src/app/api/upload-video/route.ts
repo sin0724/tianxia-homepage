@@ -8,6 +8,7 @@ const ALLOWED = new Set([
   "about-fb.mp4",
   "about-beauty.mp4",
   "about-hospital.mp4",
+  "shopee.mp4",
 ]);
 
 export const maxDuration = 300;
