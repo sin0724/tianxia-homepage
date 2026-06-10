@@ -1,14 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 
 type CursorVariant = "default" | "hover" | "play";
 
+function subscribeHoverNone(callback: () => void) {
+  const mq = window.matchMedia("(hover: none)");
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+function useIsTouchDevice() {
+  return useSyncExternalStore(
+    subscribeHoverNone,
+    () => window.matchMedia("(hover: none)").matches,
+    () => true // SSR에서는 터치 기기로 간주해 렌더하지 않음
+  );
+}
+
 export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(true);
   const [variant, setVariant] = useState<CursorVariant>("default");
+  const isTouchDevice = useIsTouchDevice();
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -18,8 +32,7 @@ export default function CustomCursor() {
   const ringY = useSpring(mouseY, { stiffness: 350, damping: 30, mass: 0.7 });
 
   useEffect(() => {
-    if (window.matchMedia("(hover: none)").matches) return;
-    setIsTouchDevice(false);
+    if (isTouchDevice) return;
 
     const onMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
@@ -53,7 +66,7 @@ export default function CustomCursor() {
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.documentElement.removeEventListener("mouseenter", onEnter);
     };
-  }, [mouseX, mouseY]);
+  }, [isTouchDevice, mouseX, mouseY]);
 
   if (isTouchDevice) return null;
 
