@@ -32,6 +32,12 @@
   *, *::before, *::after {
     cursor: none !important;
   }
+
+  /* 텍스트 입력 필드에서는 I-beam 복원 (폼 사용성) */
+  input,
+  textarea {
+    cursor: text !important;
+  }
 }
 
 html {

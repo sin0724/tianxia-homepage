@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
 import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
+import CountUp from "@/components/motion/CountUp";
 
 const GAP = 20; // px — marginRight와 동일하게 유지해야 루프가 맞음
 
@@ -86,7 +87,7 @@ export default function ServicesSection() {
 
         {/* 하단 카운터 */}
         <Reveal delay={0.32} y={16} className="flex-shrink-0 border-t border-zinc-800/40 pt-5 flex items-center gap-4">
-          <span className="text-2xl md:text-3xl font-black text-zinc-50">70+</span>
+          <CountUp to={70} suffix="+" className="text-2xl md:text-3xl font-black text-zinc-50" />
           <span className="text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-mono leading-tight">
             Brand<br />Partners
           </span>

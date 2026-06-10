@@ -187,6 +187,7 @@ export default function WorkSection() {
                 exit="exit"
                 transition={{ duration: 0.4, ease: EASE }}
                 className="absolute inset-0 cursor-pointer group"
+                data-cursor="play"
                 onClick={() => work.youtubeUrl && setPlaying(work)}
               >
                 <Image
@@ -229,6 +230,7 @@ export default function WorkSection() {
                     <div
                       key={w.id}
                       className="aspect-video relative overflow-hidden cursor-pointer group bg-zinc-900"
+                      data-cursor="play"
                       onClick={() => w.youtubeUrl && setPlaying(w)}
                     >
                       <Image

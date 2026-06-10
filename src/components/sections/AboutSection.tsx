@@ -33,10 +33,10 @@ function VideoCard({
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-90"
+        className="absolute inset-0 w-full h-full object-cover opacity-70 transition-[opacity,transform] duration-700 group-hover:opacity-90 group-hover:scale-[1.04]"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent" />
-      <div className="relative z-10 mt-auto p-4 md:p-6">
+      <div className="relative z-10 mt-auto p-4 md:p-6 transition-transform duration-500 ease-out group-hover:-translate-y-1">
         <p className="text-zinc-500 text-[10px] font-mono tracking-[0.15em] uppercase mb-1 md:mb-2">
           0{index + 1}
         </p>
@@ -44,6 +44,7 @@ function VideoCard({
           {target.industry}
         </h3>
         <p className="text-xs text-zinc-500">{target.desc}</p>
+        <div className="h-px w-10 bg-red-500 mt-3 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
       </div>
     </div>
   );
