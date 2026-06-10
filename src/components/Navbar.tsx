@@ -4,6 +4,24 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
+import Magnetic from "@/components/motion/Magnetic";
+
+/** hover 시 글자가 위로 밀려나가고 같은 글자가 아래서 올라오는 롤링 텍스트 */
+function RollingText({ label }: { label: string }) {
+  return (
+    <span className="relative block overflow-hidden">
+      <span className="block transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full">
+        {label}
+      </span>
+      <span
+        className="absolute left-0 top-full block w-full text-zinc-50 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full"
+        aria-hidden
+      >
+        {label}
+      </span>
+    </span>
+  );
+}
 
 const NAV_ITEMS = [
   { label: "소개", index: 1 },
@@ -62,24 +80,27 @@ export default function Navbar() {
           {/* 데스크탑 네비게이션 */}
           <nav className="hidden md:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
-              <button
-                key={item.index}
-                onClick={() => fpNavigate(item.index)}
-                className="text-sm font-medium text-zinc-400 hover:text-zinc-50 transition-colors duration-200"
-              >
-                {item.label}
-              </button>
+              <Magnetic key={item.index} strength={0.35}>
+                <button
+                  onClick={() => fpNavigate(item.index)}
+                  className="group block text-sm font-medium text-zinc-400 py-1"
+                >
+                  <RollingText label={item.label} />
+                </button>
+              </Magnetic>
             ))}
           </nav>
 
           {/* CTA + 햄버거 */}
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => fpNavigate(6)}
-              className="hidden md:inline-flex items-center h-9 px-5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
-            >
-              문의하기
-            </button>
+            <Magnetic strength={0.25} className="hidden md:inline-block">
+              <button
+                onClick={() => fpNavigate(6)}
+                className="inline-flex items-center h-9 px-5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
+              >
+                문의하기
+              </button>
+            </Magnetic>
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="메뉴 열기"

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
 import { ArrowRight, X } from "@phosphor-icons/react";
 import { Reveal, MaskReveal } from "@/components/motion/Reveal";
+import Magnetic from "@/components/motion/Magnetic";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -253,13 +254,15 @@ export default function ContactSection() {
               </p>
             </Reveal>
             <Reveal delay={0.3} y={16}>
-              <button
-                onClick={() => setFormOpen(true)}
-                className="inline-flex items-center gap-3 h-14 px-10 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm tracking-wide transition-colors duration-200 active:scale-[0.98]"
-              >
-                문의하기
-                <ArrowRight size={16} weight="bold" />
-              </button>
+              <Magnetic strength={0.25}>
+                <button
+                  onClick={() => setFormOpen(true)}
+                  className="inline-flex items-center gap-3 h-14 px-10 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm tracking-wide transition-colors duration-200 active:scale-[0.98]"
+                >
+                  문의하기
+                  <ArrowRight size={16} weight="bold" />
+                </button>
+              </Magnetic>
             </Reveal>
           </div>
         </div>

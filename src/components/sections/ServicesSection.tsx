@@ -1,7 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
+import { useAnimationFrame, useReducedMotion } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
+import { useSectionState } from "@/components/SectionContext";
 import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
 import CountUp from "@/components/motion/CountUp";
 
@@ -19,17 +22,38 @@ function LogoRow({
   // gap 대신 marginRight 사용: 마지막 아이템 뒤에도 동일 간격이 붙어 -50% 루프가 정확해짐
   const track = [...logos, ...logos];
 
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offset = useRef(0); // 0~50 (%)
+  const velocity = useRef(1); // 속도 배율 — hover 시 0.35로 부드럽게 감속
+  const hovered = useRef(false);
+  const reduce = useReducedMotion();
+  const { isActive } = useSectionState();
+
+  // CSS 키프레임 대신 JS 구동: hover 감속을 점프 없이 처리, 비활성 섹션은 정지
+  useAnimationFrame((_, delta) => {
+    const el = trackRef.current;
+    if (!el || reduce || !isActive) return;
+    const target = hovered.current ? 0.35 : 1;
+    velocity.current += (target - velocity.current) * Math.min(1, delta / 250);
+    const pctPerMs = 50 / (speed * 1000);
+    offset.current = (offset.current + pctPerMs * velocity.current * delta) % 50;
+    const x = reverse ? -50 + offset.current : -offset.current;
+    el.style.transform = `translateX(${x}%)`;
+  });
+
   return (
-    <div className="overflow-hidden relative">
+    <div
+      className="overflow-hidden relative grayscale-[50%] hover:grayscale-0 transition-[filter] duration-500"
+      onMouseEnter={() => (hovered.current = true)}
+      onMouseLeave={() => (hovered.current = false)}
+    >
       <div className="absolute left-0 top-0 bottom-0 w-28 z-10 bg-gradient-to-r from-zinc-950 to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-28 z-10 bg-gradient-to-l from-zinc-950 to-transparent pointer-events-none" />
 
       <div
+        ref={trackRef}
         className="flex items-center"
-        style={{
-          animation: `marquee ${speed}s linear infinite ${reverse ? "reverse" : ""}`,
-          willChange: "transform",
-        }}
+        style={{ willChange: "transform" }}
       >
         {track.map((client, i) => (
           <div
