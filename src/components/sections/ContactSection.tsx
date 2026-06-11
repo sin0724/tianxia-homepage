@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
 import { ArrowRight, X } from "@phosphor-icons/react";
@@ -15,6 +15,15 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("선택된 파일 없음");
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // 모달이 떠 있는 동안 FullPageScroll의 휠/터치/키보드 섹션 전환을 잠금 —
+  // 모달 안에서 위로 스크롤해도 섹션이 넘어가며 모달이 닫히지 않도록
+  useEffect(() => {
+    document.body.dataset.fpLock = "1";
+    return () => {
+      delete document.body.dataset.fpLock;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,7 +63,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 40 }}
       transition={{ duration: 0.4, ease: EASE }}
-      className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col overflow-y-auto"
+      className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col overflow-y-auto overscroll-contain"
     >
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between px-6 md:px-16 h-16 border-b border-zinc-800/60 flex-shrink-0 sticky top-0 bg-zinc-950 z-10">

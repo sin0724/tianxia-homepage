@@ -39,6 +39,8 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
   // 마우스 휠
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
+      // 모달(문의 폼 등)이 열려 있으면 섹션 전환 잠금 — 모달 내부 스크롤만 동작
+      if (document.body.dataset.fpLock) return;
       e.preventDefault();
       if (e.deltaY > 30) navigate(current + 1);
       else if (e.deltaY < -30) navigate(current - 1);
@@ -54,6 +56,7 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
       startY = e.touches[0].clientY;
     };
     const onTouchEnd = (e: TouchEvent) => {
+      if (document.body.dataset.fpLock) return;
       const delta = startY - e.changedTouches[0].clientY;
       if (Math.abs(delta) > 60) navigate(current + (delta > 0 ? 1 : -1));
     };
@@ -68,6 +71,7 @@ export default function FullPageScroll({ sections }: FullPageScrollProps) {
   // 키보드
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (document.body.dataset.fpLock) return;
       if (e.key === "ArrowDown" || e.key === "PageDown") navigate(current + 1);
       if (e.key === "ArrowUp" || e.key === "PageUp") navigate(current - 1);
     };
