@@ -30,6 +30,19 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-[100dvh] overflow-hidden bg-zinc-950">
+      {/*
+        접근성·SEO: 영상만으로 구성된 히어로의 텍스트 대체.
+        sr-only(clip 방식)로 시각적으로는 숨기되 스크린리더·검색엔진에는
+        노출 — 화면이 전달하는 내용과 동일한 자연스러운 문장으로만 작성.
+      */}
+      <h1 className="sr-only">
+        대만 마케팅 전문 에이전시 (주)티엔샤 TIANXIA
+      </h1>
+      <p className="sr-only">
+        한국 브랜드의 대만 시장 진출 파트너. 대만 KOL·KOC 마케팅, 쇼피 입점
+        지원, 공동구매 마케팅으로 F&amp;B·뷰티·병원 브랜드의 대만 진출을 돕습니다.
+      </p>
+
       {/* 진입 연출: 영상 1.06→1 줌아웃 (재방문·reduced-motion은 생략) */}
       <motion.div
         className="absolute inset-0"
@@ -63,6 +76,7 @@ export default function HeroSection() {
               loop
               playsInline
               preload="auto"
+              aria-label="대만 마케팅 에이전시 티엔샤 브랜드 소개 영상"
               className="absolute inset-0 w-full h-full object-contain md:object-cover"
             />
           </ParallaxLayer>

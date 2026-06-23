@@ -158,6 +158,19 @@ const jsonLd = {
       email: "hello@tnxia.com",
       description:
         "한국 브랜드의 대만 시장 진출을 돕는 마케팅 에이전시. 대만 KOL 마케팅, 쇼피 입점 지원, 공동구매 마케팅 전문.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "서울",
+        addressRegion: "서울특별시",
+        addressCountry: "KR",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        email: "hello@tnxia.com",
+        areaServed: ["KR", "TW"],
+        availableLanguage: ["ko", "zh-TW"],
+      },
       areaServed: ["KR", "TW"],
       knowsAbout: [
         "대만 마케팅", "KOL 마케팅", "KOC 시딩", "Dcard 마케팅",
@@ -195,8 +208,29 @@ const jsonLd = {
                 "대만 KOL이 직접 진행하는 공동구매 캠페인. 상품 현지화부터 KOL 섭외·매칭, 릴스·스토리 판매 전환까지 원스톱 진행.",
             },
           },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "스튜디오구프 영상 제작",
+              description:
+                "브랜드 영상·유튜브 콘텐츠 기획부터 촬영·편집까지. 대만 마케팅과 연계한 숏폼·채널 운영 대행.",
+            },
+          },
         ],
       },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${BASE_URL}/#webpage`,
+      url: BASE_URL,
+      name: "(주)티엔샤 — 대만 마케팅 전문 에이전시",
+      description:
+        "한국 브랜드의 대만 시장 진출 전문 에이전시 티엔샤. 대만 KOL 마케팅, 쇼피 입점 지원, 공동구매 마케팅 전문.",
+      inLanguage: "ko-KR",
+      isPartOf: { "@id": `${BASE_URL}/#website` },
+      about: { "@id": `${BASE_URL}/#organization` },
+      primaryImageOfPage: `${BASE_URL}/og-kakao.jpg`,
     },
     {
       "@type": "WebSite",
@@ -222,11 +256,15 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqLd).replace(/</g, "\\u003c"),
+          }}
         />
       </head>
       <body>
