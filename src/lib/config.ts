@@ -209,7 +209,6 @@ export const SITE_CONFIG = {
     { name: "Client 8", logo: "/clients/client-8.jpg" },
     { name: "Client 9", logo: "/clients/client-9.jpg" },
     { name: "Client 10", logo: "/clients/client-10.jpg" },
-    { name: "Client 11", logo: "/clients/client-11.jpg" },
     { name: "Client 12", logo: "/clients/client-12.jpg" },
     { name: "Client 13", logo: "/clients/client-13.jpg" },
     { name: "Client 14", logo: "/clients/client-14.jpg" },
