@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 import { db } from "@/lib/db";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { sendLeadEvent } from "@/lib/metaCapi";
 
 // 입력 길이 상한 — DB·메일 폭주 방지
 const MAX = { name: 100, phone: 50, email: 200, inquiry: 200, message: 5000 };
@@ -64,6 +66,23 @@ export async function POST(req: NextRequest) {
     console.error("[contact] db error:", err);
     return NextResponse.json({ error: "저장에 실패했습니다. 잠시 후 다시 시도해주세요." }, { status: 500 });
   }
+
+  // Meta 전환 API — 브라우저 픽셀의 Lead와 같은 eventId로 전송해 중복 제거
+  const rawEventId = (body as Record<string, unknown>).eventId;
+  const eventId =
+    typeof rawEventId === "string" && rawEventId.length > 0 && rawEventId.length <= 64
+      ? rawEventId
+      : randomUUID();
+  sendLeadEvent({
+    email: email.trim(),
+    phone: phone.trim(),
+    eventId,
+    sourceUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.kr",
+    ip: clientIp(req.headers),
+    userAgent: req.headers.get("user-agent") ?? undefined,
+    fbp: req.cookies.get("_fbp")?.value,
+    fbc: req.cookies.get("_fbc")?.value,
+  });
 
   // 이메일 알림 (선택 — RESEND_API_KEY 없으면 스킵)
   const apiKey = process.env.RESEND_API_KEY;

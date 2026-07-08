@@ -9,6 +9,18 @@ import Magnetic from "@/components/motion/Magnetic";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
+// 브라우저 픽셀과 서버 CAPI가 같은 이벤트임을 알리는 중복 제거 키
+const newEventId = () =>
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,6 +43,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     setError("");
 
     const form = e.currentTarget;
+    const eventId = newEventId();
     const data = {
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
@@ -39,6 +52,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
       // 허니팟 — 사람은 비워두고 봇만 채움
       company: (form.elements.namedItem("company") as HTMLInputElement).value,
+      eventId,
     };
 
     try {
@@ -49,6 +63,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "전송 실패");
+      window.fbq?.("track", "Lead", {}, { eventID: eventId });
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "전송에 실패했습니다.");
