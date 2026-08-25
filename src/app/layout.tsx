@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import SiteNavLinks from "@/components/SiteNavLinks";
+import { BASE_URL, HOME_URL } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,13 +21,12 @@ const notoSansKR = Noto_Sans_KR({
   weight: ["300", "400", "500", "700", "900"],
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.kr";
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1713769906448027";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "(주)티엔샤 — 대만 마케팅 전문 에이전시",
+    default: "(주)티엔샤 TIANXIA — 대만 마케팅 에이전시",
     template: "%s | 티엔샤",
   },
   description:
@@ -39,12 +40,12 @@ export const metadata: Metadata = {
     "대만 SNS 마케팅", "대만 광고대행사", "스튜디오구프",
   ],
   alternates: {
-    canonical: BASE_URL,
+    canonical: HOME_URL,
   },
   openGraph: {
     title: "(주)티엔샤 — 대만 마케팅 전문 에이전시",
     description: "한국 브랜드의 대만 진출 파트너. KOL 마케팅·쇼피 입점·공동구매 마케팅 전문.",
-    url: BASE_URL,
+    url: HOME_URL,
     siteName: "티엔샤 TIANXIA",
     locale: "ko_KR",
     type: "website",
@@ -75,77 +76,6 @@ export const metadata: Metadata = {
   },
 };
 
-const faqLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "티엔샤는 어떤 회사인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "티엔샤(TIANXIA)는 한국 브랜드의 대만 시장 진출을 전담하는 마케팅 에이전시입니다. 대만 현지 KOL 네트워크, 쇼피 입점 지원, 공동구매 마케팅을 통해 F&B·뷰티·병원 브랜드를 대만 소비자와 연결합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "대만 마케팅은 어떻게 진행되나요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "티엔샤는 KOL·KOC 마케팅, Dcard 커뮤니티 바이럴, Threads 마케팅, 공동구매 캠페인 등 대만 소비자가 실제로 사용하는 채널 전반을 커버합니다. 브랜드 분석 후 최적의 채널 조합을 제안하고 콘텐츠 기획부터 판매 전환까지 전 과정을 대행합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Dcard 마케팅이란 무엇인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Dcard는 대만 최대 익명 커뮤니티로 대만 2030 소비자가 제품 정보를 탐색하는 핵심 채널입니다. 티엔샤는 자연스러운 바이럴 게시글과 커뮤니티 시딩으로 브랜드 인지도를 높이고 구매 욕구를 자극합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "KOC 시딩이란 무엇인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "KOC(Key Opinion Consumer)는 수천~수만 팔로워를 보유한 일반 소비자 인플루언서입니다. KOC에게 제품을 체험하게 해 진정성 높은 후기 콘텐츠를 생성합니다. 광고보다 신뢰도가 높아 구매 전환에 효과적입니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "쇼피(Shopee) 입점 지원이란 무엇인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "티엔샤 전용 입점 링크를 통해 대만 쇼피에 등록하면 판매 트래킹과 다양한 입점 혜택을 받을 수 있습니다. 상품 현지화(번역·상세페이지·키워드 최적화)도 함께 지원합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "공동구매 마케팅이란 무엇인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "대만 KOL이 인스타그램 릴스·스토리·프로필을 통해 직접 상품을 홍보하고 공동구매 형태로 판매를 일으키는 방식입니다. 라이브커머스 없이도 KOL 팔로워를 통한 강력한 바이럴 판매가 가능합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "어떤 업종을 지원하나요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "F&B(식음료·레스토랑·카페), 뷰티(스킨케어·코스메틱·헬스케어), 병원(성형·피부과·메디컬) 브랜드의 대만 마케팅을 전문으로 합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "한국 브랜드가 대만 시장에 진출하려면 어떻게 해야 하나요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "티엔샤를 통하면 쇼피 입점 지원부터 상품 현지화, KOL 섭외·매칭, 공동구매 마케팅까지 원스톱으로 진행할 수 있습니다. 홈페이지 문의 폼을 통해 상담을 신청하실 수 있습니다.",
-      },
-    },
-  ],
-};
-
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -154,7 +84,7 @@ const jsonLd = {
       "@id": `${BASE_URL}/#organization`,
       name: "티엔샤",
       alternateName: "TIANXIA",
-      url: BASE_URL,
+      url: HOME_URL,
       logo: `${BASE_URL}/티엔샤_투명배경_흰글씨.png`,
       email: "hello@tnxia.com",
       description:
@@ -222,21 +152,9 @@ const jsonLd = {
       },
     },
     {
-      "@type": "WebPage",
-      "@id": `${BASE_URL}/#webpage`,
-      url: BASE_URL,
-      name: "(주)티엔샤 — 대만 마케팅 전문 에이전시",
-      description:
-        "한국 브랜드의 대만 시장 진출 전문 에이전시 티엔샤. 대만 KOL 마케팅, 쇼피 입점 지원, 공동구매 마케팅 전문.",
-      inLanguage: "ko-KR",
-      isPartOf: { "@id": `${BASE_URL}/#website` },
-      about: { "@id": `${BASE_URL}/#organization` },
-      primaryImageOfPage: `${BASE_URL}/og-kakao.jpg`,
-    },
-    {
       "@type": "WebSite",
       "@id": `${BASE_URL}/#website`,
-      url: BASE_URL,
+      url: HOME_URL,
       name: "티엔샤 TIANXIA",
       publisher: { "@id": `${BASE_URL}/#organization` },
       inLanguage: "ko-KR",
@@ -261,12 +179,6 @@ export default function RootLayout({
             __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqLd).replace(/</g, "\\u003c"),
-          }}
-        />
         {/* Meta 픽셀 — 전 페이지 PageView + 문의 폼 Lead 이벤트(ContactSection)의 기반 */}
         <script
           dangerouslySetInnerHTML={{
@@ -287,6 +199,8 @@ export default function RootLayout({
         </noscript>
         <CustomCursor />
         {children}
+        {/* 탭 순서 끝에 두어 키보드 이동을 방해하지 않는다 */}
+        <SiteNavLinks />
       </body>
     </html>
   );
