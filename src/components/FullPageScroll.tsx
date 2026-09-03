@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { SectionProvider } from "@/components/SectionContext";
 
-const SECTION_LABELS = ["메인", "소개", "쇼피", "브랜드", "오피스", "작업물", "문의"];
+const SECTION_LABELS = ["메인", "크리에이터", "소개", "쇼피", "브랜드", "오피스", "작업물", "문의"];
 const COOLDOWN_MS = 900;
 
 interface FullPageScrollProps {

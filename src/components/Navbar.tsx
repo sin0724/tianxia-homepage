@@ -24,9 +24,10 @@ function RollingText({ label }: { label: string }) {
 }
 
 const NAV_ITEMS = [
-  { label: "소개", index: 1 },
-  { label: "브랜드", index: 3 },
-  { label: "작업물", index: 5 },
+  { label: "크리에이터", index: 1 },
+  { label: "소개", index: 2 },
+  { label: "브랜드", index: 4 },
+  { label: "작업물", index: 6 },
 ];
 
 function fpNavigate(index: number) {
@@ -95,7 +96,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <Magnetic strength={0.25} className="hidden md:inline-block">
               <button
-                onClick={() => fpNavigate(6)}
+                onClick={() => fpNavigate(7)}
                 className="inline-flex items-center h-9 px-5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
               >
                 문의하기
@@ -154,7 +155,7 @@ export default function Navbar() {
           <motion.button
             onClick={() => {
               setMenuOpen(false);
-              fpNavigate(6);
+              fpNavigate(7);
             }}
             className="text-left text-4xl font-bold text-red-600"
             initial={{ opacity: 0, x: -24 }}

@@ -43,6 +43,39 @@ export const SITE_CONFIG = {
   },
 
   // -------------------------------------------------------
+  // 크리에이터 섹션
+  //
+  // 추가하는 법:
+  //   1) public/creators/ 에 사진을 넣습니다 (3:4 세로, 파일명은 영문/숫자/_/. 만)
+  //   2) 아래 배열에 { handle, photo } 한 줄 추가
+  //
+  // handle 은 인스타 아이디입니다. 카드에는 @handle 로 표시되고
+  // 클릭하면 https://instagram.com/<handle> 로 이동합니다.
+  // 인원수는 제한이 없습니다 — 몇 명이든 마퀴가 알아서 채웁니다.
+  // -------------------------------------------------------
+  creatorsHeadline: {
+    eyebrow: "Our Creators",
+    // 아래 한 줄만 바꾸면 헤드라인이 교체됩니다
+    title: "Creators We Work With",
+    // 헤드라인 아래 설명. 줄바꿈한 그대로 화면에 나옵니다.
+    desc: `현지 연예기획사·MCN·엔터테인먼트 네트워킹 풀을 보유합니다.
+다양한 분야의 크리에이터와 협업해 브랜드 캠페인을 진행합니다.`,
+  },
+
+  creators: [
+    { handle: "000.4.2", photo: "/creators/000.4.2.jpg" },
+    { handle: "0960kim0960", photo: "/creators/0960kim0960.jpg" },
+    { handle: "_min_go", photo: "/creators/_min_go.jpg" },
+    { handle: "h0_barbie", photo: "/creators/h0_barbie.jpg" },
+    { handle: "kimtaerini", photo: "/creators/kimtaerini.jpg" },
+    { handle: "leehozeong", photo: "/creators/leehozeong.jpg" },
+    { handle: "luvy00n", photo: "/creators/luvy00n.jpg" },
+    { handle: "minjeong_w_", photo: "/creators/minjeong_w_.jpg" },
+    { handle: "ppap.eva19", photo: "/creators/ppap.eva19.jpg" },
+    { handle: "wlgus2qh", photo: "/creators/wlgus2qh.jpg" },
+  ],
+
+  // -------------------------------------------------------
   // 소개 섹션 - 타겟 산업별 영상
   // public/videos/ 폴더에 파일을 넣고 video 경로 수정
   // -------------------------------------------------------

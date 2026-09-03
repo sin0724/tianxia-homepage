@@ -73,6 +73,16 @@ body {
   animation-play-state: paused;
 }
 
+/* 크리에이터 마퀴는 배경처럼 천천히 흐르는 연출이라, 동작 줄이기 환경에서도 유지한다.
+   위 reduce 블록의 `animation: none`과 `*`의 !important duration을 둘 다 이겨야 하므로
+   각 속성을 !important로 되돌리고, 시간은 인라인 변수에서 받는다. */
+.marquee-keep-motion {
+  animation-name: marquee !important;
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+  animation-duration: var(--marquee-duration, 90s) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;

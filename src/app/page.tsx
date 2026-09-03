@@ -3,6 +3,7 @@ import JsonLd from "@/components/JsonLd";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
 import FullPageScroll from "@/components/FullPageScroll";
 import HeroSection from "@/components/sections/HeroSection";
+import CreatorsSection from "@/components/sections/CreatorsSection";
 import AboutSection from "@/components/sections/AboutSection";
 import ShopeeSection from "@/components/sections/ShopeeSection";
 import ServicesSection from "@/components/sections/ServicesSection";
@@ -39,6 +40,7 @@ export default function Home() {
       <FullPageScroll
         sections={[
           <HeroSection key="hero" />,
+          <CreatorsSection key="creators" />,
           <AboutSection key="about" />,
           <ShopeeSection key="shopee" />,
           <ServicesSection key="services" />,

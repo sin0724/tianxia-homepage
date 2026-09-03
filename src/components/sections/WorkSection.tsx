@@ -284,7 +284,7 @@ export default function WorkSection() {
               ))}
             </div>
             <button
-              onClick={() => document.dispatchEvent(new CustomEvent("fp-navigate", { detail: { index: 6 } }))}
+              onClick={() => document.dispatchEvent(new CustomEvent("fp-navigate", { detail: { index: 7 } }))}
               className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-red-500 transition-colors duration-200 font-medium"
             >
               More work available — get in touch
