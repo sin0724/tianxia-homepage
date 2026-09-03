@@ -84,7 +84,7 @@ export default function ServicesSection() {
       <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full">
 
         {/* 헤더 */}
-        <div className="flex-shrink-0 pb-6">
+        <div className="flex-shrink-0 mb-3 md:mb-4">
           <Reveal delay={0} y={12}>
             <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
               Our Clients
@@ -98,11 +98,20 @@ export default function ServicesSection() {
           </h2>
         </div>
 
+        <div className="mb-3 md:mb-8 flex-shrink-0">
+          <Reveal delay={0.12}>
+            <p className="text-zinc-400 text-xs md:text-sm leading-relaxed max-w-[52ch]">
+              F&amp;B, 뷰티, 의료 분야 브랜드와 대만 시장에서 함께 일했습니다.<br />
+              입점부터 KOL 캠페인까지 전 과정을 맡아 진행합니다.
+            </p>
+          </Reveal>
+        </div>
+
         <LineReveal delay={0.16} className="h-px bg-zinc-800 flex-shrink-0" />
 
         {/* 로고 마퀴 — 수직 중앙, 그룹 단위 1회 fade */}
         <Reveal delay={0.24} y={20} className="flex-1 min-h-0 flex flex-col">
-          <div className="flex-1 flex flex-col justify-center gap-3 md:gap-5 min-h-0">
+          <div className="flex-1 flex flex-col gap-3 md:gap-5 min-h-0 pt-4 md:pt-5">
             <LogoRow logos={logos.slice(0, 8)} speed={35} />
             <LogoRow logos={logos.slice(8, 16)} speed={28} reverse />
             <LogoRow logos={logos.slice(16)} speed={42} />
