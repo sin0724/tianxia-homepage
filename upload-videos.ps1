@@ -14,7 +14,8 @@ $videos = @(
     @{ file = "public\videos\about-fb_compressed.mp4"; name = "about-fb.mp4" },
     @{ file = "public\videos\about-beauty_compressed.mp4"; name = "about-beauty.mp4" },
     @{ file = "public\videos\about-hospital_compressed.mp4"; name = "about-hospital.mp4" },
-    @{ file = "public\videos\shopee.mp4"; name = "shopee.mp4" }
+    @{ file = "public\videos\shopee.mp4"; name = "shopee.mp4" },
+    @{ file = "public\videos\0906.mp4"; name = "0906.mp4" }
 )
 
 foreach ($v in $videos) {

@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import IntroLoader from "@/components/IntroLoader";
+import ScrollProgress from "@/components/ScrollProgress";
 import SiteNavLinks from "@/components/SiteNavLinks";
+import { SITE_CONFIG } from "@/lib/config";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
 
 const geistSans = Geist({
@@ -85,8 +88,10 @@ const jsonLd = {
       name: "티엔샤",
       alternateName: "TIANXIA",
       url: HOME_URL,
-      logo: `${BASE_URL}/티엔샤_투명배경_흰글씨.png`,
-      email: "hello@tnxia.com",
+      logo: `${BASE_URL}${SITE_CONFIG.logo.src}`,
+      email: SITE_CONFIG.company.email,
+      // 검색엔진이 공식 계정을 같은 주체로 묶도록
+      sameAs: [SITE_CONFIG.company.instagram, SITE_CONFIG.company.youtube],
       description:
         "한국 브랜드의 대만 시장 진출을 돕는 마케팅 에이전시. 대만 KOL 마케팅, 쇼피 입점 지원, 공동구매 마케팅 전문.",
       address: {
@@ -98,7 +103,7 @@ const jsonLd = {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer service",
-        email: "hello@tnxia.com",
+        email: SITE_CONFIG.company.email,
         areaServed: ["KR", "TW"],
         availableLanguage: ["ko", "zh-TW"],
       },
@@ -171,8 +176,24 @@ export default function RootLayout({
     <html
       lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansKR.variable} antialiased`}
+      // 아래 인라인 스크립트가 하이드레이션 전에 data-intro를 심는다.
+      // 서버가 렌더한 적 없는 속성이라 경고가 나므로 이 노드만 예외 처리한다.
+      suppressHydrationWarning
     >
       <head>
+        {/*
+          첫 페인트 전에 로더를 띄울지 정한다. useEffect로 미루면 로더가
+          한 프레임 번쩍인다 (Next.js "preventing flash before hydration").
+
+          홈에 들어올 때마다 재생한다. 지시서의 "세션당 1회 / 동작 줄이기 시 생략"은
+          이 사이트의 첫인상을 매번 같게 보여달라는 요청에 따라 걷어냈다.
+          랜딩 페이지는 검색 유입이라 로더가 방해가 되므로 홈에서만 돈다.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{document.documentElement.dataset.intro=location.pathname==="/"?"run":"skip";}catch(e){document.documentElement.dataset.intro="skip";}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -197,6 +218,8 @@ export default function RootLayout({
             src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
           />
         </noscript>
+        <IntroLoader />
+        <ScrollProgress />
         <CustomCursor />
         {children}
         {/* 탭 순서 끝에 두어 키보드 이동을 방해하지 않는다 */}

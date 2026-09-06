@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Play, X } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight, Play, X } from "@phosphor-icons/react";
 import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -26,12 +26,92 @@ function toEmbedUrl(url: string): string {
   return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : "";
 }
 
-function toThumbnailUrl(url: string): string {
+/**
+ * 유튜브는 영상마다 스토리보드 프레임 1~3번을 따로 제공한다.
+ * 대표 썸네일 + 이 3장을 호버 중에 돌리면 새 에셋 없이 "움직이는 포트폴리오"가 된다.
+ * (영상을 실제로 재생하지 않으므로 동시 재생 1개 제약과도 부딪히지 않는다)
+ */
+function toFrameUrls(url: string): string[] {
   const id = extractVideoId(url);
-  return id ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg` : "";
+  if (!id) return [];
+  return [
+    `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+    `https://img.youtube.com/vi/${id}/1.jpg`,
+    `https://img.youtube.com/vi/${id}/2.jpg`,
+    `https://img.youtube.com/vi/${id}/3.jpg`,
+  ];
+}
+
+/** 호버 중 프레임이 넘어가는 간격(ms) */
+const FRAME_MS = 420;
+
+/**
+ * 호버하면 스토리보드가 넘어가는 썸네일.
+ * maxresdefault가 없는 영상은 이미지가 깨지므로 hqdefault로 물러난다.
+ */
+function WorkThumb({
+  work,
+  className,
+  sizes,
+}: {
+  work: Work;
+  className: string;
+  sizes: string;
+}) {
+  const frames = toFrameUrls(work.youtubeUrl);
+  const [frame, setFrame] = useState(0);
+  const timer = useRef<number | undefined>(undefined);
+
+  const start = () => {
+    if (frames.length < 2) return;
+    window.clearInterval(timer.current);
+    timer.current = window.setInterval(
+      () => setFrame((f) => (f + 1) % frames.length),
+      FRAME_MS
+    );
+  };
+
+  const stop = () => {
+    window.clearInterval(timer.current);
+    setFrame(0);
+  };
+
+  // 카드가 사라질 때 타이머가 남지 않도록
+  useEffect(() => () => window.clearInterval(timer.current), []);
+
+  const src =
+    frames[frame] ?? `https://picsum.photos/seed/${work.placeholderSeed}/1280/720`;
+
+  return (
+    <span onMouseEnter={start} onMouseLeave={stop} className="contents">
+      <Image
+        key={src}
+        src={src}
+        alt={work.title}
+        fill
+        sizes={sizes}
+        className={className}
+        onError={(e) => {
+          const img = e.currentTarget as HTMLImageElement;
+          if (img.src.includes("maxresdefault")) {
+            img.src = img.src.replace("maxresdefault", "hqdefault");
+          }
+        }}
+      />
+    </span>
+  );
 }
 
 function VideoModal({ work, onClose }: { work: Work; onClose: () => void }) {
+  // 모달 뒤 페이지가 같이 스크롤되지 않도록 잠금
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -75,6 +155,10 @@ export default function WorkSection() {
   const [playing, setPlaying] = useState<Work | null>(null);
   const [touchStart, setTouchStart] = useState(0);
   const reduce = useReducedMotion();
+  // 동작 줄이기: 값·구조는 그대로 두고 이동만 즉시 끝낸다 (SSR 마크업 동일 유지)
+  const slideTransition = reduce
+    ? { duration: 0.3, x: { duration: 0 } }
+    : { duration: 0.4, ease: EASE };
 
   const works = SITE_CONFIG.works;
   const total = works.length;
@@ -98,20 +182,19 @@ export default function WorkSection() {
   };
 
   const work = works[current];
-  const thumbnail = toThumbnailUrl(work.youtubeUrl);
   const pageWorks = works.slice(dPage * DESKTOP_PAGE_SIZE, (dPage + 1) * DESKTOP_PAGE_SIZE);
 
   return (
     <>
-      <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-20 md:pt-24 pb-3 md:pb-6 overflow-hidden">
-        <div className="max-w-[1400px] w-full mx-auto flex flex-col flex-1 min-h-0">
+      <section
+        id="work"
+        className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-6 md:px-12 py-24 md:py-32 overflow-hidden"
+      >
+        <div className="max-w-[1400px] w-full mx-auto">
 
           {/* 헤더 */}
-          <div className="flex items-end justify-between mb-2 md:mb-4 flex-shrink-0">
+          <div className="flex items-end justify-between mb-4 md:mb-6">
             <div>
-              <Reveal delay={0} y={12}>
-                <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">Portfolio</p>
-              </Reveal>
               <h2 className="text-2xl md:text-4xl font-black tracking-tight text-zinc-50">
                 <MaskReveal delay={0.08}>Our Work</MaskReveal>
               </h2>
@@ -160,12 +243,12 @@ export default function WorkSection() {
             </div>
           </div>
 
-          <LineReveal delay={0.14} className="h-px bg-zinc-800 mb-2 md:mb-4 flex-shrink-0" />
+          <LineReveal delay={0.14} className="h-px bg-zinc-800 mb-6 md:mb-8" />
 
           {/* 모바일: 단일 카드 슬라이더 */}
-          <Reveal delay={0.2} y={20} className="md:hidden flex-1 min-h-0 max-h-[48vh]">
+          <Reveal delay={0.2} y={20} className="md:hidden">
           <div
-            className="relative w-full h-full overflow-hidden"
+            className="relative w-full aspect-video overflow-hidden"
             onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
             onTouchEnd={(e) => {
               const delta = touchStart - e.changedTouches[0].clientX;
@@ -177,7 +260,7 @@ export default function WorkSection() {
               <motion.div
                 key={current}
                 custom={dir}
-                variants={reduce ? undefined : {
+                variants={{
                   enter: (d: number) => ({ x: d > 0 ? "3%" : "-3%", opacity: 0 }),
                   center: { x: "0%", opacity: 1 },
                   exit: (d: number) => ({ x: d > 0 ? "-3%" : "3%", opacity: 0 }),
@@ -185,17 +268,15 @@ export default function WorkSection() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.4, ease: EASE }}
+                transition={slideTransition}
                 className="absolute inset-0 cursor-pointer group"
                 data-cursor="play"
                 onClick={() => work.youtubeUrl && setPlaying(work)}
               >
-                <Image
-                  src={thumbnail || `https://picsum.photos/seed/${work.placeholderSeed}/1280/720`}
-                  alt={work.title}
-                  fill
+                <WorkThumb
+                  work={work}
+                  sizes="100vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                  priority
                 />
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
@@ -208,12 +289,12 @@ export default function WorkSection() {
           </Reveal>
 
           {/* 데스크탑: 3열 그리드 — aspect-video 유지, 세로 중앙 정렬 */}
-          <Reveal delay={0.2} y={24} className="hidden md:flex flex-col justify-center flex-1 min-h-0">
+          <Reveal delay={0.2} y={24} className="hidden md:block">
             <AnimatePresence custom={dDir} mode="wait" initial={false}>
               <motion.div
                 key={dPage}
                 custom={dDir}
-                variants={reduce ? undefined : {
+                variants={{
                   enter: (d: number) => ({ x: d > 0 ? "2%" : "-2%", opacity: 0 }),
                   center: { x: "0%", opacity: 1 },
                   exit: (d: number) => ({ x: d > 0 ? "-2%" : "2%", opacity: 0 }),
@@ -221,25 +302,27 @@ export default function WorkSection() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.4, ease: EASE }}
+                transition={slideTransition}
                 className="grid grid-cols-3 gap-3"
               >
                 {pageWorks.map((w, idx) => {
-                  const thumb = toThumbnailUrl(w.youtubeUrl);
                   return (
                     <motion.div
                       key={w.id}
-                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                      initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, ease: EASE, delay: idx * 0.05 }}
+                      transition={
+                        reduce
+                          ? { duration: 0.3, y: { duration: 0 } }
+                          : { duration: 0.45, ease: EASE, delay: idx * 0.05 }
+                      }
                       className="aspect-video relative overflow-hidden cursor-pointer group bg-zinc-900"
                       data-cursor="play"
                       onClick={() => w.youtubeUrl && setPlaying(w)}
                     >
-                      <Image
-                        src={thumb || `https://picsum.photos/seed/${w.placeholderSeed}/1280/720`}
-                        alt={w.title}
-                        fill
+                      <WorkThumb
+                        work={w}
+                        sizes="(max-width: 1400px) 33vw, 460px"
                         className="object-cover grayscale-[30%] transition-all duration-700 group-hover:grayscale-0 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -258,7 +341,7 @@ export default function WorkSection() {
           </Reveal>
 
           {/* 하단 도트 + CTA */}
-          <Reveal delay={0.3} y={12} className="mt-3 flex items-center justify-between flex-shrink-0">
+          <Reveal delay={0.3} y={12} className="mt-6 flex items-center justify-between">
             {/* 모바일 도트 */}
             <div className="flex md:hidden items-center gap-1.5">
               {works.map((_, i) => (
@@ -283,13 +366,12 @@ export default function WorkSection() {
                 />
               ))}
             </div>
-            <button
-              onClick={() => document.dispatchEvent(new CustomEvent("fp-navigate", { detail: { index: 7 } }))}
-              className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-red-500 transition-colors duration-200 font-medium"
+            <a
+              href="#contact"
+              className="text-xs text-zinc-500 hover:text-red-500 transition-colors duration-200 font-medium underline-offset-4 hover:underline"
             >
-              More work available — get in touch
-              <ArrowUpRight size={13} weight="bold" />
-            </button>
+              더 많은 작업물이 궁금하다면 문의해 주세요
+            </a>
           </Reveal>
 
         </div>

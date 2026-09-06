@@ -41,7 +41,26 @@
 }
 
 html {
-  scroll-behavior: auto;
+  /* 앵커 네비게이션용 부드러운 스크롤 — reduce 환경에서는 아래에서 auto로 되돌린다 */
+  scroll-behavior: smooth;
+}
+
+/*
+  인트로 로더 게이트.
+  <head>의 인라인 스크립트가 첫 페인트 전에 data-intro를 정한다.
+    run  = 홈 진입 → 로더를 보여주고 스크롤을 잠근다
+    exit = 와이프가 도는 중 → 로더는 보이되 스크롤은 풀어준다
+    skip = 홈이 아님 → 로더를 한 프레임도 그리지 않는다
+    done = 와이프까지 끝남
+  React가 아니라 CSS가 첫 페인트를 결정해야 깜빡임이 없다.
+*/
+html[data-intro="run"] {
+  overflow: hidden;
+}
+
+html[data-intro="skip"] #intro-loader,
+html[data-intro="done"] #intro-loader {
+  display: none;
 }
 
 body {
@@ -84,6 +103,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .marquee-track {
     animation: none;
   }

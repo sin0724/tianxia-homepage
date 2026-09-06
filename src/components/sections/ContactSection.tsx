@@ -3,9 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
-import { ArrowRight, X } from "@phosphor-icons/react";
+import { SOCIALS } from "@/components/socials";
+import { X } from "@phosphor-icons/react";
 import { Reveal, MaskReveal } from "@/components/motion/Reveal";
 import Magnetic from "@/components/motion/Magnetic";
+import FillHover from "@/components/motion/FillHover";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -28,12 +30,12 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const [fileName, setFileName] = useState("선택된 파일 없음");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // 모달이 떠 있는 동안 FullPageScroll의 휠/터치/키보드 섹션 전환을 잠금 —
-  // 모달 안에서 위로 스크롤해도 섹션이 넘어가며 모달이 닫히지 않도록
+  // 모달이 떠 있는 동안 뒤 페이지가 같이 스크롤되지 않도록 잠금
   useEffect(() => {
-    document.body.dataset.fpLock = "1";
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      delete document.body.dataset.fpLock;
+      document.body.style.overflow = prev;
     };
   }, []);
 
@@ -82,9 +84,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     >
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between px-6 md:px-16 h-16 border-b border-zinc-800/60 flex-shrink-0 sticky top-0 bg-zinc-950 z-10">
-        <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500">
-          Contact
-        </span>
+        <span className="text-sm font-medium text-zinc-400">문의하기</span>
         <button
           onClick={onClose}
           className="w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-zinc-50 transition-colors duration-200"
@@ -270,16 +270,14 @@ export default function ContactSection() {
 
   return (
     <>
-      <section className="h-[100dvh] bg-zinc-950 flex flex-col overflow-hidden">
+      <section
+        id="contact"
+        className="scroll-mt-16 md:scroll-mt-[68px] min-h-[100dvh] bg-zinc-950 flex flex-col overflow-hidden"
+      >
 
         {/* 메인: 타이포 + CTA */}
-        <div className="flex-1 flex flex-col items-center justify-center px-6 md:px-12 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center px-6 md:px-12 py-24 text-center">
           <div>
-            <Reveal delay={0} y={12}>
-              <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-5">
-                Contact
-              </p>
-            </Reveal>
             <h2 className="text-5xl md:text-7xl lg:text-[6.5rem] font-black tracking-tighter leading-[0.92] text-zinc-50 mb-8">
               <MaskReveal delay={0.08} duration={0.9}>Next Move</MaskReveal>
             </h2>
@@ -293,46 +291,66 @@ export default function ContactSection() {
               <Magnetic strength={0.25}>
                 <button
                   onClick={() => setFormOpen(true)}
-                  className="inline-flex items-center gap-3 h-14 px-10 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm tracking-wide transition-colors duration-200 active:scale-[0.98]"
+                  className="group relative overflow-hidden inline-flex items-center h-14 px-10 bg-red-600 text-white hover:text-red-600 font-semibold text-sm tracking-wide transition-colors duration-300 active:scale-[0.98]"
                 >
-                  문의하기
-                  <ArrowRight size={16} weight="bold" />
+                  <FillHover className="bg-white" />
+                  <span className="relative z-10">문의하기</span>
                 </button>
               </Magnetic>
             </Reveal>
           </div>
         </div>
 
-        {/* 하단 푸터 스트립 */}
-        <Reveal delay={0.4} y={0} className="border-t border-zinc-800/60 px-6 md:px-12 py-5 flex-shrink-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-6 flex-wrap">
-            <a
-              href={`mailto:${SITE_CONFIG.company.email}`}
-              className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors duration-200"
-            >
-              {SITE_CONFIG.company.email}
-            </a>
-            <a
-              href={SITE_CONFIG.company.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors duration-200 uppercase tracking-wider"
-            >
-              Instagram
-            </a>
-            <a
-              href={SITE_CONFIG.company.youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors duration-200 uppercase tracking-wider"
-            >
-              YouTube
-            </a>
+        {/* 하단 푸터 */}
+        <footer className="mt-auto border-t border-zinc-800/60">
+          <Reveal delay={0.4} y={16} className="px-6 md:px-12 py-10 md:py-14">
+            <div className="max-w-[1400px] mx-auto flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+
+              {/* 이메일 — 푸터에서 가장 크게 */}
+              <div>
+                <p className="text-xs text-zinc-500 mb-3">이메일로 문의</p>
+                <a
+                  href={`mailto:${SITE_CONFIG.company.email}`}
+                  className="group inline-block text-2xl md:text-4xl font-black tracking-tight text-zinc-50 hover:text-red-500 transition-colors duration-200 break-all"
+                >
+                  {SITE_CONFIG.company.email}
+                  <span className="block h-px bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+                </a>
+              </div>
+
+              {/* 공식 채널 */}
+              <div>
+                <p className="text-xs text-zinc-500 mb-3">공식 채널</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  {SOCIALS.map(({ label, href, Icon, fill, hoverBorder }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group relative overflow-hidden inline-flex items-center gap-2.5 h-12 px-5 border border-zinc-700 text-zinc-200 font-medium text-sm hover:text-white hover:border-transparent transition-colors duration-300 ${hoverBorder}`}
+                    >
+                      <FillHover className={fill} />
+                      <Icon size={20} weight="fill" className="relative z-10" />
+                      <span className="relative z-10">{label}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="border-t border-zinc-900 px-6 md:px-12 py-5">
+            <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <p className="text-xs text-zinc-500">
+                {SITE_CONFIG.company.name} {SITE_CONFIG.company.nameEn}
+              </p>
+              <p className="text-xs text-zinc-600">
+                &copy; {year} {SITE_CONFIG.company.name}. All rights reserved.
+              </p>
+            </div>
           </div>
-          <p className="text-xs text-zinc-700">
-            &copy; {year} {SITE_CONFIG.company.name}. All rights reserved.
-          </p>
-        </Reveal>
+        </footer>
 
       </section>
 

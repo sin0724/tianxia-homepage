@@ -9,11 +9,12 @@ export const SITE_CONFIG = {
     nameEn: "TIANXIA",
     tagline: "대만을 향한 마케팅",
     subTagline: "한국 브랜드의 무대를 대만으로.\n현지의 감각으로 팬을 만듭니다.",
-    email: "hello@tnxia.com",
+    email: "b-567@naver.com",
     phone: "02-000-0000",
     address: "서울특별시",
-    instagram: "https://instagram.com/",
-    youtube: "https://youtube.com/",
+    instagram: "https://www.instagram.com/tianxia_tw",
+    // 스튜디오구프 채널 (@스튜디오구프) — 한글 핸들이라 퍼센트 인코딩된 형태로 둔다
+    youtube: "https://www.youtube.com/@%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EA%B5%AC%ED%94%84",
   },
 
   // -------------------------------------------------------
@@ -33,12 +34,27 @@ export const SITE_CONFIG = {
   shopeePoster: "",
 
   // -------------------------------------------------------
+  // 브랜드 필름 (히어로 다음, 로고 마퀴 아래 독립 섹션)
+  //
+  // 원본은 8K/120fps HEVC라 브라우저가 디코딩하지 못한다.
+  // 웹용 H.264 1080p30으로 변환한 파일을 여기서 가리킨다.
+  // 원본을 교체할 때는 아래 명령으로 다시 변환할 것:
+  //   ffmpeg -i <원본> -an -vf "fps=30,scale=1920:-2:flags=lanczos"
+  //     -c:v libx264 -profile:v high -crf 21 -preset medium
+  //     -pix_fmt yuv420p -movflags +faststart public/videos/0906.mp4
+  // -------------------------------------------------------
+  filmVideo: "/videos/0906.mp4",
+  filmPoster: "/posters/0906-poster.jpg",
+
+  // -------------------------------------------------------
   // 로고
   // -------------------------------------------------------
+  // 원본(새로운 흰색로고.png)은 흰 배경 위 검은 워드마크라 어두운 네비에서 안 보인다.
+  // 배경을 투명하게 빼고 글자를 흰색으로 반전한 뒤 여백까지 잘라낸 파일이다.
   logo: {
-    src: "/티엔샤_투명배경_흰글씨.png",
+    src: "/티엔샤_워드마크_흰색.png",
     alt: "티엔샤 로고",
-    width: 140,
+    width: 152,
     height: 40,
   },
 
@@ -229,31 +245,38 @@ export const SITE_CONFIG = {
   ],
 
   // -------------------------------------------------------
-  // 클라이언트 로고 (public/clients/ 폴더에 파일 추가 후 logo 경로 수정)
+  // 클라이언트 로고
+  //
+  // public/clients/ 의 원본(흰 배경 JPG)에서 배경을 빼고 어두운 화면에서
+  // 읽히도록 보정한 결과가 public/clients-cutout/ 이다.
+  //   · 배경색은 테두리에서 추정해 제거 (흰 배경이 아닌 로고도 있다)
+  //   · 검은 잉크는 흰색으로 — 안 그러면 어두운 배경에서 사라진다
+  //   · 유채색은 색상을 지키고 밝기 바닥만 올림
+  // 화면에서는 기본이 흰 실루엣이고 호버 시 이 색이 드러난다.
   // -------------------------------------------------------
   clients: [
-    { name: "Client 1", logo: "/clients/client-1.jpg" },
-    { name: "Client 2", logo: "/clients/client-2.jpg" },
-    { name: "Client 3", logo: "/clients/client-3.jpg" },
-    { name: "Client 4", logo: "/clients/client-4.jpg" },
-    { name: "Client 5", logo: "/clients/client-5.jpg" },
-    { name: "Client 6", logo: "/clients/client-6.jpg" },
-    { name: "Client 7", logo: "/clients/client-7.jpg" },
-    { name: "Client 8", logo: "/clients/client-8.jpg" },
-    { name: "Client 9", logo: "/clients/client-9.jpg" },
-    { name: "Client 10", logo: "/clients/client-10.jpg" },
-    { name: "Client 12", logo: "/clients/client-12.jpg" },
-    { name: "Client 13", logo: "/clients/client-13.jpg" },
-    { name: "Client 14", logo: "/clients/client-14.jpg" },
-    { name: "Client 15", logo: "/clients/client-15.jpg" },
-    { name: "Client 16", logo: "/clients/client-16.jpg" },
-    { name: "Client 17", logo: "/clients/client-17.jpg" },
-    { name: "Client 18", logo: "/clients/client-18.jpg" },
-    { name: "Client 19", logo: "/clients/client-19.jpg" },
-    { name: "Client 20", logo: "/clients/client-20.jpg" },
-    { name: "Client 21", logo: "/clients/client-21.jpg" },
-    { name: "Client 22", logo: "/clients/client-22.jpg" },
-    { name: "Client 23", logo: "/clients/client-23.jpg" },
-    { name: "Client 24", logo: "/clients/client-24.jpg" },
+    { name: "Client 1", logo: "/clients-cutout/client-1.png" },
+    { name: "Client 2", logo: "/clients-cutout/client-2.png" },
+    { name: "Client 3", logo: "/clients-cutout/client-3.png" },
+    { name: "Client 4", logo: "/clients-cutout/client-4.png" },
+    { name: "Client 5", logo: "/clients-cutout/client-5.png" },
+    { name: "Client 6", logo: "/clients-cutout/client-6.png" },
+    { name: "Client 7", logo: "/clients-cutout/client-7.png" },
+    { name: "Client 8", logo: "/clients-cutout/client-8.png" },
+    { name: "Client 9", logo: "/clients-cutout/client-9.png" },
+    { name: "Client 10", logo: "/clients-cutout/client-10.png" },
+    { name: "Client 12", logo: "/clients-cutout/client-12.png" },
+    { name: "Client 13", logo: "/clients-cutout/client-13.png" },
+    { name: "Client 14", logo: "/clients-cutout/client-14.png" },
+    { name: "Client 15", logo: "/clients-cutout/client-15.png" },
+    { name: "Client 16", logo: "/clients-cutout/client-16.png" },
+    { name: "Client 17", logo: "/clients-cutout/client-17.png" },
+    { name: "Client 18", logo: "/clients-cutout/client-18.png" },
+    { name: "Client 19", logo: "/clients-cutout/client-19.png" },
+    { name: "Client 20", logo: "/clients-cutout/client-20.png" },
+    { name: "Client 21", logo: "/clients-cutout/client-21.png" },
+    { name: "Client 22", logo: "/clients-cutout/client-22.png" },
+    { name: "Client 23", logo: "/clients-cutout/client-23.png" },
+    { name: "Client 24", logo: "/clients-cutout/client-24.png" },
   ],
 };

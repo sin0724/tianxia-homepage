@@ -4,7 +4,9 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
+import { SOCIALS } from "@/components/socials";
 import Magnetic from "@/components/motion/Magnetic";
+import FillHover from "@/components/motion/FillHover";
 
 /** hover 시 글자가 위로 밀려나가고 같은 글자가 아래서 올라오는 롤링 텍스트 */
 function RollingText({ label }: { label: string }) {
@@ -23,18 +25,13 @@ function RollingText({ label }: { label: string }) {
   );
 }
 
+// 화면에 나오는 순서와 같게 유지한다
 const NAV_ITEMS = [
-  { label: "크리에이터", index: 1 },
-  { label: "소개", index: 2 },
-  { label: "브랜드", index: 4 },
-  { label: "작업물", index: 6 },
+  { label: "브랜드", href: "#brands" },
+  { label: "크리에이터", href: "#creators" },
+  { label: "소개", href: "#about" },
+  { label: "작업물", href: "#work" },
 ];
-
-function fpNavigate(index: number) {
-  document.dispatchEvent(
-    new CustomEvent("fp-navigate", { detail: { index } })
-  );
-}
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -52,11 +49,7 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between h-16 md:h-[68px]">
           {/* 로고 */}
-          <button
-            onClick={() => fpNavigate(0)}
-            className="relative flex items-center"
-            aria-label="홈으로"
-          >
+          <a href="#home" className="relative flex items-center" aria-label="홈으로">
             <Image
               src={SITE_CONFIG.logo.src}
               alt={SITE_CONFIG.logo.alt}
@@ -76,36 +69,50 @@ export default function Navbar() {
             >
               티엔샤
             </span>
-          </button>
+          </a>
 
           {/* 데스크탑 네비게이션 */}
           <nav className="hidden md:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
-              <Magnetic key={item.index} strength={0.35}>
-                <button
-                  onClick={() => fpNavigate(item.index)}
+              <Magnetic key={item.href} strength={0.35}>
+                <a
+                  href={item.href}
                   className="group block text-sm font-medium text-zinc-400 py-1"
                 >
                   <RollingText label={item.label} />
-                </button>
+                </a>
               </Magnetic>
             ))}
           </nav>
 
-          {/* CTA + 햄버거 */}
-          <div className="flex items-center gap-4">
-            <Magnetic strength={0.25} className="hidden md:inline-block">
-              <button
-                onClick={() => fpNavigate(7)}
-                className="inline-flex items-center h-9 px-5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
+          {/* 소셜 + CTA + 햄버거 */}
+          <div className="flex items-center gap-2 md:gap-3">
+            {SOCIALS.map(({ label, href, Icon, hoverText }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`티엔샤 ${label}`}
+                className={`w-9 h-9 flex items-center justify-center text-zinc-300 transition-colors duration-200 ${hoverText}`}
               >
-                문의하기
-              </button>
+                <Icon size={22} weight="fill" />
+              </a>
+            ))}
+            <Magnetic strength={0.25} className="hidden md:inline-block md:ml-1">
+              <a
+                href="#contact"
+                className="group relative overflow-hidden inline-flex items-center h-9 px-5 bg-red-600 text-white hover:text-red-600 text-sm font-medium transition-colors duration-300 active:scale-[0.98]"
+              >
+                <FillHover className="bg-white" />
+                <span className="relative z-10">문의하기</span>
+              </a>
             </Magnetic>
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              aria-label="메뉴 열기"
-              className="md:hidden flex flex-col gap-1.5 w-6"
+              aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+              aria-expanded={menuOpen}
+              className="md:hidden flex flex-col gap-1.5 w-6 relative z-50"
             >
               <span
                 className={`block h-px bg-zinc-50 transition-all duration-300 ${
@@ -135,37 +142,33 @@ export default function Navbar() {
         className={`fixed inset-0 z-40 bg-zinc-950 flex flex-col justify-center px-8 md:hidden ${
           menuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
+        // 닫혀 있을 때 링크가 키보드 탭 순서에 남지 않도록 (React 19 boolean inert)
+        inert={!menuOpen}
       >
         <nav className="flex flex-col gap-8">
           {NAV_ITEMS.map((item, i) => (
-            <motion.button
-              key={item.index}
-              onClick={() => {
-                setMenuOpen(false);
-                fpNavigate(item.index);
-              }}
+            <motion.a
+              key={item.href}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
               className="text-left text-4xl font-bold text-zinc-50"
               initial={{ opacity: 0, x: -24 }}
               animate={menuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
               transition={{ delay: i * 0.07, duration: 0.35 }}
             >
               {item.label}
-            </motion.button>
+            </motion.a>
           ))}
-          <motion.button
-            onClick={() => {
-              setMenuOpen(false);
-              fpNavigate(7);
-            }}
+          <motion.a
+            href="#contact"
+            onClick={() => setMenuOpen(false)}
             className="text-left text-4xl font-bold text-red-600"
             initial={{ opacity: 0, x: -24 }}
-            animate={
-              menuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }
-            }
+            animate={menuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
             transition={{ delay: NAV_ITEMS.length * 0.07, duration: 0.35 }}
           >
             문의하기
-          </motion.button>
+          </motion.a>
         </nav>
       </motion.div>
     </>

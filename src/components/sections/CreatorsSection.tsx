@@ -22,6 +22,8 @@ function CreatorCard({ creator }: { creator: (typeof SITE_CONFIG.creators)[numbe
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${creator.handle} 인스타그램`}
+      data-cursor="label"
+      data-cursor-label={`@${creator.handle}`}
       className="group relative block h-full w-auto aspect-[3/4] flex-shrink-0 mr-3 md:mr-4 overflow-hidden bg-zinc-900"
     >
       <Image
@@ -29,7 +31,7 @@ function CreatorCard({ creator }: { creator: (typeof SITE_CONFIG.creators)[numbe
         alt=""
         fill
         sizes="(max-width: 768px) 62vw, 19vw"
-        loading="eager"
+        loading="lazy"
         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
       />
 
@@ -48,7 +50,7 @@ function CreatorCard({ creator }: { creator: (typeof SITE_CONFIG.creators)[numbe
 
 export default function CreatorsSection() {
   const creators = SITE_CONFIG.creators;
-  const { eyebrow, title, desc } = SITE_CONFIG.creatorsHeadline;
+  const { title, desc } = SITE_CONFIG.creatorsHeadline;
 
   // marquee 키프레임이 -50%까지 이동하므로 트랙은 정확히 2벌이어야 이음매가 없다.
   // 카드 간격은 flex gap 대신 카드의 mr로 주는데, gap을 쓰면 2벌의 마지막
@@ -59,13 +61,11 @@ export default function CreatorsSection() {
   const duration = set.length * SECONDS_PER_CARD;
 
   return (
-    <section className="h-[100dvh] bg-zinc-950 flex flex-col pt-20 md:pt-24 pb-10 md:pb-14 overflow-hidden">
-      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 flex-shrink-0">
-        <Reveal delay={0} y={12}>
-          <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
-            {eyebrow}
-          </p>
-        </Reveal>
+    <section
+      id="creators"
+      className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 py-24 md:py-32 overflow-hidden"
+    >
+      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12">
         <h2 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-zinc-50 mb-3 md:mb-4">
           <MaskReveal delay={0.08}>{title}</MaskReveal>
         </h2>
@@ -80,10 +80,10 @@ export default function CreatorsSection() {
       </div>
 
       {/* 마퀴는 좌우 패딩 밖으로 흘러나가야 하므로 max-w 컨테이너 바깥에 둔다 */}
-      <Reveal delay={0.24} y={20} className="flex-1 min-h-0 pt-4 md:pt-5 overflow-hidden">
-        {/* 카드는 높이에서 폭이 결정되므로(3:4), 행 높이에 상한을 두면 폭이 고정된다.
-            25vw 상한 → 카드 폭 약 18.75vw → 창 크기와 무관하게 항상 5명 안팎이 보인다. */}
-        <div className="w-full h-full max-h-[83vw] md:max-h-[25vw] overflow-hidden">
+      <Reveal delay={0.24} y={20} className="pt-6 md:pt-8 overflow-hidden">
+        {/* 카드는 높이에서 폭이 결정되므로(3:4), 행 높이를 고정하면 폭도 고정된다.
+            25vw → 카드 폭 약 18.75vw → 창 크기와 무관하게 항상 5명 안팎이 보인다. */}
+        <div className="w-full h-[83vw] md:h-[25vw] overflow-hidden">
           <div
             className="marquee-track marquee-keep-motion flex h-full w-max"
             style={{ "--marquee-duration": `${duration}s` } as React.CSSProperties}

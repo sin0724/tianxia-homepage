@@ -4,11 +4,16 @@ import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useIsTouchDevice } from "@/components/motion/useIsTouchDevice";
 
-type CursorVariant = "default" | "hover" | "play";
+type CursorVariant = "default" | "hover" | "play" | "label";
+
+const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [variant, setVariant] = useState<CursorVariant>("default");
+  // label 변형에서 커서에 띄울 문구. 빠져나갈 때 글자가 사라지며 깜빡이지
+  // 않도록, 변형이 풀려도 마지막 값을 그대로 들고 있는다.
+  const [label, setLabel] = useState("");
   const isTouchDevice = useIsTouchDevice();
 
   const mouseX = useMotionValue(-100);
@@ -27,7 +32,12 @@ export default function CustomCursor() {
       setIsVisible(true);
     };
 
-    // 인터랙티브 요소 감지 — data-cursor="play"는 PLAY 커서로 변형
+    /*
+      인터랙티브 요소 감지.
+        data-cursor="play"  → 채워진 원 + PLAY
+        data-cursor="label" → data-cursor-label 문구를 담은 알약
+      그 외 a/button 은 기본 hover 확대.
+    */
     const onOver = (e: MouseEvent) => {
       const target = (e.target as Element).closest?.(
         "a, button, [role='button'], [data-cursor]"
@@ -36,7 +46,15 @@ export default function CustomCursor() {
         setVariant("default");
         return;
       }
-      setVariant(target.getAttribute("data-cursor") === "play" ? "play" : "hover");
+      const kind = target.getAttribute("data-cursor");
+      if (kind === "play") {
+        setVariant("play");
+      } else if (kind === "label") {
+        setLabel(target.getAttribute("data-cursor-label") ?? "");
+        setVariant("label");
+      } else {
+        setVariant("hover");
+      }
     };
 
     const onLeave = () => setIsVisible(false);
@@ -64,7 +82,7 @@ export default function CustomCursor() {
         className="fixed top-0 left-0 w-2 h-2 rounded-full bg-red-500 pointer-events-none z-[9999]"
         style={{ x: mouseX, y: mouseY, translateX: "-50%", translateY: "-50%" }}
         animate={{
-          opacity: isVisible && variant !== "play" ? 1 : 0,
+          opacity: isVisible && variant !== "play" && variant !== "label" ? 1 : 0,
           scale: variant === "hover" ? 0.5 : 1,
         }}
         transition={{ duration: 0.2 }}
@@ -80,7 +98,9 @@ export default function CustomCursor() {
         <motion.div
           className="rounded-full border border-red-500/60 w-9 h-9"
           animate={{
-            scale: variant === "play" ? 2 : variant === "hover" ? 1.5 : 1,
+            opacity: variant === "label" ? 0 : 1,
+            scale:
+              variant === "play" ? 2 : variant === "hover" ? 1.5 : variant === "label" ? 0.4 : 1,
             backgroundColor:
               variant === "play" ? "rgba(220,38,38,0.9)" : "rgba(220,38,38,0)",
             borderColor:
@@ -99,6 +119,23 @@ export default function CustomCursor() {
         >
           PLAY
         </motion.span>
+
+        {/*
+          라벨 알약 — 문구 길이에 따라 폭이 늘어나야 해서 고정 원을 쓰지 않는다.
+          (@0960kim0960 같은 긴 핸들도 잘리지 않게)
+        */}
+        <motion.div
+          className="absolute flex items-center h-7 px-3.5 rounded-full bg-red-600 whitespace-nowrap"
+          animate={{
+            opacity: variant === "label" ? 1 : 0,
+            scale: variant === "label" ? 1 : 0.7,
+          }}
+          transition={{ duration: 0.25, ease: EASE }}
+        >
+          <span className="text-[10px] font-bold tracking-[0.12em] text-white select-none">
+            {label}
+          </span>
+        </motion.div>
       </motion.div>
     </>
   );

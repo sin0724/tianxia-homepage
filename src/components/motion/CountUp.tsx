@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate, useReducedMotion } from "motion/react";
-import { useSectionState } from "@/components/SectionContext";
+import { animate, useInView, useReducedMotion } from "motion/react";
 import { EASE_OUT } from "@/components/motion/Reveal";
 
 interface CountUpProps {
@@ -13,7 +12,7 @@ interface CountUpProps {
   className?: string;
 }
 
-/** 섹션 진입 시 0→to 카운트업. 폭은 최종 값 기준으로 예약해 layout shift 방지 */
+/** 뷰포트 진입 시 0→to 카운트업. 폭은 최종 값 기준으로 예약해 layout shift 방지 */
 export default function CountUp({
   to,
   suffix = "",
@@ -23,27 +22,28 @@ export default function CountUp({
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
-  const { isActive, isRevisit } = useSectionState();
+  // 한 번만 센다 — 스크롤로 오르내릴 때마다 다시 도는 건 산만하다
+  const inView = useInView(ref, { once: true, amount: 0.5 });
   const finalText = `${to}${suffix}`;
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (!isActive || reduce) {
+    if (!inView || reduce) {
       el.textContent = finalText;
       return;
     }
     el.textContent = `0${suffix}`;
     const controls = animate(0, to, {
-      duration: isRevisit ? 0.9 : duration,
-      delay: isRevisit ? delay * 0.4 : delay,
+      duration,
+      delay,
       ease: EASE_OUT,
       onUpdate: (v) => {
         el.textContent = `${Math.round(v)}${suffix}`;
       },
     });
     return () => controls.stop();
-  }, [isActive, isRevisit, reduce, to, suffix, delay, duration, finalText]);
+  }, [inView, reduce, to, suffix, delay, duration, finalText]);
 
   return (
     <span

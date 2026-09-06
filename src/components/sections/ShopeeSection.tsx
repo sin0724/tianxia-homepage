@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
-import { useSectionState } from "@/components/SectionContext";
 import { Reveal, MaskReveal, LineReveal } from "@/components/motion/Reveal";
+import { useVideoInView } from "@/components/motion/useVideoInView";
 
 const STEPS = [
   {
@@ -30,23 +29,20 @@ const STEPS = [
 ];
 
 export default function ShopeeSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const { isActive } = useSectionState();
   const reduce = useReducedMotion();
-
-  // 활성 섹션에서만 재생 — 숨겨진 프리로드 사본은 버퍼링만
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (isActive) v.play().catch(() => {});
-    else v.pause();
-  }, [isActive]);
+  const { containerRef, videoRef, shouldLoad, isActive } = useVideoInView({
+    amount: 0.3,
+  });
 
   return (
-    <section className="h-[100dvh] relative overflow-hidden bg-zinc-950">
+    <section
+      id="shopee"
+      className="scroll-mt-16 md:scroll-mt-[68px] min-h-[100dvh] relative overflow-hidden bg-zinc-950"
+    >
       {SITE_CONFIG.shopeeVideo && (
         // Ken Burns: 머무는 동안 아주 느린 줌 인-아웃 반복
         <motion.div
+          ref={containerRef}
           className="absolute inset-0"
           animate={!reduce && isActive ? { scale: [1, 1.04] } : { scale: 1 }}
           transition={
@@ -63,12 +59,12 @@ export default function ShopeeSection() {
         >
           <video
             ref={videoRef}
-            src={SITE_CONFIG.shopeeVideo}
+            src={shouldLoad ? SITE_CONFIG.shopeeVideo : undefined}
             poster={SITE_CONFIG.shopeePoster || undefined}
             muted
             loop
             playsInline
-            preload="auto"
+            preload="none"
             className="absolute inset-0 w-full h-full object-cover opacity-60"
           />
         </motion.div>
@@ -76,15 +72,10 @@ export default function ShopeeSection() {
 
       <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-zinc-950/20" />
 
-      <div className="relative z-10 h-full flex flex-col px-6 md:px-12 pt-20 md:pt-24 pb-8 md:pb-10">
-        <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full">
+      <div className="relative z-10 min-h-[100dvh] flex flex-col px-6 md:px-12 pt-32 md:pt-40 pb-16 md:pb-20">
+        <div className="max-w-[1400px] w-full mx-auto flex flex-col flex-1">
 
-          <div className="flex-1 flex flex-col justify-center">
-            <Reveal delay={0} y={12}>
-              <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-3">
-                Shopee &amp; Co-Buy
-              </p>
-            </Reveal>
+          <div className="flex-1 flex flex-col justify-center py-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.05] text-zinc-50">
               <MaskReveal delay={0.08}>쇼피 입점 지원부터</MaskReveal>
               <MaskReveal delay={0.16}>
@@ -99,7 +90,7 @@ export default function ShopeeSection() {
             </Reveal>
           </div>
 
-          <div className="flex-shrink-0">
+          <div>
             <LineReveal delay={0.2} className="h-px bg-zinc-700/60 mb-6 md:mb-8" />
 
             {/* 데스크탑: 4열 */}

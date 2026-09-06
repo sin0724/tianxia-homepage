@@ -7,17 +7,15 @@ import ParallaxLayer from "@/components/motion/ParallaxLayer";
 export default function OfficeSection() {
 
   return (
-    <section className="h-[100dvh] bg-zinc-950 flex flex-col px-6 md:px-12 pt-20 pb-8 overflow-hidden">
-      <div className="max-w-[1400px] w-full mx-auto flex flex-col flex-1 min-h-0">
+    <section
+      id="office"
+      className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-6 md:px-12 py-24 md:py-32 overflow-hidden"
+    >
+      <div className="max-w-[1400px] w-full mx-auto">
 
         {/* 헤더 */}
-        <div className="flex items-end justify-between mb-4 flex-shrink-0">
+        <div className="flex items-end justify-between mb-4">
           <div>
-            <Reveal delay={0} y={12}>
-              <p className="text-red-500/70 text-[10px] font-mono tracking-[0.3em] uppercase mb-2">
-                Our Space
-              </p>
-            </Reveal>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight text-zinc-50">
               <MaskReveal delay={0.08}>타이베이 현지 오피스</MaskReveal>
             </h2>
@@ -31,13 +29,17 @@ export default function OfficeSection() {
           </Reveal>
         </div>
 
-        <LineReveal delay={0.16} className="h-px bg-zinc-800 mb-5 flex-shrink-0" />
+        <LineReveal delay={0.16} className="h-px bg-zinc-800 mb-6 md:mb-8" />
 
         {/* 이미지 그리드
             왼쪽(3/5): 가로 이미지 2장 — 피처드(_03) + 회의실(_00)
             오른쪽(2/5): 세로 이미지 2장 — 미팅라운지(_02) + 인테리어(_01)
         */}
-        <div className="flex-1 min-h-0 grid grid-cols-5 gap-3">
+        <div
+          className="h-[80vh] max-h-[760px] grid grid-cols-5 gap-3"
+          data-cursor="label"
+          data-cursor-label="TAIPEI"
+        >
           {/* 왼쪽: 가로 이미지 2장 (위 65% / 아래 35%) */}
           <div className="col-span-3 flex flex-col gap-3">
             {/* 피처드 */}
@@ -48,14 +50,12 @@ export default function OfficeSection() {
                   alt="타이베이 오피스 공용 공간"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  priority
+                  sizes="(max-width: 768px) 60vw, 45vw"
                 />
               </ParallaxLayer>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-5">
-                <span className="text-[10px] font-mono text-zinc-300/70 uppercase tracking-[0.25em]">
-                  Taipei, Taiwan
-                </span>
+                <span className="text-xs text-zinc-200/80">타이베이, 대만</span>
               </div>
             </ClipReveal>
             {/* 회의실 (가로 이미지) */}

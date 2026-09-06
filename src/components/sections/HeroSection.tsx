@@ -1,26 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { SpeakerSimpleX, SpeakerSimpleHigh } from "@phosphor-icons/react";
 import { SITE_CONFIG } from "@/lib/config";
-import { useSectionState } from "@/components/SectionContext";
 import { EASE_OUT } from "@/components/motion/Reveal";
 import ParallaxLayer from "@/components/motion/ParallaxLayer";
+import { useVideoInView } from "@/components/motion/useVideoInView";
 
 export default function HeroSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
-  const { isActive, isRevisit } = useSectionState();
   const reduce = useReducedMotion();
-
-  // 활성 섹션에서만 재생 — 숨겨진 프리로드 사본은 버퍼링만 하고 디코딩하지 않음
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (isActive) v.play().catch(() => {});
-    else v.pause();
-  }, [isActive]);
+  // 히어로는 첫 화면이라 지연 로드 대상이 아니다 (eager)
+  const { containerRef, videoRef, isActive } = useVideoInView({
+    amount: 0.25,
+    eager: true,
+  });
 
   const toggleMute = () => {
     if (!videoRef.current) return;
@@ -29,7 +24,10 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[100dvh] overflow-hidden bg-zinc-950">
+    <section
+      id="home"
+      className="relative h-[100dvh] overflow-hidden bg-zinc-950"
+    >
       {/*
         접근성·SEO: 영상만으로 구성된 히어로의 텍스트 대체.
         sr-only(clip 방식)로 시각적으로는 숨기되 스크린리더·검색엔진에는
@@ -43,12 +41,13 @@ export default function HeroSection() {
         지원, 공동구매 마케팅으로 F&amp;B·뷰티·병원 브랜드의 대만 진출을 돕습니다.
       </p>
 
-      {/* 진입 연출: 영상 1.06→1 줌아웃 (재방문·reduced-motion은 생략) */}
+      {/* 진입 연출: 영상 1.06→1 줌아웃 (동작 줄이기면 시간만 0으로) */}
       <motion.div
+        ref={containerRef}
         className="absolute inset-0"
-        initial={reduce || isRevisit ? false : { scale: 1.06 }}
+        initial={{ scale: 1.06 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 1.4, ease: EASE_OUT }}
+        transition={reduce ? { duration: 0 } : { duration: 1.4, ease: EASE_OUT }}
       >
         {/* Ken Burns: 머무는 동안 아주 느린 줌 인-아웃 반복 */}
         <motion.div
@@ -70,14 +69,16 @@ export default function HeroSection() {
           <ParallaxLayer strength={14} invert>
             <video
               ref={videoRef}
+              // 인트로 로더가 진행률 기준으로 삼는 표식
+              data-hero
               src={SITE_CONFIG.heroVideo}
               poster={SITE_CONFIG.heroPoster}
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
               aria-label="대만 마케팅 에이전시 티엔샤 브랜드 소개 영상"
-              className="absolute inset-0 w-full h-full object-contain md:object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </ParallaxLayer>
         </motion.div>
@@ -86,15 +87,15 @@ export default function HeroSection() {
       {/* 오버레이: 진하게 시작해 옅어지며 영상이 드러남 */}
       <motion.div
         className="absolute inset-0 bg-black"
-        initial={reduce || isRevisit ? { opacity: 0.2 } : { opacity: 0.6 }}
+        initial={{ opacity: 0.6 }}
         animate={{ opacity: 0.2 }}
-        transition={{ duration: 1.2, ease: EASE_OUT }}
+        transition={reduce ? { duration: 0.3 } : { duration: 1.2, ease: EASE_OUT }}
       />
 
       {/* 음소거 토글 버튼 */}
       <motion.button
         onClick={toggleMute}
-        initial={isRevisit ? false : { opacity: 0 }}
+        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.8 }}
         className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-10 w-10 h-10 flex items-center justify-center border border-white/30 bg-black/30 backdrop-blur-sm text-white/70 hover:text-white hover:border-white/60 transition-all duration-200"

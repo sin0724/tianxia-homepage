@@ -47,3 +47,6 @@ skills-lock.json
 
 # large media (upload to Railway volume separately)
 public/videos/
+
+# 리포 루트에 둔 영상 원본(편집본 마스터). 웹용 변환본만 public/videos/로 간다.
+/*.mp4

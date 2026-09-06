@@ -1,11 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
 
 export default function StatsSection() {
-  const reduce = useReducedMotion();
-
   return (
     <section className="bg-zinc-900 py-20 md:py-24 px-6 md:px-12 border-y border-zinc-800">
       <div className="max-w-[1400px] mx-auto">
@@ -13,7 +11,7 @@ export default function StatsSection() {
           {SITE_CONFIG.stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={reduce ? undefined : { opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
