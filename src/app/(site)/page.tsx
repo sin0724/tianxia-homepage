@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import IntroLoader from "@/components/IntroLoader";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
 import HeroSection from "@/components/sections/HeroSection";
@@ -37,6 +38,7 @@ export default function Home() {
   return (
     <>
       <JsonLd data={homeJsonLd} />
+      <IntroLoader />
       <Navbar />
       <main>
         <HeroSection />

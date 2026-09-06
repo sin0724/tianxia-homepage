@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
-import IntroLoader from "@/components/IntroLoader";
-import ScrollProgress from "@/components/ScrollProgress";
 import SiteNavLinks from "@/components/SiteNavLinks";
 import { SITE_CONFIG } from "@/lib/config";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
@@ -218,9 +215,6 @@ export default function RootLayout({
             src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
           />
         </noscript>
-        <IntroLoader />
-        <ScrollProgress />
-        <CustomCursor />
         {children}
         {/* 탭 순서 끝에 두어 키보드 이동을 방해하지 않는다 */}
         <SiteNavLinks />

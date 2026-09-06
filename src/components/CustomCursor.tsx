@@ -26,6 +26,11 @@ export default function CustomCursor() {
   useEffect(() => {
     if (isTouchDevice) return;
 
+    // 기본 커서를 숨기는 CSS는 이 클래스 안에서만 동작한다.
+    // 이 컴포넌트가 살아 있는 동안에만 붙여야 관리자 화면 등에서
+    // 커서가 사라지는 일이 없다.
+    document.documentElement.classList.add("custom-cursor");
+
     const onMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -66,6 +71,7 @@ export default function CustomCursor() {
     document.documentElement.addEventListener("mouseenter", onEnter);
 
     return () => {
+      document.documentElement.classList.remove("custom-cursor");
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
       document.documentElement.removeEventListener("mouseleave", onLeave);

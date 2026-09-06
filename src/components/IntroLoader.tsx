@@ -26,6 +26,9 @@ const MAX_MS = 3000;
 export default function IntroLoader() {
   const [count, setCount] = useState(0);
   const [exiting, setExiting] = useState(false);
+  // 와이프가 끝나면 DOM에서 아예 뺀다. clip-path로 안 보이게만 두면
+  // 화면 전체를 덮은 채 클릭을 계속 가로챈다.
+  const [gone, setGone] = useState(false);
   const rafRef = useRef(0);
 
   useEffect(() => {
@@ -102,6 +105,8 @@ export default function IntroLoader() {
     };
   }, []);
 
+  if (gone) return null;
+
   return (
     <motion.div
       id="intro-loader"
@@ -113,7 +118,9 @@ export default function IntroLoader() {
       animate={{ clipPath: exiting ? "inset(0% 0% 100% 0%)" : "inset(0% 0% 0% 0%)" }}
       transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
       onAnimationComplete={() => {
-        if (exiting) document.documentElement.dataset.intro = "done";
+        if (!exiting) return;
+        document.documentElement.dataset.intro = "done";
+        setGone(true);
       }}
     >
       {/* 슬로건 — 가운데에서 한 번 올라온다 */}
