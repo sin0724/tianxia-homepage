@@ -23,8 +23,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const contactId = parseId(id);
   if (contactId === null) return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
-  await db.contact.update({ where: { id: contactId }, data: { isRead: true } });
-  return NextResponse.json({ ok: true });
+  // 본문에 isRead가 오면 그 값으로, 없으면 읽음 처리 (기존 호출 호환)
+  const body = await req.json().catch(() => null);
+  const isRead =
+    body && typeof (body as { isRead?: unknown }).isRead === "boolean"
+      ? (body as { isRead: boolean }).isRead
+      : true;
+
+  await db.contact.update({ where: { id: contactId }, data: { isRead } });
+  return NextResponse.json({ ok: true, isRead });
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

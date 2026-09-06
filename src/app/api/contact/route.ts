@@ -5,7 +5,7 @@ import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { sendLeadEvent } from "@/lib/metaCapi";
 
 // 입력 길이 상한 — DB·메일 폭주 방지
-const MAX = { name: 100, phone: 50, email: 200, inquiry: 200, message: 5000 };
+const MAX = { brand: 150, name: 100, phone: 50, email: 200, inquiry: 200, message: 5000 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // 알림 메일 HTML 주입 방지
@@ -28,16 +28,17 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
 
-  const { name, phone, email, inquiry, message, company } = body as Record<string, string>;
+  const { brand, name, phone, email, inquiry, message, company } = body as Record<string, string>;
 
   // 허니팟: 숨겨진 필드가 채워져 있으면 봇 — 조용히 성공 응답만 반환
   if (company) return NextResponse.json({ ok: true });
 
-  if (!name?.trim() || !phone?.trim() || !email?.trim() || !message?.trim()) {
+  if (!brand?.trim() || !name?.trim() || !phone?.trim() || !email?.trim() || !message?.trim()) {
     return NextResponse.json({ error: "필수 항목을 입력해주세요." }, { status: 400 });
   }
 
   if (
+    brand.length > MAX.brand ||
     name.length > MAX.name ||
     phone.length > MAX.phone ||
     email.length > MAX.email ||
@@ -55,6 +56,7 @@ export async function POST(req: NextRequest) {
   try {
     await db.contact.create({
       data: {
+        brand: brand.trim(),
         name: name.trim(),
         phone: phone.trim(),
         email: email.trim(),
@@ -91,12 +93,13 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(apiKey);
     const adminEmail = process.env.CONTACT_RECEIVER_EMAIL ?? "hyuun0724@gmail.com";
     const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev";
-    const subject = `[티엔샤 문의] ${name} — ${inquiry?.trim() || "일반 문의"}`;
+    const subject = `[티엔샤 문의] ${brand} · ${name} — ${inquiry?.trim() || "일반 문의"}`;
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">
         <h2 style="margin:0 0 24px;font-size:20px;border-bottom:2px solid #dc2626;padding-bottom:12px">새 문의가 접수되었습니다</h2>
         <table style="width:100%;border-collapse:collapse;font-size:14px">
-          <tr><td style="padding:10px 0;color:#666;width:100px">이름</td><td style="padding:10px 0;font-weight:600">${esc(name)}</td></tr>
+          <tr><td style="padding:10px 0;color:#666;width:100px">브랜드명</td><td style="padding:10px 0;font-weight:600">${esc(brand)}</td></tr>
+          <tr><td style="padding:10px 0;color:#666">담당자</td><td style="padding:10px 0;font-weight:600">${esc(name)}</td></tr>
           <tr><td style="padding:10px 0;color:#666">연락처</td><td style="padding:10px 0">${esc(phone)}</td></tr>
           <tr><td style="padding:10px 0;color:#666">이메일</td><td style="padding:10px 0"><a href="mailto:${esc(email)}" style="color:#dc2626">${esc(email)}</a></td></tr>
           <tr><td style="padding:10px 0;color:#666">문의 분야</td><td style="padding:10px 0">${esc(inquiry?.trim() || "—")}</td></tr>

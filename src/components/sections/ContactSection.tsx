@@ -47,6 +47,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     const form = e.currentTarget;
     const eventId = newEventId();
     const data = {
+      brand: (form.elements.namedItem("brand") as HTMLInputElement).value,
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
@@ -135,13 +136,26 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 <div className="space-y-7">
                   <div>
                     <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      이름 <span className="text-red-500">*</span>
+                      브랜드명 <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="brand"
+                      required
+                      placeholder="브랜드명을 입력하세요."
+                      className="w-full h-13 bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-zinc-100 mb-2">
+                      담당자 이름 <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       name="name"
                       required
-                      placeholder="이름을 입력하세요."
+                      placeholder="담당자 이름을 입력하세요."
                       className="w-full h-13 bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all"
                     />
                   </div>

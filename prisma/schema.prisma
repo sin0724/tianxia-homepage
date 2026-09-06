@@ -9,6 +9,8 @@ datasource db {
 
 model Contact {
   id        Int      @id @default(autoincrement())
+  // 기존 행이 있는 테이블에 db push로 추가되므로 기본값이 필요하다
+  brand     String   @default("")
   name      String
   phone     String
   email     String
