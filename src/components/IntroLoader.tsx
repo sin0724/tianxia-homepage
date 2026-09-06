@@ -69,6 +69,24 @@ export default function IntroLoader() {
         // 100에서 잠깐 멈췄다가 화면을 걷어낸다
         exitTimer = window.setTimeout(() => {
           root.dataset.intro = "exit"; // 스크롤 잠금 해제
+
+          /*
+            로더가 스크롤을 잠근 동안 브라우저의 앵커 점프가 버려진다.
+            그대로 두면 /#work 같은 링크로 들어와도 최상단에 떨어지므로
+            잠금이 풀리는 순간 해시 위치를 다시 맞춘다.
+            scroll-margin-top이 적용되도록 scrollIntoView를 쓴다.
+          */
+          const hash = window.location.hash;
+          if (hash.length > 1) {
+            try {
+              document
+                .querySelector(hash)
+                ?.scrollIntoView({ behavior: "auto" });
+            } catch {
+              // 해시가 선택자로 유효하지 않은 경우 — 그냥 최상단에 둔다
+            }
+          }
+
           setExiting(true);
         }, 200);
         return;
