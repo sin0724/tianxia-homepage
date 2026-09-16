@@ -8,14 +8,9 @@ import { X } from "@phosphor-icons/react";
 import { Reveal, MaskReveal } from "@/components/motion/Reveal";
 import Magnetic from "@/components/motion/Magnetic";
 import FillHover from "@/components/motion/FillHover";
+import { trackMetaLead } from "@/lib/metaPixel";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 // 브라우저 픽셀과 서버 CAPI가 같은 이벤트임을 알리는 중복 제거 키
 const newEventId = () =>
@@ -61,12 +56,13 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
+        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "전송 실패");
-      window.fbq?.("track", "Lead", {}, { eventID: eventId });
+      trackMetaLead(eventId);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "전송에 실패했습니다.");
@@ -250,12 +246,14 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   <label className="flex items-center gap-2.5 text-xs text-zinc-500 cursor-pointer select-none">
                     <input type="checkbox" required className="accent-red-600 w-3.5 h-3.5" />
                     개인정보 처리방침에 동의합니다.
-                    <button
-                      type="button"
+                    <a
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="ml-1 border border-zinc-700 hover:border-zinc-500 px-2.5 py-1 text-[10px] text-zinc-400 hover:text-zinc-200 transition-colors rounded"
                     >
                       전문보기
-                    </button>
+                    </a>
                   </label>
                   {error && (
                     <p className="text-xs text-red-400">{error}</p>
@@ -359,6 +357,7 @@ export default function ContactSection() {
               <p className="text-xs text-zinc-500">
                 {SITE_CONFIG.company.name} {SITE_CONFIG.company.nameEn}
               </p>
+              <a href="/privacy" className="text-xs font-semibold text-zinc-300 underline underline-offset-4 hover:text-zinc-50">개인정보 처리방침</a>
               <p className="text-xs text-zinc-600">
                 &copy; {year} {SITE_CONFIG.company.name}. All rights reserved.
               </p>

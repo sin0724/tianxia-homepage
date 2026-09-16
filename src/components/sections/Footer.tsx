@@ -20,6 +20,7 @@ export default function Footer() {
 
           {/* 링크 */}
           <div className="flex items-center gap-6">
+            <a href="/privacy" className="text-xs font-semibold text-zinc-300 underline underline-offset-4 hover:text-zinc-50">개인정보 처리방침</a>
             <a
               href={SITE_CONFIG.company.instagram}
               target="_blank"
