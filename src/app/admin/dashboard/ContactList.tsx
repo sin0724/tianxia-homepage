@@ -45,6 +45,7 @@ function Field({
 export default function ContactList({ contacts }: { contacts: Contact[] }) {
   const [items, setItems] = useState(contacts);
   const [expanded, setExpanded] = useState<number | null>(null);
+  const [showSpam, setShowSpam] = useState(false);
   const router = useRouter();
 
   /*
@@ -68,6 +69,26 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
     }
   };
 
+  /*
+    허니팟에 걸린 제출은 예전처럼 버리지 않고 isSpam으로 저장된다.
+    브라우저 자동완성이 숨은 필드를 채워 진짜 문의가 걸리는 일이 있어서,
+    여기서 되돌릴 수 있어야 한다.
+  */
+  const setSpam = async (id: number, isSpam: boolean) => {
+    setItems((prev) => prev.map((c) => (c.id === id ? { ...c, isSpam } : c)));
+    const res = await fetch(`/api/admin/contacts/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isSpam }),
+    });
+    if (!res.ok) {
+      setItems((prev) =>
+        prev.map((c) => (c.id === id ? { ...c, isSpam: !isSpam } : c))
+      );
+      alert("상태 변경에 실패했습니다.");
+    }
+  };
+
   const handleDelete = async (id: number) => {
     if (!confirm("이 문의를 삭제할까요? 되돌릴 수 없습니다.")) return;
     const res = await fetch(`/api/admin/contacts/${id}`, { method: "DELETE" });
@@ -84,7 +105,11 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
     router.push("/admin");
   };
 
-  const unreadCount = items.filter((c) => !c.isRead).length;
+  // 통계는 정상 문의만 센다. 스팸 의심 건이 미확인 배지를 흔들면 안 된다.
+  const real = items.filter((c) => !c.isSpam);
+  const spamCount = items.length - real.length;
+  const unreadCount = real.filter((c) => !c.isRead).length;
+  const visible = showSpam ? items : real;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -99,6 +124,17 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
           )}
         </div>
         <div className="flex items-center gap-4">
+          {spamCount > 0 && (
+            <button
+              onClick={() => setShowSpam((v) => !v)}
+              aria-pressed={showSpam}
+              className={`text-xs transition-colors ${
+                showSpam ? "text-amber-400" : "text-zinc-500 hover:text-zinc-300"
+              }`}
+            >
+              스팸 의심 {spamCount}건 {showSpam ? "숨기기" : "보기"}
+            </button>
+          )}
           <button
             onClick={() => window.location.reload()}
             className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
@@ -118,9 +154,9 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
         {/* 통계 */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           {[
-            { label: "전체 문의", value: items.length },
+            { label: "전체 문의", value: real.length },
             { label: "미확인", value: unreadCount },
-            { label: "확인 완료", value: items.length - unreadCount },
+            { label: "확인 완료", value: real.length - unreadCount },
           ].map((s) => (
             <div key={s.label} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
               <p className="text-xs text-zinc-500 mb-1">{s.label}</p>
@@ -130,15 +166,19 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
         </div>
 
         {/* 문의 목록 */}
-        {items.length === 0 ? (
+        {visible.length === 0 ? (
           <div className="text-center py-24 text-zinc-600 text-sm">아직 문의가 없습니다.</div>
         ) : (
           <div className="space-y-2">
-            {items.map((c) => (
+            {visible.map((c) => (
               <div
                 key={c.id}
                 className={`border rounded-xl overflow-hidden transition-colors ${
-                  c.isRead ? "border-zinc-800 bg-zinc-900/40" : "border-zinc-700 bg-zinc-900"
+                  c.isSpam
+                    ? "border-amber-900/60 bg-amber-950/20"
+                    : c.isRead
+                      ? "border-zinc-800 bg-zinc-900/40"
+                      : "border-zinc-700 bg-zinc-900"
                 }`}
               >
                 {/* 요약 행 */}
@@ -154,8 +194,15 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
                     aria-hidden
                   />
                   <div className="flex-1 min-w-0 grid grid-cols-2 md:grid-cols-4 gap-3 items-center">
-                    <span className={`text-sm font-semibold truncate ${c.isRead ? "text-zinc-500" : "text-zinc-100"}`}>
-                      {c.brand || "—"}
+                    <span className="flex items-center gap-2 min-w-0">
+                      {c.isSpam && (
+                        <span className="flex-shrink-0 text-[10px] font-mono text-amber-400 border border-amber-900/60 rounded px-1.5 py-0.5">
+                          스팸의심
+                        </span>
+                      )}
+                      <span className={`text-sm font-semibold truncate ${c.isRead ? "text-zinc-500" : "text-zinc-100"}`}>
+                        {c.brand || "—"}
+                      </span>
                     </span>
                     <span className={`text-xs truncate ${c.isRead ? "text-zinc-600" : "text-zinc-400"}`}>
                       {c.name}
@@ -195,6 +242,12 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
                         }`}
                       >
                         {c.isRead ? "미확인으로 되돌리기" : "확인 완료로 표시"}
+                      </button>
+                      <button
+                        onClick={() => setSpam(c.id, !c.isSpam)}
+                        className="text-xs px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-amber-300 rounded-lg transition-colors"
+                      >
+                        {c.isSpam ? "정상 문의로 되돌리기" : "스팸으로 표시"}
                       </button>
                       <button
                         onClick={() => handleDelete(c.id)}

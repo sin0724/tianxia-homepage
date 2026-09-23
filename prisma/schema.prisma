@@ -17,5 +17,9 @@ model Contact {
   inquiry   String   @default("")
   message   String
   isRead    Boolean  @default(false)
+  // 허니팟에 걸린 제출. 예전에는 조용히 버렸는데, 브라우저 자동완성이
+  // 숨은 필드를 채우면 진짜 문의도 흔적 없이 사라졌다. 이제는 표시만 하고
+  // 저장한다 — 어드민에서 기본으로 숨기되 언제든 꺼내볼 수 있다.
+  isSpam    Boolean  @default(false)
   createdAt DateTime @default(now())
 }

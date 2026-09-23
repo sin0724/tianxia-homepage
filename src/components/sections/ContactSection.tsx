@@ -77,7 +77,14 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 40 }}
       transition={{ duration: 0.4, ease: EASE }}
-      className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col overflow-y-auto overscroll-contain"
+      /*
+        레이어 순서: 동의 배너(150) < 인트로 로더(200) < 이 모달(300) < 커서(9998).
+        z-100이던 시절에는 모바일에서 동의 배너가 화면 하단 전폭을 덮어 그 아래
+        깔린 동의 체크박스와 제출 버튼을 누를 수 없었다 — 배너를 먼저 닫지
+        않으면 문의 자체가 불가능했다. 로더와 같은 200을 쓰면 퇴장 애니메이션
+        중에 순서가 DOM 순서로 결정되므로 그 위로 올린다.
+      */
+      className="fixed inset-0 z-[300] bg-zinc-950 flex flex-col overflow-y-auto overscroll-contain"
     >
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between px-6 md:px-16 h-16 border-b border-zinc-800/60 flex-shrink-0 sticky top-0 bg-zinc-950 z-10">

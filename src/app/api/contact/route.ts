@@ -18,8 +18,11 @@ const esc = (s: string) =>
     .replace(/"/g, "&quot;");
 
 export async function POST(req: NextRequest) {
+  const ip = clientIp(req.headers);
+
   // 스팸 방지: IP당 10분에 5회
-  if (!rateLimit(`contact:${clientIp(req.headers)}`, 5, 600_000)) {
+  if (!rateLimit(`contact:${ip}`, 5, 600_000)) {
+    console.warn("[contact] rejected: rate limit", { ip });
     return NextResponse.json(
       { error: "요청이 너무 잦습니다. 잠시 후 다시 시도해주세요." },
       { status: 429 }
@@ -27,14 +30,25 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
-  if (!body) return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
+  if (!body) {
+    console.warn("[contact] rejected: unparsable body", { ip });
+    return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
+  }
 
   const { brand, name, phone, email, inquiry, message, company } = body as Record<string, string>;
 
-  // 허니팟: 숨겨진 필드가 채워져 있으면 봇 — 조용히 성공 응답만 반환
-  if (company) return NextResponse.json({ ok: true });
+  /*
+    허니팟: 사람에게는 보이지 않는 필드라 봇만 채운다 — 가 원래 전제였다.
+    실제로는 브라우저 주소 자동완성이 name="company"를 조직명으로 보고 채우는
+    일이 있고, 그때 진짜 문의가 DB에도 메일에도 로그에도 남지 않은 채
+    "감사합니다!"만 보여주고 사라졌다.
+    이제는 버리지 않고 isSpam으로 표시만 해서 저장한다. 응답은 예전과 똑같이
+    두어 봇에게 걸렸다는 사실을 알리지 않는다.
+  */
+  const flagged = Boolean(company);
 
   if (!brand?.trim() || !name?.trim() || !phone?.trim() || !email?.trim() || !message?.trim()) {
+    console.warn("[contact] rejected: missing required field", { ip, flagged });
     return NextResponse.json({ error: "필수 항목을 입력해주세요." }, { status: 400 });
   }
 
@@ -46,10 +60,12 @@ export async function POST(req: NextRequest) {
     (inquiry?.length ?? 0) > MAX.inquiry ||
     message.length > MAX.message
   ) {
+    console.warn("[contact] rejected: input too long", { ip, flagged });
     return NextResponse.json({ error: "입력 길이가 제한을 초과했습니다." }, { status: 400 });
   }
 
   if (!EMAIL_RE.test(email.trim())) {
+    console.warn("[contact] rejected: bad email format", { ip, flagged });
     return NextResponse.json({ error: "올바른 이메일 형식이 아닙니다." }, { status: 400 });
   }
 
@@ -63,8 +79,12 @@ export async function POST(req: NextRequest) {
         email: email.trim(),
         inquiry: inquiry?.trim() ?? "",
         message: message.trim(),
+        isSpam: flagged,
       },
     });
+    if (flagged) {
+      console.warn("[contact] honeypot hit — saved as spam", { ip, email: email.trim() });
+    }
   } catch (err) {
     console.error("[contact] db error:", err);
     return NextResponse.json({ error: "저장에 실패했습니다. 잠시 후 다시 시도해주세요." }, { status: 500 });
@@ -76,14 +96,15 @@ export async function POST(req: NextRequest) {
     typeof rawEventId === "string" && rawEventId.length > 0 && rawEventId.length <= 64
       ? rawEventId
       : randomUUID();
-  if (isMetaConsentGranted(req.cookies.get(META_CONSENT_COOKIE)?.value)) {
+  // 스팸 의심 건은 Meta 학습 데이터에 넣지 않는다.
+  if (!flagged && isMetaConsentGranted(req.cookies.get(META_CONSENT_COOKIE)?.value)) {
     // 브라우저 Lead와 같은 eventId를 유지해 중복을 제거한다.
     sendLeadEvent({
       email: email.trim(),
       phone: phone.trim(),
       eventId,
       sourceUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.kr",
-      ip: clientIp(req.headers),
+      ip,
       userAgent: req.headers.get("user-agent") ?? undefined,
       fbp: req.cookies.get("_fbp")?.value,
       fbc: req.cookies.get("_fbc")?.value,
@@ -97,7 +118,9 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(apiKey);
     const adminEmail = process.env.CONTACT_RECEIVER_EMAIL ?? "hyuun0724@gmail.com";
     const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev";
-    const subject = `[티엔샤 문의] ${brand} · ${name} — ${inquiry?.trim() || "일반 문의"}`;
+    // 스팸 의심이어도 메일은 보낸다. 자동완성에 걸린 진짜 문의를
+    // 어드민의 숨김 목록에서 뒤늦게 발견하는 일이 없도록.
+    const subject = `${flagged ? "[스팸의심] " : ""}[티엔샤 문의] ${brand} · ${name} — ${inquiry?.trim() || "일반 문의"}`;
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">
         <h2 style="margin:0 0 24px;font-size:20px;border-bottom:2px solid #dc2626;padding-bottom:12px">새 문의가 접수되었습니다</h2>
