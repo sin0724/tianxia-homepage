@@ -10,14 +10,18 @@ import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
 const PATH = "/kol-marketing";
 
 export const metadata: Metadata = {
-  title: { absolute: "대만 KOL 마케팅 | Dcard·Threads·KOC 시딩 — 티엔샤" },
+  title: { absolute: "대만 인플루언서 마케팅 | 대만 KOL·KOC 섭외·캠페인 — 티엔샤" },
   description:
-    "대만 KOL·KOC 마케팅 전문. Dcard 바이럴, Threads 마케팅, KOC 시딩, 공동구매 캠페인까지. 대만 소셜 채널 전반의 바이럴 마케팅을 티엔샤가 진행합니다.",
+    "대만 인플루언서 마케팅 전문 티엔샤. 대만 KOL·KOC 섭외와 매칭, Instagram 릴스, Dcard·Threads 바이럴, 체험단, 공동구매까지 대만 현지 인플루언서 캠페인을 직접 운영합니다.",
+  keywords: [
+    "대만 인플루언서 마케팅", "대만 인플루언서", "대만 KOL 마케팅", "대만 KOL", "대만 KOC",
+    "대만 인플루언서 섭외", "대만 체험단", "Dcard 마케팅", "Threads 마케팅", "대만 마케팅",
+  ],
   alternates: { canonical: `${BASE_URL}${PATH}` },
   openGraph: {
-    title: "대만 KOL 마케팅 · Dcard · Threads · KOC 시딩 — 티엔샤",
+    title: "대만 인플루언서 마케팅 — 대만 KOL·KOC 캠페인 | 티엔샤",
     description:
-      "Dcard 바이럴, Threads 마케팅, KOC 시딩, 공동구매 캠페인. 대만 소셜 채널 전반의 바이럴 마케팅.",
+      "대만 KOL·KOC 섭외부터 릴스·Dcard·Threads 바이럴, 체험단, 공동구매까지. 대만 인플루언서 마케팅 전문 티엔샤.",
     url: `${BASE_URL}${PATH}`,
   },
 };
@@ -103,6 +107,10 @@ const factors = [
 
 const faq = [
   {
+    q: "대만 인플루언서 마케팅 비용은 어떻게 정해지나요?",
+    a: "섭외하는 인플루언서의 규모(메가·미들·마이크로 KOL, KOC)와 인원, 콘텐츠 형식(릴스·스토리·Threads 글·Dcard 후기), 2차 활용 범위, 공동구매 연계 여부에 따라 달라집니다. 목표에 맞춰 구성을 역산해 견적을 드리며, 처음이라면 소규모 캠페인으로 반응을 확인한 뒤 확장하는 방식을 권합니다.",
+  },
+  {
     q: "대만 KOL은 어떤 기준으로 선정하나요?",
     a: "팔로워 수, 최근 게시물의 평균 반응률, 팔로워 구성, 과거 협업 이력, 콘텐츠 톤을 함께 봅니다. 특히 브랜드 카테고리와 계정의 성격이 맞는지를 중요하게 검토합니다. 카테고리가 어긋나면 도달이 나와도 구매로 이어지지 않습니다.",
   },
@@ -134,9 +142,9 @@ const faq = [
 
 const pageJsonLd = buildPageJsonLd({
   path: PATH,
-  name: "대만 KOL 마케팅",
+  name: "대만 인플루언서 마케팅",
   description:
-    "대만 KOL·KOC 마케팅 전문. Dcard 바이럴, Threads 마케팅, KOC 시딩, 공동구매 캠페인까지. 대만 소셜 채널 전반의 바이럴 마케팅을 티엔샤가 진행합니다.",
+    "대만 인플루언서 마케팅 전문 티엔샤. 대만 KOL·KOC 섭외와 매칭, Instagram 릴스, Dcard·Threads 바이럴, 체험단, 공동구매까지 대만 현지 인플루언서 캠페인을 직접 운영합니다.",
   services: channels.map((c) => ({ name: c.name, description: c.desc })),
   faq,
 });
@@ -158,12 +166,12 @@ export default function KolMarketingPage() {
           KOL · KOC · Viral Marketing
         </p>
         <h1 className="mt-3 text-4xl md:text-5xl font-black tracking-tight leading-[1.1]">
-          대만 KOL·KOC 마케팅<br />
-          <span className="text-red-500">Dcard · Threads · 공동구매</span>
+          대만 인플루언서 마케팅<br />
+          <span className="text-red-500">KOL · KOC · 체험단 · 공동구매</span>
         </h1>
 
         <p className="mt-6 text-zinc-400 text-base md:text-lg leading-relaxed max-w-2xl">
-          티엔샤는 대만의 주요 소셜 채널 전반에서 바이럴 마케팅을 진행합니다.
+          티엔샤는 대만 현지 KOL·KOC 네트워크로 대만 인플루언서 마케팅을 진행합니다.
           Instagram KOL 캠페인부터 Dcard 커뮤니티 시딩, Threads 바이럴, KOC 제품 체험, 공동구매 판매까지
           대만 소비자가 실제로 사용하는 모든 채널을 커버합니다.
         </p>
@@ -193,7 +201,7 @@ export default function KolMarketingPage() {
         </div>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-2">왜 대만에서 KOL·KOC 마케팅인가?</h2>
+          <h2 className="text-2xl font-black mb-2">왜 대만 인플루언서 마케팅인가?</h2>
           <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
             대만 소비자는 광고보다 실제 사용자의 추천을 신뢰합니다. Dcard에서의 커뮤니티 반응,
             KOC의 진정성 있는 후기, KOL의 공동구매 추천이 구매 결정에 직접적인 영향을 미칩니다.
@@ -229,7 +237,7 @@ export default function KolMarketingPage() {
           <CardGrid items={factors} />
         </Section>
 
-        <FaqSection items={faq} title="대만 KOL 마케팅 자주 묻는 질문" />
+        <FaqSection items={faq} title="대만 인플루언서 마케팅 자주 묻는 질문" />
 
         <RelatedPages currentPath={PATH} />
 

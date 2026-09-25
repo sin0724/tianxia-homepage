@@ -110,7 +110,7 @@ export const INSIGHTS: Insight[] = [
         ],
       },
     ],
-    relatedPaths: ["/taiwan-marketing", "/kol-marketing", "/shopee"],
+    relatedPaths: ["/taiwan-marketing", "/kol-marketing", "/taiwan-marketing/threads", "/taiwan-marketing/review-campaign"],
   },
   {
     slug: "traditional-chinese-localization",
@@ -279,7 +279,7 @@ export const INSIGHTS: Insight[] = [
         ],
       },
     ],
-    relatedPaths: ["/kol-marketing", "/taiwan-marketing/dcard", "/taiwan-marketing"],
+    relatedPaths: ["/taiwan-marketing/review-campaign", "/kol-marketing", "/taiwan-marketing/dcard"],
   },
   {
     slug: "line-official-account",

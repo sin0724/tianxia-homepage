@@ -11,12 +11,16 @@ import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
 const PATH = "/taiwan-marketing/dcard";
 
 export const metadata: Metadata = {
-  title: { absolute: "Dcard 마케팅 | 대만 최대 커뮤니티 바이럴 — 티엔샤" },
+  title: { absolute: "대만 디카드 마케팅 | Dcard 바이럴·시딩·후기 — 티엔샤" },
   description:
-    "대만 최대 익명 커뮤니티 Dcard 마케팅 전문. 커뮤니티 특성에 맞는 시딩·리뷰·댓글 운영으로 구매 직전 단계의 신뢰를 만듭니다. 대만 마케팅 에이전시 티엔샤.",
+    "대만 디카드(Dcard) 마케팅 전문 티엔샤. 대만 최대 익명 커뮤니티 Dcard에서 게시판 선정, 실사용 후기 시딩, 댓글 운영으로 구매 직전 단계의 신뢰를 만듭니다.",
+  keywords: [
+    "대만 디카드 마케팅", "디카드 마케팅", "대만 Dcard 마케팅", "Dcard 마케팅", "Dcard 바이럴",
+    "디카드 바이럴", "대만 커뮤니티 마케팅", "대만 바이럴 마케팅", "대만 마케팅",
+  ],
   alternates: { canonical: `${BASE_URL}${PATH}` },
   openGraph: {
-    title: "Dcard 마케팅 — 대만 최대 커뮤니티 바이럴",
+    title: "대만 디카드(Dcard) 마케팅 — 대만 최대 커뮤니티 바이럴",
     description:
       "대만 2030이 구매 전에 검색하는 Dcard. 커뮤니티 문법에 맞는 시딩과 리뷰 설계로 신뢰를 만듭니다.",
     url: `${BASE_URL}${PATH}`,
@@ -91,7 +95,7 @@ const cautions = [
 
 const faq = [
   {
-    q: "Dcard가 정확히 어떤 서비스인가요?",
+    q: "Dcard(디카드)가 정확히 어떤 서비스인가요?",
     a: "Dcard는 대만에서 널리 쓰이는 익명 커뮤니티로, 대학생과 2030 세대를 중심으로 성장했습니다. 뷰티, 미용의료, 식품, 연애, 취업 등 주제별 게시판이 나뉘어 있으며, 대만 소비자가 제품을 구매하기 전에 후기를 찾아보는 대표적인 채널입니다.",
   },
   {
@@ -118,7 +122,7 @@ const faq = [
 
 const pageJsonLd = buildPageJsonLd({
   path: PATH,
-  name: "Dcard 마케팅",
+  name: "대만 디카드 마케팅",
   description:
     "대만 최대 익명 커뮤니티 Dcard 마케팅. 커뮤니티 특성에 맞는 시딩·리뷰·댓글 운영으로 구매 직전 단계의 신뢰를 만듭니다.",
   services: [
@@ -147,21 +151,21 @@ export default function DcardMarketingPage() {
           backHref="/taiwan-marketing"
           backLabel="← 대만 마케팅"
           eyebrow="Dcard Marketing"
-          title="Dcard 마케팅"
-          titleAccent="대만 커뮤니티 바이럴"
-          lead="Dcard는 대만 2030 소비자가 제품을 구매하기 전에 후기를 확인하는 익명 커뮤니티입니다. 티엔샤는 게시판 선정부터 실사용 기반 후기 확보, 댓글 반응 관리까지 커뮤니티의 문법에 맞춰 Dcard 마케팅을 진행합니다."
+          title="대만 디카드 마케팅"
+          titleAccent="Dcard 커뮤니티 바이럴"
+          lead="디카드(Dcard)는 대만 2030 소비자가 제품을 구매하기 전에 후기를 확인하는 익명 커뮤니티입니다. 티엔샤는 게시판 선정부터 실사용 기반 후기 확보, 댓글 반응 관리까지 커뮤니티의 문법에 맞춰 대만 디카드 마케팅을 진행합니다."
           tags={["커뮤니티 시딩", "리뷰 콘텐츠", "댓글 관리", "브랜드 버즈"]}
         />
 
         <Section
-          title="왜 Dcard인가"
+          title="왜 대만 디카드(Dcard)인가"
           lead="대만 마케팅에서 Dcard가 다른 채널로 대체되기 어려운 이유는 역할이 다르기 때문입니다."
         >
           <CardGrid items={why} />
         </Section>
 
         <Section
-          title="Dcard 마케팅 진행 방식"
+          title="대만 디카드 마케팅 진행 방식"
           lead="게시글 하나를 올리는 작업이 아니라, 게시판 분석부터 발행 후 댓글 관리까지 이어지는 과정입니다."
         >
           <CardGrid items={how} />
@@ -174,7 +178,7 @@ export default function DcardMarketingPage() {
           <CardGrid items={cautions} />
         </Section>
 
-        <FaqSection items={faq} title="Dcard 마케팅 자주 묻는 질문" />
+        <FaqSection items={faq} title="대만 디카드 마케팅 자주 묻는 질문" />
 
         <RelatedPages currentPath={PATH} />
 

@@ -21,8 +21,8 @@ export const LANDING_PAGES: LandingPage[] = [
   },
   {
     path: "/kol-marketing",
-    label: "대만 KOL 마케팅",
-    blurb: "Dcard·Threads·KOC 시딩까지 대만 소셜 채널 전반의 바이럴 마케팅.",
+    label: "대만 인플루언서 마케팅",
+    blurb: "대만 KOL·KOC 섭외와 매칭, 릴스·Dcard·Threads 캠페인, 공동구매까지.",
     priority: 0.9,
   },
   {
@@ -33,8 +33,20 @@ export const LANDING_PAGES: LandingPage[] = [
   },
   {
     path: "/taiwan-marketing/dcard",
-    label: "Dcard 마케팅",
-    blurb: "대만 최대 익명 커뮤니티 Dcard 바이럴·시딩 운영 방식.",
+    label: "대만 디카드 마케팅",
+    blurb: "대만 최대 익명 커뮤니티 Dcard(디카드) 바이럴·시딩·후기 운영.",
+    priority: 0.7,
+  },
+  {
+    path: "/taiwan-marketing/threads",
+    label: "대만 쓰레드 마케팅",
+    blurb: "대만에서 가장 빠르게 퍼지는 Threads(스레드) 계정 운영과 KOL·KOC 포스팅.",
+    priority: 0.7,
+  },
+  {
+    path: "/taiwan-marketing/review-campaign",
+    label: "대만 체험단",
+    blurb: "대만 인플루언서·KOC 체험단 모집부터 제품 발송, 후기 발행까지.",
     priority: 0.7,
   },
   {
