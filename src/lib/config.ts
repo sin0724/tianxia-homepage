@@ -43,8 +43,11 @@ export const SITE_CONFIG = {
   //     -c:v libx264 -profile:v high -crf 21 -preset medium
   //     -pix_fmt yuv420p -movflags +faststart public/videos/0906.mp4
   // -------------------------------------------------------
-  filmVideo: "/videos/0906.mp4",
-  filmPoster: "/posters/0906-poster.jpg",
+  // 2026-09 교체: 대만 사진 기반 빠른 컷 타이포 필름(17초, 1080p30, 무음 루프).
+  // Railway 볼륨(public/videos/)이 아니라 리포의 public/film/에 커밋해서 배포와 함께 나간다.
+  // 이전 필름으로 되돌리려면 아래 두 줄을 "/videos/0906.mp4", "/posters/0906-poster.jpg"로 바꾸면 된다.
+  filmVideo: "/film/tianxia-film-2026.mp4",
+  filmPoster: "/posters/film-2026-poster.jpg",
 
   // -------------------------------------------------------
   // 로고
