@@ -3,6 +3,7 @@ import { LANDING_PAGES } from "@/lib/landing-pages";
 const LINKS = [
   { href: "/", label: "티엔샤 홈" },
   ...LANDING_PAGES.map((page) => ({ href: page.path, label: page.label })),
+  { href: "/insights", label: "대만 마케팅 인사이트" },
 ];
 
 /**

@@ -9,6 +9,7 @@ import { Reveal, MaskReveal } from "@/components/motion/Reveal";
 import Magnetic from "@/components/motion/Magnetic";
 import FillHover from "@/components/motion/FillHover";
 import { trackMetaLead } from "@/lib/metaPixel";
+import { LANDING_PAGES } from "@/lib/landing-pages";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -358,6 +359,19 @@ export default function ContactSection() {
               </div>
             </div>
           </Reveal>
+
+          {/* 서비스 링크 — 홈에서 랜딩으로 가는 눈에 보이는 내부 링크(앵커 = 타겟 키워드) */}
+          <nav aria-label="서비스" className="border-t border-zinc-900 px-6 md:px-12 py-5">
+            <ul className="max-w-[1400px] mx-auto flex flex-wrap gap-x-6 gap-y-2">
+              {[...LANDING_PAGES.map((p) => ({ href: p.path, label: p.label })), { href: "/insights", label: "대만 마케팅 인사이트" }].map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <div className="border-t border-zinc-900 px-6 md:px-12 py-5">
             <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">

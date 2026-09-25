@@ -6,20 +6,28 @@ import CardGrid from "@/components/landing/CardGrid";
 import FaqSection from "@/components/landing/FaqSection";
 import RelatedPages from "@/components/landing/RelatedPages";
 import ContactCta from "@/components/landing/ContactCta";
+import Link from "next/link";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import { INSIGHTS } from "@/lib/insights";
 
 const PATH = "/taiwan-marketing";
 
 export const metadata: Metadata = {
-  title: { absolute: "대만 마케팅 전문 에이전시 | KOL·쇼피·공동구매 — 티엔샤" },
+  title: { absolute: "대만 마케팅 전문 에이전시 티엔샤 | 대만마케팅 KOL·Dcard·쇼피·공동구매" },
   description:
-    "한국 브랜드의 대만 시장 진출 파트너 티엔샤. KOL 마케팅, Dcard·Threads 바이럴, KOC 시딩, 쇼피 입점, 공동구매 마케팅까지 대만 마케팅 전 과정을 지원합니다.",
+    "대만 마케팅 전문 에이전시 티엔샤. 서울·타이베이 오피스에서 KOL 마케팅, Dcard·Threads 바이럴, KOC 시딩, 쇼피 입점, 공동구매까지 한국 브랜드의 대만마케팅 전 과정을 직접 운영합니다.",
+  keywords: [
+    "대만 마케팅", "대만마케팅", "대만 마케팅 에이전시", "대만 마케팅 대행사", "대만 광고대행사",
+    "대만 KOL 마케팅", "대만 인플루언서 마케팅", "Dcard 마케팅", "대만 바이럴 마케팅",
+    "KOC 시딩", "쇼피 입점", "대만 공동구매", "한국 브랜드 대만 진출", "대만 마케팅 비용",
+  ],
   alternates: { canonical: `${BASE_URL}${PATH}` },
   openGraph: {
     title: "대만 마케팅 전문 에이전시 — 티엔샤 TIANXIA",
     description:
       "한국 브랜드의 대만 시장 진출 파트너 티엔샤. KOL·Dcard·Threads·KOC·쇼피·공동구매까지 원스톱 대만 마케팅.",
     url: `${BASE_URL}${PATH}`,
+    type: "website",
   },
 };
 
@@ -122,6 +130,25 @@ const reasons = [
   },
 ];
 
+const costFactors = [
+  {
+    title: "KOL 규모와 인원",
+    desc: "팔로워 규모(마이크로·미드·메가)와 섭외 인원에 따라 가장 크게 달라집니다. 같은 예산이라도 대형 KOL 한 명과 중소형 KOL 여러 명은 결과의 성격이 다릅니다.",
+  },
+  {
+    title: "KOC 시딩 인원과 기간",
+    desc: "후기를 몇 명에게, 어느 기간 안에 모을지에 따라 제품 발송 수량과 운영 비용이 정해집니다. 검색 결과를 채우려면 짧은 기간에 촘촘하게 모으는 편이 효율적입니다.",
+  },
+  {
+    title: "콘텐츠 제작 범위",
+    desc: "KOL이 직접 제작하는 콘텐츠만 쓸지, 브랜드 영상·숏폼을 별도로 제작할지에 따라 달라집니다. 번체 카피와 상세페이지 현지화도 여기에 포함됩니다.",
+  },
+  {
+    title: "채널 구성과 운영 기간",
+    desc: "Dcard·Threads 운영, 쇼피 입점과 공동구매 연계 여부, 캠페인을 단발로 할지 월 단위로 이어갈지에 따라 전체 규모가 결정됩니다.",
+  },
+];
+
 const faq = [
   {
     q: "대만 마케팅은 어떤 순서로 진행되나요?",
@@ -152,6 +179,18 @@ const faq = [
     a: "콘텐츠별 도달과 반응, 프로필·스토리 링크 클릭, 쇼피 유입과 판매 데이터를 정리해 리포트로 전달합니다. 어떤 KOL과 어떤 콘텐츠 형식이 실제 판매로 이어졌는지 구분해 다음 캠페인 설계에 반영합니다.",
   },
   {
+    q: "대만 마케팅 비용은 어떻게 정해지나요?",
+    a: "KOL 규모와 인원, KOC 시딩 인원과 기간, 콘텐츠 제작 범위, 채널 구성과 운영 기간에 따라 달라집니다. 정해진 패키지 가격보다 목표(인지·후기 확보·판매)에 맞춰 필요한 구성을 역산해 견적을 드리며, 처음이라면 소규모로 반응을 확인한 뒤 잘된 조합에 예산을 늘리는 방식을 권합니다.",
+  },
+  {
+    q: "대만 마케팅 대행사를 고를 때 무엇을 봐야 하나요?",
+    a: "대만 현지에서 직접 운영하는지, KOL을 팔로워 수가 아니라 팔로워 구성과 반응률로 검토하는지, 번체 콘텐츠를 대만식으로 다시 쓰는지, 성과를 도달이 아니라 판매 데이터까지 보고하는지를 확인하시길 권합니다. 티엔샤는 타이베이 현지 오피스에서 이 과정을 직접 진행합니다.",
+  },
+  {
+    q: "중국 마케팅과 대만 마케팅은 무엇이 다른가요?",
+    a: "대만은 간체자가 아닌 번체자를 쓰고, 같은 뜻에도 다른 어휘를 씁니다. 플랫폼도 달라 대만에서는 Dcard·PTT·Instagram·Threads·LINE·Shopee가 중심입니다. 중국 본토용 콘텐츠를 그대로 쓰면 대만 소비자에게 현지를 신경 쓰지 않은 브랜드로 읽히기 때문에 별도의 현지화가 필요합니다.",
+  },
+  {
     q: "상담은 어떻게 신청하나요?",
     a: "홈페이지 문의 폼으로 브랜드와 제품, 목표를 남겨 주시면 담당자가 연락드립니다. 제품 정보와 희망 시점을 함께 알려주시면 첫 상담에서 바로 채널 구성과 진행 일정을 제안드릴 수 있습니다.",
   },
@@ -161,7 +200,7 @@ const pageJsonLd = buildPageJsonLd({
   path: PATH,
   name: "대만 마케팅",
   description:
-    "한국 브랜드의 대만 시장 진출 파트너 티엔샤. KOL 마케팅, Dcard·Threads 바이럴, KOC 시딩, 쇼피 입점, 공동구매 마케팅까지 대만 마케팅 전 과정을 지원합니다.",
+    "대만 마케팅 전문 에이전시 티엔샤. 서울·타이베이 오피스에서 KOL 마케팅, Dcard·Threads 바이럴, KOC 시딩, 쇼피 입점, 공동구매까지 한국 브랜드의 대만마케팅 전 과정을 직접 운영합니다.",
   services: services.map((s) => ({ name: s.title, description: s.desc })),
   faq,
 });
@@ -176,7 +215,7 @@ export default function TaiwanMarketingPage() {
           eyebrow="Taiwan Marketing"
           title="대만 마케팅 전문 에이전시"
           titleAccent="티엔샤 TIANXIA"
-          lead="티엔샤는 한국 브랜드의 대만 시장 진출을 전담하는 마케팅 에이전시입니다. 대만 현지 KOL 네트워크, Dcard·Threads 채널 바이럴, KOC 시딩, 쇼피 입점 지원, 공동구매 마케팅을 통해 브랜드와 대만 소비자를 연결합니다."
+          lead="티엔샤는 한국 브랜드의 대만 시장 진출을 전담하는 대만 마케팅 에이전시입니다. 서울과 타이베이 현지 오피스를 두고, 대만 현지 KOL 네트워크, Dcard·Threads 채널 바이럴, KOC 시딩, 쇼피 입점 지원, 공동구매 마케팅을 통해 브랜드와 대만 소비자를 연결합니다."
           tags={["KOL 마케팅", "Dcard 바이럴", "Threads 마케팅", "KOC 시딩", "쇼피 입점", "공동구매"]}
         />
 
@@ -186,7 +225,7 @@ export default function TaiwanMarketingPage() {
 
         <Section
           title="대만 마케팅이 필요한 이유"
-          lead="대만은 한국 문화에 대한 관심이 높고, 한국 브랜드에 대한 신뢰도가 강한 시장입니다. 그러나 대만 소비자는 Dcard, PTT, Instagram, Threads 등 고유한 채널을 통해 정보를 소비하며, 현지 KOL·KOC를 통한 추천이 구매 결정에 결정적인 영향을 미칩니다. 티엔샤는 5년 이상의 대만 마케팅 경험과 현지 네트워크를 바탕으로 이 채널들을 전략적으로 활용합니다."
+          lead="대만은 한국 문화에 대한 관심이 높고, 한국 브랜드에 대한 신뢰도가 강한 시장입니다. 그러나 대만 소비자는 Dcard, PTT, Instagram, Threads 등 고유한 채널을 통해 정보를 소비하며, 현지 KOL·KOC를 통한 추천이 구매 결정에 결정적인 영향을 미칩니다. 대만마케팅은 이 채널들의 역할을 나눠 인지부터 구매까지 한 흐름으로 설계하는 일이며, 티엔샤는 5년 이상의 대만 마케팅 경험과 현지 네트워크를 바탕으로 이 채널들을 전략적으로 활용합니다."
         />
 
         <Section
@@ -212,6 +251,35 @@ export default function TaiwanMarketingPage() {
 
         <Section title="티엔샤를 선택하는 이유">
           <CardGrid items={reasons} />
+        </Section>
+
+        <Section
+          title="대만 마케팅 비용은 무엇으로 정해지나요"
+          lead="대만 마케팅 비용은 정해진 패키지보다 목표에 따라 구성이 달라집니다. 견적을 좌우하는 요소는 크게 네 가지입니다."
+        >
+          <CardGrid items={costFactors} />
+        </Section>
+
+        <Section
+          title="대만마케팅 인사이트"
+          lead="대만 현지에서 캠페인을 운영하며 정리한 실무 칼럼입니다."
+        >
+          <ul className="grid md:grid-cols-2 gap-6">
+            {INSIGHTS.slice(0, 4).map((item) => (
+              <li key={item.slug}>
+                <Link
+                  href={`/insights/${item.slug}`}
+                  className="block h-full border border-zinc-800 p-6 hover:border-red-600/60 transition-colors"
+                >
+                  <h3 className="text-base font-bold text-zinc-50 mb-2">{item.title}</h3>
+                  <p className="text-sm text-zinc-500 leading-relaxed">{item.excerpt}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Link href="/insights" className="mt-6 inline-block text-xs font-mono text-zinc-500 hover:text-red-400">
+            대만 마케팅 인사이트 전체 보기 →
+          </Link>
         </Section>
 
         <FaqSection items={faq} title="대만 마케팅 자주 묻는 질문" />

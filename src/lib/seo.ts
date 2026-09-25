@@ -39,6 +39,57 @@ interface PageSchemaInput {
 }
 
 /**
+ * 인사이트 칼럼용 Article + BreadcrumbList 그래프.
+ */
+export function buildArticleJsonLd({
+  path,
+  title,
+  description,
+  publishedAt,
+  updatedAt,
+  keywords,
+}: {
+  path: string;
+  title: string;
+  description: string;
+  publishedAt: string;
+  updatedAt?: string;
+  keywords: string[];
+}) {
+  const url = `${BASE_URL}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${url}#article`,
+        headline: title,
+        description,
+        url,
+        mainEntityOfPage: url,
+        datePublished: `${publishedAt}T09:00:00+09:00`,
+        dateModified: `${updatedAt ?? publishedAt}T09:00:00+09:00`,
+        inLanguage: "ko-KR",
+        keywords: keywords.join(", "),
+        image: `${BASE_URL}/og-kakao.jpg`,
+        author: { "@id": `${BASE_URL}/#organization` },
+        publisher: { "@id": `${BASE_URL}/#organization` },
+        isPartOf: { "@id": `${BASE_URL}/#website` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "홈", item: HOME_URL },
+          { "@type": "ListItem", position: 2, name: "대만 마케팅 인사이트", item: `${BASE_URL}/insights` },
+          { "@type": "ListItem", position: 3, name: title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+/**
  * 하위 페이지용 WebPage + BreadcrumbList + Service 그래프.
  *
  * 루트 레이아웃의 그래프에는 Organization/WebSite만 남겨 두고, 페이지별 WebPage는
