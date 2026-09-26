@@ -5,6 +5,7 @@ import SiteNavLinks from "@/components/SiteNavLinks";
 import MetaConsent from "@/components/MetaConsent";
 import { SITE_CONFIG } from "@/lib/config";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
+import { LANDING_PAGES } from "@/lib/landing-pages";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -84,20 +85,31 @@ const jsonLd = {
       "@type": "Organization",
       "@id": `${BASE_URL}/#organization`,
       name: "티엔샤",
-      alternateName: "TIANXIA",
+      legalName: "주식회사 티엔샤",
+      // AI 검색·지식 패널이 표기 변형을 같은 회사로 묶도록 모두 적는다
+      alternateName: ["TIANXIA", "(주)티엔샤", "티엔샤 TIANXIA", "天下"],
       url: HOME_URL,
       logo: `${BASE_URL}${SITE_CONFIG.logo.src}`,
       email: SITE_CONFIG.company.email,
       // 검색엔진이 공식 계정을 같은 주체로 묶도록
       sameAs: [SITE_CONFIG.company.instagram, SITE_CONFIG.company.youtube],
       description:
-        "한국 브랜드의 대만 시장 진출을 돕는 마케팅 에이전시. 대만 KOL 마케팅, 쇼피 입점 지원, 공동구매 마케팅 전문.",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "서울",
-        addressRegion: "서울특별시",
-        addressCountry: "KR",
-      },
+        "한국 브랜드의 대만 시장 진출을 전담하는 대만 마케팅 전문 에이전시. 서울·타이베이 오피스에서 대만 KOL·KOC 인플루언서 마케팅, Dcard·Threads 바이럴, 대만 체험단, 쇼피 입점 지원, 공동구매 마케팅을 직접 운영.",
+      // 서울 본사 + 타이베이 현지 오피스. "대만 현지 실행"은 AI 답변에서 차별점으로 인용된다.
+      address: [
+        {
+          "@type": "PostalAddress",
+          addressLocality: "강서구",
+          addressRegion: "서울특별시",
+          addressCountry: "KR",
+        },
+        {
+          "@type": "PostalAddress",
+          addressLocality: "Taipei",
+          addressRegion: "臺北市",
+          addressCountry: "TW",
+        },
+      ],
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer service",
@@ -107,42 +119,27 @@ const jsonLd = {
       },
       areaServed: ["KR", "TW"],
       knowsAbout: [
-        "대만 마케팅", "KOL 마케팅", "KOC 시딩", "Dcard 마케팅",
+        "대만 마케팅", "대만마케팅", "대만 마케팅 대행사", "KOL 마케팅", "KOC 시딩", "Dcard 마케팅",
         "Threads 마케팅", "쇼피 입점", "공동구매 마케팅",
         "대만 바이럴 마케팅", "한국 브랜드 대만 진출",
         "대만 인플루언서 마케팅", "대만 체험단", "대만 디카드 마케팅", "대만 쓰레드 마케팅",
       ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
-        name: "서비스",
+        name: "대만 마케팅 서비스",
+        // 랜딩 레지스트리에서 생성 — 페이지를 추가하면 여기에도 자동으로 들어간다.
         itemListElement: [
-          {
+          ...LANDING_PAGES.map((page) => ({
             "@type": "Offer",
             itemOffered: {
               "@type": "Service",
-              name: "대만 KOL 마케팅",
-              description:
-                "대만 현지 KOL·인플루언서를 활용한 SNS 마케팅. 릴스·스토리 콘텐츠로 브랜드 인지도와 판매를 동시에 높입니다.",
+              name: page.label,
+              description: page.blurb,
+              url: `${BASE_URL}${page.path}`,
+              provider: { "@id": `${BASE_URL}/#organization` },
+              areaServed: "TW",
             },
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "쇼피 입점 지원",
-              description:
-                "티엔샤 전용 링크를 통한 대만 쇼피(Shopee) 입점 지원. 트래킹 및 다양한 입점 혜택 제공.",
-            },
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "공동구매 마케팅",
-              description:
-                "대만 KOL이 직접 진행하는 공동구매 캠페인. 상품 현지화부터 KOL 섭외·매칭, 릴스·스토리 판매 전환까지 원스톱 진행.",
-            },
-          },
+          })),
           {
             "@type": "Offer",
             itemOffered: {
@@ -150,6 +147,7 @@ const jsonLd = {
               name: "스튜디오구프 영상 제작",
               description:
                 "브랜드 영상·유튜브 콘텐츠 기획부터 촬영·편집까지. 대만 마케팅과 연계한 숏폼·채널 운영 대행.",
+              provider: { "@id": `${BASE_URL}/#organization` },
             },
           },
         ],

@@ -12,6 +12,27 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  // 도메인 통합 — 브랜드 검색 신호를 tianxia.kr 하나로 모은다.
+  // "티엔샤 대만 마케팅" 검색에서 예전 사이트 tianxia.co.kr이 tianxia.kr보다 먼저 잡히고 있었다.
+  // 주의: 이 규칙은 해당 도메인의 DNS가 이 Railway 서비스를 가리킬 때만 동작한다.
+  // (Railway 서비스 → Settings → Networking에 tianxia.co.kr, www.tianxia.co.kr, www.tianxia.kr 추가)
+  async redirects() {
+    return [
+      {
+        // 옛 사이트의 경로 구조는 이 사이트와 달라 경로를 살리면 404가 난다. 전부 홈으로 보낸다.
+        source: "/:path*",
+        has: [{ type: "host", value: "(www\\.)?tianxia\\.co\\.kr" }],
+        destination: "https://tianxia.kr/",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www\\.tianxia\\.kr" }],
+        destination: "https://tianxia.kr/:path*",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "img.youtube.com" },
