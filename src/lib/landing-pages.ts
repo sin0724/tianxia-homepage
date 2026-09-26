@@ -34,13 +34,13 @@ export const LANDING_PAGES: LandingPage[] = [
   {
     path: "/taiwan-marketing/dcard",
     label: "대만 디카드 마케팅",
-    blurb: "대만 최대 익명 커뮤니티 Dcard(디카드) 바이럴·시딩·후기 운영.",
+    blurb: "대만 익명 커뮤니티 Dcard(디카드) 바이럴·시딩·후기 운영.",
     priority: 0.7,
   },
   {
     path: "/taiwan-marketing/threads",
     label: "대만 쓰레드 마케팅",
-    blurb: "대만에서 가장 빠르게 퍼지는 Threads(스레드) 계정 운영과 KOL·KOC 포스팅.",
+    blurb: "대만 Threads(스레드) 계정 운영과 KOL·KOC 포스팅, 확산 설계.",
     priority: 0.7,
   },
   {
