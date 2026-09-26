@@ -32,6 +32,24 @@ export const LANDING_PAGES: LandingPage[] = [
     priority: 0.8,
   },
   {
+    path: "/taiwan-marketing/koc",
+    label: "대만 KOC 마케팅",
+    blurb: "대만 현지 KOC의 실제 경험 콘텐츠로 검색과 구매 결정을 받쳐 주는 시딩·리뷰 캠페인.",
+    priority: 0.8,
+  },
+  {
+    path: "/taiwan-marketing/medical",
+    label: "대만 병원 마케팅",
+    blurb: "한국 의료기관의 대만 소비자 접점 설계. KOL·KOC·Threads·Dcard 채널 조합.",
+    priority: 0.8,
+  },
+  {
+    path: "/taiwan-marketing/clinic",
+    label: "대만 피부과·성형외과 마케팅",
+    blurb: "방한 전 검색부터 방문 경험 콘텐츠까지, 클리닉 선택 과정에 맞춘 KOL·방문형 KOC 캠페인.",
+    priority: 0.8,
+  },
+  {
     path: "/taiwan-marketing/dcard",
     label: "대만 디카드 마케팅",
     blurb: "대만 익명 커뮤니티 Dcard(디카드) 바이럴·시딩·후기 운영.",

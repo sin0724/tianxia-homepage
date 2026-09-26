@@ -35,33 +35,39 @@ const services = [
   {
     title: "KOL·인플루언서 마케팅",
     desc: "대만 현지 인플루언서(KOL)를 섭외해 브랜드를 대만 소비자에게 소개합니다. 팔로워 규모와 콘텐츠 카테고리를 분석해 브랜드 핏에 맞는 KOL을 매칭합니다.",
+    href: "/kol-marketing",
   },
   {
     title: "Dcard(디카드) 마케팅",
-    desc: "대만 최대 익명 커뮤니티 Dcard에서 브랜드 버즈를 만듭니다. 실제 사용자처럼 자연스럽게 녹아드는 시딩·바이럴 콘텐츠로 신뢰도를 높입니다.",
+    desc: "대만 소비자가 구매 전에 후기를 찾는 익명 커뮤니티 Dcard에서 브랜드 버즈를 만듭니다. 실제 사용자처럼 자연스럽게 녹아드는 시딩·바이럴 콘텐츠로 신뢰도를 높입니다.",
+    href: "/taiwan-marketing/dcard",
   },
   {
     title: "Threads(쓰레드) 마케팅",
     desc: "대만 Threads 채널을 통한 바이럴 마케팅. 짧고 임팩트 있는 콘텐츠로 빠르게 확산되는 대만 소셜 트렌드를 활용합니다.",
+    href: "/taiwan-marketing/threads",
   },
   {
     title: "KOC 시딩·체험단",
     desc: "대만 일반 소비자 인플루언서(KOC) 체험단에게 제품을 체험하게 해 진정성 있는 후기와 추천 콘텐츠를 생성합니다. 광고보다 높은 신뢰도로 구매 전환을 유도합니다.",
+    href: "/taiwan-marketing/koc",
   },
   {
     title: "쇼피 입점 지원",
     desc: "티엔샤 전용 입점 링크로 대만 쇼피(Shopee)에 등록하면 판매 트래킹과 다양한 혜택을 받을 수 있습니다. 상품 현지화(번역·키워드)도 함께 진행합니다.",
+    href: "/shopee",
   },
   {
     title: "공동구매 마케팅",
     desc: "KOL이 릴스·스토리·프로필을 활용해 공동구매 형태로 판매를 일으킵니다. 단기간 집중 판매와 바이럴 효과를 동시에 얻을 수 있습니다.",
+    href: "/taiwan-marketing/gonggu",
   },
 ];
 
-const targets = [
+const targets: { name: string; desc: string; href?: string }[] = [
   { name: "F&B", desc: "레스토랑, 식음료, 카페, 건강식품 브랜드" },
   { name: "뷰티", desc: "스킨케어, 코스메틱, 헤어, 헬스케어 브랜드" },
-  { name: "병원·메디컬", desc: "성형외과, 피부과, 한의원, 메디컬 디바이스" },
+  { name: "병원·메디컬", desc: "성형외과, 피부과, 한의원, 메디컬 디바이스", href: "/taiwan-marketing/medical" },
 ];
 
 const channels = [
@@ -244,9 +250,20 @@ export default function TaiwanMarketingPage() {
 
         <Section title="지원 업종">
           <CardGrid
-            items={targets.map((t) => ({ title: t.name, desc: t.desc }))}
+            items={targets.map((t) => ({ title: t.name, desc: t.desc, href: t.href }))}
             columns={3}
           />
+          <p className="mt-6 text-sm text-zinc-500 leading-relaxed">
+            병원·의료기관은{" "}
+            <Link href="/taiwan-marketing/medical" className="text-red-400 hover:underline underline-offset-4">
+              대만 병원 마케팅
+            </Link>
+            , 피부과·성형외과는{" "}
+            <Link href="/taiwan-marketing/clinic" className="text-red-400 hover:underline underline-offset-4">
+              대만 피부과·성형외과 마케팅
+            </Link>
+            에서 채널 구성과 진행 방식을 자세히 볼 수 있습니다.
+          </p>
         </Section>
 
         <Section title="티엔샤를 선택하는 이유">

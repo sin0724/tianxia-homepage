@@ -8,7 +8,7 @@ import { INSIGHTS, latestInsightDate } from "@/lib/insights";
  * 이전에는 new Date()를 써서 크롤할 때마다 "방금 변경됨"으로 보고했는데,
  * 실제 변경이 없으면 Google이 lastmod 신호 자체를 무시하게 된다.
  */
-const LAST_MODIFIED = new Date("2026-09-25");
+const LAST_MODIFIED = new Date("2026-09-26");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

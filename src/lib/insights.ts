@@ -8,12 +8,16 @@
  * 수치·통계는 출처를 확인할 수 있는 것만 쓴다. 브랜드 사이트라 틀린 숫자는 치명적이다.
  */
 
+import { GUIDE_INSIGHTS } from "./insights-guides";
+
 export interface InsightBlock {
   /** 소제목(H2). 없으면 앞 블록에 이어지는 문단으로 렌더된다. */
   h2?: string;
   paragraphs?: string[];
   /** 불릿 목록 */
   list?: string[];
+  /** 블록 끝에 붙는 서비스 랜딩 링크 (본문 CTA) */
+  link?: { href: string; label: string };
 }
 
 export interface Insight {
@@ -33,9 +37,14 @@ export interface Insight {
   body: InsightBlock[];
   /** 본문 끝에서 연결할 서비스 랜딩 경로 */
   relatedPaths: string[];
+  /** 화면에 보이는 FAQ (있으면 FAQPage 구조화 데이터도 함께 나간다) */
+  faq?: { q: string; a: string }[];
+  /** 글 맨 끝 상담 CTA 문구. 없으면 기본 문구를 쓴다. */
+  cta?: { title: string; desc: string; label: string };
 }
 
-export const INSIGHTS: Insight[] = [
+/** 2026-09-25 이전에 발행된 칼럼 */
+const COLUMN_INSIGHTS: Insight[] = [
   {
     slug: "taiwan-marketing-checklist",
     title: "대만마케팅 처음이라면, 시작 전에 확인할 7가지",
@@ -381,6 +390,9 @@ export const INSIGHTS: Insight[] = [
     relatedPaths: ["/taiwan-marketing", "/kol-marketing", "/shopee"],
   },
 ];
+
+/** 최신 글이 앞에 오도록 가이드 칼럼을 먼저 둔다 */
+export const INSIGHTS: Insight[] = [...GUIDE_INSIGHTS, ...COLUMN_INSIGHTS];
 
 export function getInsight(slug: string): Insight | undefined {
   return INSIGHTS.find((item) => item.slug === slug);

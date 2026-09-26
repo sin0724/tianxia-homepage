@@ -48,6 +48,7 @@ export function buildArticleJsonLd({
   publishedAt,
   updatedAt,
   keywords,
+  faq = [],
 }: {
   path: string;
   title: string;
@@ -55,6 +56,8 @@ export function buildArticleJsonLd({
   publishedAt: string;
   updatedAt?: string;
   keywords: string[];
+  /** 화면에 보이는 FAQ만 넘긴다 */
+  faq?: FaqSpec[];
 }) {
   const url = `${BASE_URL}${path}`;
   return {
@@ -85,6 +88,19 @@ export function buildArticleJsonLd({
           { "@type": "ListItem", position: 3, name: title, item: url },
         ],
       },
+      ...(faq.length
+        ? [
+            {
+              "@type": "FAQPage",
+              "@id": `${url}#faq`,
+              mainEntity: faq.map((item) => ({
+                "@type": "Question",
+                name: item.q,
+                acceptedAnswer: { "@type": "Answer", text: item.a },
+              })),
+            },
+          ]
+        : []),
     ],
   };
 }

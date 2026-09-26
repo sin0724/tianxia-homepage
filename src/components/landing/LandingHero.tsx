@@ -9,6 +9,8 @@ export default function LandingHero({
   titleAccent,
   lead,
   tags = [],
+  primaryCta,
+  secondaryCta,
 }: {
   backHref?: string;
   backLabel?: string;
@@ -17,6 +19,10 @@ export default function LandingHero({
   titleAccent?: string;
   lead: string;
   tags?: string[];
+  /** 첫 화면에서 바로 보이는 상담 버튼. 기존 문의 폼(/#contact)으로 보낸다. */
+  primaryCta?: string;
+  /** 같은 페이지 안의 섹션으로 내려가는 보조 링크 */
+  secondaryCta?: { label: string; href: string };
 }) {
   return (
     <>
@@ -54,6 +60,27 @@ export default function LandingHero({
               {tag}
             </span>
           ))}
+        </div>
+      )}
+
+      {(primaryCta || secondaryCta) && (
+        <div className="mt-8 flex flex-wrap items-center gap-4">
+          {primaryCta && (
+            <Link
+              href="/#contact"
+              className="inline-block px-6 py-3 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors"
+            >
+              {primaryCta}
+            </Link>
+          )}
+          {secondaryCta && (
+            <a
+              href={secondaryCta.href}
+              className="text-sm text-zinc-400 hover:text-red-400 underline-offset-4 hover:underline"
+            >
+              {secondaryCta.label} ↓
+            </a>
+          )}
         </div>
       )}
     </>

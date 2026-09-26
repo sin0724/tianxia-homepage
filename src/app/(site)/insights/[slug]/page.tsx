@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/JsonLd";
 import ContactCta from "@/components/landing/ContactCta";
+import FaqSection from "@/components/landing/FaqSection";
 import { BASE_URL, buildArticleJsonLd } from "@/lib/seo";
 import { INSIGHTS, getInsight } from "@/lib/insights";
 import { LANDING_PAGES } from "@/lib/landing-pages";
@@ -61,6 +62,7 @@ export default async function InsightPage({ params }: Props) {
           publishedAt: item.publishedAt,
           updatedAt: item.updatedAt,
           keywords: item.keywords,
+          faq: item.faq,
         })}
       />
       <article className="max-w-3xl mx-auto px-6 py-16 md:py-24">
@@ -107,9 +109,21 @@ export default async function InsightPage({ params }: Props) {
                   ))}
                 </ul>
               )}
+              {block.link && (
+                <Link
+                  href={block.link.href}
+                  className="mt-4 inline-block text-sm font-bold text-red-400 hover:text-red-300 underline-offset-4 hover:underline"
+                >
+                  {block.link.label} →
+                </Link>
+              )}
             </section>
           ))}
         </div>
+
+        {item.faq && item.faq.length > 0 && (
+          <FaqSection items={item.faq} title="자주 묻는 질문" />
+        )}
 
         {related.length > 0 && (
           <section className="mt-16 border-t border-zinc-800 pt-12">
@@ -146,8 +160,9 @@ export default async function InsightPage({ params }: Props) {
         </section>
 
         <ContactCta
-          title="대만 마케팅, 티엔샤와 상담하세요"
-          desc="브랜드와 제품, 목표를 알려주시면 대만 현지 채널 구성과 진행 일정을 제안드립니다."
+          title={item.cta?.title ?? "대만 마케팅, 티엔샤와 상담하세요"}
+          desc={item.cta?.desc ?? "브랜드와 제품, 목표를 알려주시면 대만 현지 채널 구성과 진행 일정을 제안드립니다."}
+          label={item.cta?.label}
         />
       </article>
     </main>
