@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { sendLeadEvent } from "@/lib/metaCapi";
 import { isMetaConsentGranted, META_CONSENT_COOKIE } from "@/lib/metaConsent";
+import { notifySlackContact } from "@/lib/slackNotify";
 
 // 입력 길이 상한 — DB·메일 폭주 방지
 const MAX = { brand: 150, name: 100, phone: 50, email: 200, inquiry: 200, message: 5000 };
@@ -110,6 +111,17 @@ export async function POST(req: NextRequest) {
       fbc: req.cookies.get("_fbc")?.value,
     });
   }
+
+  // 슬랙 알림 (선택 — SLACK_WEBHOOK_URL 없으면 스킵). 스팸 의심도 제목만 달고 보낸다.
+  notifySlackContact({
+    brand: brand.trim(),
+    name: name.trim(),
+    phone: phone.trim(),
+    email: email.trim(),
+    inquiry: inquiry?.trim() ?? "",
+    message: message.trim(),
+    isSpam: flagged,
+  });
 
   // 이메일 알림 (선택 — RESEND_API_KEY 없으면 스킵)
   const apiKey = process.env.RESEND_API_KEY;
