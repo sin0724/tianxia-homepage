@@ -18,7 +18,6 @@ export function notifySlackContact(params: {
   if (!url) return;
 
   const { brand, name, phone, email, inquiry, message, isSpam } = params;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tianxia.kr";
   const title = `${isSpam ? "[스팸의심] " : ""}새 홈페이지 문의 — ${brand} · ${name}`;
   // 슬랙 section 텍스트는 3000자 제한이라 본문은 잘라서 보낸다. 전문은 어드민에서.
   // 이스케이프하면 길이가 늘어나므로 이스케이프한 뒤에 자른다.
@@ -40,10 +39,6 @@ export function notifySlackContact(params: {
         ],
       },
       { type: "section", text: { type: "mrkdwn", text: `>>> ${body}` } },
-      {
-        type: "context",
-        elements: [{ type: "mrkdwn", text: `<${siteUrl}/admin|어드민에서 보기>` }],
-      },
     ],
   };
 
