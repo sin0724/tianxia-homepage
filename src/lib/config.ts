@@ -68,6 +68,7 @@ export const SITE_CONFIG = {
   //   1) public/creators/ 에 사진을 넣습니다 (3:4 세로, 파일명은 영문/숫자/_/. 만)
   //   2) 아래 배열에 { handle, photo } 한 줄 추가
   //
+  // category 는 /creators 분류 탭입니다. 생략하면 치어리더, 아티스트면 "artist".
   // handle 은 인스타 아이디입니다. 카드에는 @handle 로 표시되고
   // 클릭하면 https://instagram.com/<handle> 로 이동합니다.
   // 인원수는 제한이 없습니다 — 몇 명이든 마퀴가 알아서 채웁니다.
@@ -82,17 +83,21 @@ export const SITE_CONFIG = {
   },
 
   creators: [
-    { handle: "000.4.2", photo: "/creators/000.4.2.jpg" },
-    { handle: "0960kim0960", photo: "/creators/0960kim0960.jpg" },
+    { handle: "000.4.2", photo: "/creators/000.4.2.jpg", category: "artist" },
+    { handle: "0960kim0960", photo: "/creators/0960kim0960.jpg", category: "artist" },
     { handle: "_min_go", photo: "/creators/_min_go.jpg" },
     { handle: "h0_barbie", photo: "/creators/h0_barbie.jpg" },
     { handle: "kimtaerini", photo: "/creators/kimtaerini.jpg" },
     { handle: "leehozeong", photo: "/creators/leehozeong.jpg" },
     { handle: "luvy00n", photo: "/creators/luvy00n.jpg" },
     { handle: "minjeong_w_", photo: "/creators/minjeong_w_.jpg" },
-    { handle: "ppap.eva19", photo: "/creators/ppap.eva19.jpg" },
+    { handle: "ppap.eva19", photo: "/creators/ppap.eva19.jpg", category: "artist" },
     { handle: "wlgus2qh", photo: "/creators/wlgus2qh.jpg" },
   ],
+
+  // 홈 크리에이터 섹션에 보일 6명 (나머지는 /creators "전체 보기"에서).
+  // 기존 인원은 "ig-<인스타 핸들>", 에이전시 인원은 /creators/<id> 주소의 id를 적는다.
+  featuredCreators: ["ig-h0_barbie", "ig-000.4.2", "model-142", "ig-kimtaerini", "artist-6", "model-140"],
 
   // -------------------------------------------------------
   // 소개 섹션 - 타겟 산업별 영상

@@ -19,7 +19,19 @@ const newEventId = () =>
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-function ContactModal({ onClose }: { onClose: () => void }) {
+/**
+ * 전체 화면 문의 폼. 홈 Contact 섹션 외에 /creators 섭외 버튼도 이걸 바로 띄운다.
+ * defaultInquiry/defaultMessage로 문의분야·내용을 미리 채워 둘 수 있다(수정 가능).
+ */
+export function ContactModal({
+  onClose,
+  defaultInquiry,
+  defaultMessage,
+}: {
+  onClose: () => void;
+  defaultInquiry?: string;
+  defaultMessage?: string;
+}) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -229,6 +241,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                     <input
                       type="text"
                       name="inquiry"
+                      defaultValue={defaultInquiry}
                       placeholder="ex) 견적문의, 영업문의"
                       className="w-full h-13 bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all"
                     />
@@ -241,6 +254,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                     <textarea
                       name="message"
                       required
+                      defaultValue={defaultMessage}
                       placeholder="내용을 입력하세요."
                       className="flex-1 min-h-[220px] bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all resize-none"
                     />

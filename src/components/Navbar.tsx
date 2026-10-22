@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/config";
 import { SOCIALS } from "@/components/socials";
 import Magnetic from "@/components/motion/Magnetic";
@@ -25,21 +26,29 @@ function RollingText({ label }: { label: string }) {
   );
 }
 
-// 화면에 나오는 순서와 같게 유지한다
+// 화면에 나오는 순서와 같게 유지한다.
+// 홈 섹션 링크도 "/#..." 로 둬서 /creators 같은 별도 페이지에서 같은 네비를 써도 홈으로 돌아가게 한다.
+// 홈에서는 경로가 같아 새로 고침 없이 해시 이동만 일어난다.
 const NAV_ITEMS = [
-  { label: "브랜드", href: "#brands" },
-  { label: "크리에이터", href: "#creators" },
-  { label: "소개", href: "#about" },
-  { label: "작업물", href: "#work" },
+  { label: "브랜드", href: "/#brands" },
+  { label: "크리에이터", href: "/creators" },
+  { label: "소개", href: "/#about" },
+  { label: "작업물", href: "/#work" },
 ];
 
-export default function Navbar() {
+/**
+ * @param solid 홈처럼 풀스크린 히어로가 없는 하위 페이지용. 스크롤된 본문이 메뉴와 겹쳐
+ *              읽기 어려워지지 않도록 헤더에 반투명 배경을 깐다.
+ */
+export default function Navbar({ solid = false }: { solid?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 px-6 md:px-10"
+        className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 ${
+          solid ? "bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900" : ""
+        }`}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{
@@ -49,7 +58,7 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between h-16 md:h-[68px]">
           {/* 로고 */}
-          <a href="#home" className="relative flex items-center" aria-label="홈으로">
+          <Link href="/#home" className="relative flex items-center" aria-label="홈으로">
             <Image
               src={SITE_CONFIG.logo.src}
               alt={SITE_CONFIG.logo.alt}
@@ -69,7 +78,7 @@ export default function Navbar() {
             >
               티엔샤
             </span>
-          </a>
+          </Link>
 
           {/* 데스크탑 네비게이션 */}
           <nav className="hidden md:flex items-center gap-8">
@@ -100,13 +109,13 @@ export default function Navbar() {
               </a>
             ))}
             <Magnetic strength={0.25} className="hidden md:inline-block md:ml-1">
-              <a
-                href="#contact"
+              <Link
+                href="/#contact"
                 className="group relative overflow-hidden inline-flex items-center h-9 px-5 bg-red-600 text-white hover:text-red-600 text-sm font-medium transition-colors duration-300 active:scale-[0.98]"
               >
                 <FillHover className="bg-white" />
                 <span className="relative z-10">문의하기</span>
-              </a>
+              </Link>
             </Magnetic>
             <button
               onClick={() => setMenuOpen((v) => !v)}
@@ -160,7 +169,7 @@ export default function Navbar() {
             </motion.a>
           ))}
           <motion.a
-            href="#contact"
+            href="/#contact"
             onClick={() => setMenuOpen(false)}
             className="text-left text-4xl font-bold text-red-600"
             initial={{ opacity: 0, x: -24 }}

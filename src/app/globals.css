@@ -111,6 +111,15 @@ body {
   animation-duration: var(--marquee-duration, 90s) !important;
 }
 
+/* 직접 넘길 수 있는 가로 스크롤 캐러셀 — 스크롤은 살리고 스크롤바만 숨긴다 */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

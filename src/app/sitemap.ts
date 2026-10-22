@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
 import { LANDING_PAGES } from "@/lib/landing-pages";
 import { INSIGHTS, latestInsightDate } from "@/lib/insights";
+import { TALENTS } from "@/lib/talents";
 
 /**
  * 콘텐츠를 실제로 수정할 때만 갱신한다.
@@ -36,6 +37,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(item.updatedAt ?? item.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    })),
+    {
+      url: `${BASE_URL}/creators`,
+      lastModified: new Date("2026-10-22"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    ...TALENTS.map((t) => ({
+      url: `${BASE_URL}/creators/${t.id}`,
+      lastModified: new Date("2026-10-22"),
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
     })),
     {
       url: `${BASE_URL}/privacy`,
