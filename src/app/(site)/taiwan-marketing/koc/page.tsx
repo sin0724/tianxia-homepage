@@ -10,6 +10,7 @@ import RelatedInsights from "@/components/landing/RelatedInsights";
 import RelatedPages from "@/components/landing/RelatedPages";
 import ContactCta from "@/components/landing/ContactCta";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import SiteFooter from "@/components/SiteFooter";
 
 // Primary intent: 대만 KOC / KOC 시딩·리뷰 전략.
 // "대만 체험단" 운영 형태(배송·매장·한국 방문)는 /taiwan-marketing/review-campaign이 담당하므로
@@ -195,6 +196,7 @@ export default function KocMarketingPage() {
         />
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

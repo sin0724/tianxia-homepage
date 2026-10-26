@@ -1,5 +1,6 @@
 import { InstagramLogo, YoutubeLogo } from "@phosphor-icons/react";
 import { SITE_CONFIG } from "@/lib/config";
+import NaverBlogLogo from "@/components/icons/NaverBlogLogo";
 
 /**
  * 공식 채널 — 상단 네비와 푸터가 같은 목록을 쓴다.
@@ -24,5 +25,13 @@ export const SOCIALS = [
     hoverText: "hover:text-[#FF0000]",
     fill: "bg-[#FF0000]",
     hoverBorder: "hover:border-[#FF0000]",
+  },
+  {
+    label: "네이버 블로그",
+    href: SITE_CONFIG.company.naverBlog,
+    Icon: NaverBlogLogo,
+    hoverText: "hover:text-[#03C75A]",
+    fill: "bg-[#03C75A]",
+    hoverBorder: "hover:border-[#03C75A]",
   },
 ];

@@ -20,6 +20,7 @@ import {
   getTalent,
   tabOf,
 } from "@/lib/talents";
+import SiteFooter from "@/components/SiteFooter";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -236,6 +237,7 @@ export default async function TalentPage({ params }: Props) {
             </nav>
           )}
         </div>
+        <SiteFooter />
       </main>
     </>
   );

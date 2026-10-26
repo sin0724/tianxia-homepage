@@ -6,6 +6,7 @@ import CardGrid from "@/components/landing/CardGrid";
 import FaqSection from "@/components/landing/FaqSection";
 import RelatedPages from "@/components/landing/RelatedPages";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import SiteFooter from "@/components/SiteFooter";
 
 const PATH = "/shopee";
 
@@ -224,6 +225,7 @@ export default function ShopeePage() {
         </div>
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

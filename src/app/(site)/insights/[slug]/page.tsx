@@ -7,6 +7,7 @@ import FaqSection from "@/components/landing/FaqSection";
 import { BASE_URL, buildArticleJsonLd } from "@/lib/seo";
 import { INSIGHTS, getInsight } from "@/lib/insights";
 import { LANDING_PAGES } from "@/lib/landing-pages";
+import SiteFooter from "@/components/SiteFooter";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -165,6 +166,7 @@ export default async function InsightPage({ params }: Props) {
           label={item.cta?.label}
         />
       </article>
+      <SiteFooter />
     </main>
   );
 }

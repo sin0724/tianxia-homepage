@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BASE_URL } from "@/lib/seo";
+import { SITE_CONFIG } from "@/lib/config";
+import NaverBlogLogo from "@/components/icons/NaverBlogLogo";
 
 export const metadata: Metadata = {
   title: "개인정보 처리방침",
@@ -136,7 +138,13 @@ export default function PrivacyPage() {
 
         <footer className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-200 pt-6 text-sm text-zinc-500">
           <p>© 2026 (주)티엔샤 TIANXIA</p>
-          <Link href="/" className="underline underline-offset-4 hover:text-red-700">홈페이지로 돌아가기</Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <a href={SITE_CONFIG.company.naverBlog} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 underline underline-offset-4 hover:text-[#03C75A]">
+              <NaverBlogLogo size={16} />
+              네이버 공식 블로그
+            </a>
+            <Link href="/" className="underline underline-offset-4 hover:text-red-700">홈페이지로 돌아가기</Link>
+          </div>
         </footer>
       </article>
     </main>

@@ -5,6 +5,7 @@ import LandingHero from "@/components/landing/LandingHero";
 import ContactCta from "@/components/landing/ContactCta";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
 import { INSIGHTS } from "@/lib/insights";
+import SiteFooter from "@/components/SiteFooter";
 
 const PATH = "/insights";
 const DESCRIPTION =
@@ -73,6 +74,7 @@ export default function InsightsPage() {
           desc="제품과 목표를 알려주시면 채널 구성과 진행 일정을 제안드립니다."
         />
       </div>
+      <SiteFooter />
     </main>
   );
 }

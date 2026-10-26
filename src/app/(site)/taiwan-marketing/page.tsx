@@ -9,6 +9,7 @@ import ContactCta from "@/components/landing/ContactCta";
 import Link from "next/link";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
 import { INSIGHTS } from "@/lib/insights";
+import SiteFooter from "@/components/SiteFooter";
 
 const PATH = "/taiwan-marketing";
 
@@ -309,6 +310,7 @@ export default function TaiwanMarketingPage() {
         />
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

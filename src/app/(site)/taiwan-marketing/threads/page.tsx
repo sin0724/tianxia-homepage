@@ -10,6 +10,7 @@ import RelatedInsights from "@/components/landing/RelatedInsights";
 import RelatedPages from "@/components/landing/RelatedPages";
 import ContactCta from "@/components/landing/ContactCta";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import SiteFooter from "@/components/SiteFooter";
 
 const PATH = "/taiwan-marketing/threads";
 const DESCRIPTION =
@@ -220,6 +221,7 @@ export default function ThreadsMarketingPage() {
         />
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

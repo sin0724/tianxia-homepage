@@ -6,6 +6,7 @@ import CreatorGrid from "@/components/creators/CreatorGrid";
 import { SITE_CONFIG } from "@/lib/config";
 import { ALL_CREATORS } from "@/lib/talents";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import SiteFooter from "@/components/SiteFooter";
 
 // 홈의 "Creators We Work With" 섹션을 독립 페이지로 뺀 것.
 // 홈 캐러셀은 치어리더만 보여 주고, 아티스트·모델까지 포함한 전체 로스터는 여기서 본다.
@@ -77,6 +78,7 @@ export default function CreatorsPage() {
             <InquiryButton label="섭외 문의하기" />
           </section>
         </div>
+        <SiteFooter />
       </main>
     </>
   );

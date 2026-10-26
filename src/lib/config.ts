@@ -15,6 +15,8 @@ export const SITE_CONFIG = {
     instagram: "https://www.instagram.com/tianxia_tw",
     // 스튜디오구프 채널 (@스튜디오구프) — 한글 핸들이라 퍼센트 인코딩된 형태로 둔다
     youtube: "https://www.youtube.com/@%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EA%B5%AC%ED%94%84",
+    // 네이버 공식 블로그 — 공식 블로그 인증 심사에서 홈페이지 연결을 확인한다
+    naverBlog: "https://blog.naver.com/influencercompany",
   },
 
   // -------------------------------------------------------

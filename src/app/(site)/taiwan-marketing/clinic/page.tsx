@@ -10,6 +10,7 @@ import RelatedInsights from "@/components/landing/RelatedInsights";
 import RelatedPages from "@/components/landing/RelatedPages";
 import ContactCta from "@/components/landing/ContactCta";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import SiteFooter from "@/components/SiteFooter";
 
 // Primary intent: 피부과·성형외과(클리닉) 특화. 병원 전반은 /taiwan-marketing/medical.
 // 시술 결과·효과 보장, 과장 표현을 쓰지 않는다.
@@ -189,6 +190,7 @@ export default function ClinicMarketingPage() {
         />
 
       </div>
+      <SiteFooter />
     </main>
   );
 }

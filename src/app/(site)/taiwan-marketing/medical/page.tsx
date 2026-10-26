@@ -10,6 +10,7 @@ import RelatedInsights from "@/components/landing/RelatedInsights";
 import RelatedPages from "@/components/landing/RelatedPages";
 import ContactCta from "@/components/landing/ContactCta";
 import { BASE_URL, buildPageJsonLd } from "@/lib/seo";
+import SiteFooter from "@/components/SiteFooter";
 
 // Primary intent: 병원·의료기관 전반의 대만 마케팅.
 // 피부과·성형외과 특화 내용은 /taiwan-marketing/clinic이 담당한다.
@@ -180,6 +181,7 @@ export default function MedicalMarketingPage() {
         />
 
       </div>
+      <SiteFooter />
     </main>
   );
 }
