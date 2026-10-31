@@ -24,7 +24,7 @@ const homeJsonLd = {
       "@type": "WebPage",
       "@id": `${BASE_URL}/#webpage`,
       url: HOME_URL,
-      name: "대만 마케팅 에이전시 — 티엔샤 TIANXIA",
+      name: "대만 마케팅 에이전시 티엔샤 TIANXIA",
       description:
         "한국 브랜드의 대만 시장 진출 전문 에이전시 티엔샤. 대만 KOL 마케팅, 쇼피 입점 지원, 공동구매 마케팅 전문.",
       inLanguage: "ko-KR",

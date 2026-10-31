@@ -36,7 +36,7 @@ const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1713769906448027
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "대만 마케팅 에이전시 — 티엔샤 TIANXIA",
+    default: "대만 마케팅 에이전시 티엔샤 TIANXIA",
     template: "%s | 티엔샤",
   },
   description:
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     canonical: HOME_URL,
   },
   openGraph: {
-    title: "대만 마케팅 전문 에이전시 — 티엔샤 TIANXIA",
+    title: "대만 마케팅 에이전시 티엔샤 TIANXIA",
     description: "한국 브랜드의 대만 진출 파트너. KOL 마케팅·쇼피 입점·공동구매 마케팅 전문.",
     url: HOME_URL,
     siteName: "티엔샤 TIANXIA",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "대만 마케팅 전문 에이전시 — 티엔샤 TIANXIA",
+    title: "대만 마케팅 에이전시 티엔샤 TIANXIA",
     description: "한국 브랜드의 대만 진출 파트너. KOL 마케팅·쇼피 입점·공동구매 마케팅 전문.",
     images: ["/og-kakao.jpg"],
   },
