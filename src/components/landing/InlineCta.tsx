@@ -7,7 +7,7 @@ export default function InlineCta({ text, label }: { text: string; label: string
       <p className="text-sm text-zinc-300 leading-relaxed">{text}</p>
       <Link
         href="/#contact"
-        className="shrink-0 inline-block px-5 py-2.5 border border-red-600 text-red-400 text-sm font-bold hover:bg-red-600 hover:text-white transition-colors"
+        className="shrink-0 inline-block px-5 py-2.5 border border-white/30 text-white text-sm font-bold hover:bg-iris-hover hover:text-white transition-colors rounded-full"
       >
         {label}
       </Link>

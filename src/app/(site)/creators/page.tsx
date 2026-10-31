@@ -51,10 +51,10 @@ export default function CreatorsPage() {
       <Navbar solid />
       <main className="min-h-screen bg-zinc-950 text-zinc-50">
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 pt-32 md:pt-40 pb-20 md:pb-28">
-          <p className="text-red-500/70 text-[11px] font-mono tracking-[0.3em] uppercase">
+          <p className="text-saffron/70 text-[11px] font-mono tracking-[0.3em] uppercase">
             {eyebrow}
           </p>
-          <h1 className="mt-3 text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
+          <h1 className="mt-3 text-4xl md:text-6xl lg:text-7xl font-normal tracking-tight leading-[1.05]">
             {title}
           </h1>
           <div className="mt-6 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -67,7 +67,7 @@ export default function CreatorsPage() {
           <CreatorGrid items={ALL_CREATORS} />
 
           <section className="mt-16 border-t border-zinc-800 pt-12">
-            <h2 className="text-2xl font-black mb-4">
+            <h2 className="text-2xl font-normal mb-4">
               캠페인에 맞는 크리에이터를 찾고 계신가요?
             </h2>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">

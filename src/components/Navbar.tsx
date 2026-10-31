@@ -47,7 +47,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
     <>
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 ${
-          solid ? "bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900" : ""
+          solid ? "bg-black/85 backdrop-blur-md" : ""
         }`}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -86,7 +86,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
               <Magnetic key={item.href} strength={0.35}>
                 <a
                   href={item.href}
-                  className="group block text-sm font-medium text-zinc-400 py-1"
+                  className="group block dala-label text-ash py-1"
                 >
                   <RollingText label={item.label} />
                 </a>
@@ -111,9 +111,9 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
             <Magnetic strength={0.25} className="hidden md:inline-block md:ml-1">
               <Link
                 href="/#contact"
-                className="group relative overflow-hidden inline-flex items-center h-9 px-5 bg-red-600 text-white hover:text-red-600 text-sm font-medium transition-colors duration-300 active:scale-[0.98]"
+                className="group relative overflow-hidden inline-flex items-center h-10 px-6 bg-iris dala-label rounded-full text-white transition-colors duration-300 active:scale-[0.98]"
               >
-                <FillHover className="bg-white" />
+                <FillHover className="bg-iris-hover" />
                 <span className="relative z-10">문의하기</span>
               </Link>
             </Magnetic>
@@ -160,7 +160,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="text-left text-4xl font-bold text-zinc-50"
+              className="text-left text-4xl font-normal tracking-tight text-white"
               initial={{ opacity: 0, x: -24 }}
               animate={menuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
               transition={{ delay: i * 0.07, duration: 0.35 }}
@@ -171,7 +171,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
           <motion.a
             href="/#contact"
             onClick={() => setMenuOpen(false)}
-            className="text-left text-4xl font-bold text-red-600"
+            className="text-left text-4xl font-normal tracking-tight text-saffron"
             initial={{ opacity: 0, x: -24 }}
             animate={menuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
             transition={{ delay: NAV_ITEMS.length * 0.07, duration: 0.35 }}

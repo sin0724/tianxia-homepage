@@ -85,7 +85,7 @@ export default function CustomCursor() {
     <>
       {/* 중심 점 — 마우스를 즉시 따라감 */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-red-500 pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-iris pointer-events-none z-[9999]"
         style={{ x: mouseX, y: mouseY, translateX: "-50%", translateY: "-50%" }}
         animate={{
           opacity: isVisible && variant !== "play" && variant !== "label" ? 1 : 0,
@@ -102,16 +102,16 @@ export default function CustomCursor() {
         transition={{ duration: 0.2 }}
       >
         <motion.div
-          className="rounded-full border border-red-500/60 w-9 h-9"
+          className="rounded-full border border-iris/60 w-9 h-9"
           animate={{
             opacity: variant === "label" ? 0 : 1,
             scale:
               variant === "play" ? 2 : variant === "hover" ? 1.5 : variant === "label" ? 0.4 : 1,
             backgroundColor:
-              variant === "play" ? "rgba(220,38,38,0.9)" : "rgba(220,38,38,0)",
+              variant === "play" ? "rgba(128,82,255,0.9)" : "rgba(128,82,255,0)",
             borderColor:
               variant === "play"
-                ? "rgba(220,38,38,0)"
+                ? "rgba(128,82,255,0)"
                 : variant === "hover"
                   ? "rgba(239,68,68,0.9)"
                   : "rgba(239,68,68,0.5)",
@@ -131,7 +131,7 @@ export default function CustomCursor() {
           (@0960kim0960 같은 긴 핸들도 잘리지 않게)
         */}
         <motion.div
-          className="absolute flex items-center h-7 px-3.5 rounded-full bg-red-600 whitespace-nowrap"
+          className="absolute flex items-center h-7 px-3.5 rounded-full bg-iris whitespace-nowrap"
           animate={{
             opacity: variant === "label" ? 1 : 0,
             scale: variant === "label" ? 1 : 0.7,

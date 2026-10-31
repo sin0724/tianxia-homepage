@@ -28,20 +28,20 @@ export default function LandingHero({
     <>
       <Link
         href={backHref}
-        className="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 hover:text-red-400 transition-colors"
+        className="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 hover:text-saffron transition-colors"
       >
         {backLabel}
       </Link>
 
-      <p className="mt-10 text-red-500/70 text-[11px] font-mono tracking-[0.3em] uppercase">
+      <p className="mt-10 text-saffron/70 text-[11px] font-mono tracking-[0.3em] uppercase">
         {eyebrow}
       </p>
-      <h1 className="mt-3 text-4xl md:text-5xl font-black tracking-tight leading-[1.1]">
+      <h1 className="mt-3 text-4xl md:text-5xl font-normal tracking-tight leading-[1.1]">
         {title}
         {titleAccent && (
           <>
             <br />
-            <span className="text-red-500">{titleAccent}</span>
+            <span className="text-saffron">{titleAccent}</span>
           </>
         )}
       </h1>
@@ -68,7 +68,7 @@ export default function LandingHero({
           {primaryCta && (
             <Link
               href="/#contact"
-              className="inline-block px-6 py-3 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors"
+              className="inline-block px-6 py-3 bg-iris text-white text-sm font-semibold hover:bg-iris-hover transition-colors rounded-full"
             >
               {primaryCta}
             </Link>
@@ -76,7 +76,7 @@ export default function LandingHero({
           {secondaryCta && (
             <a
               href={secondaryCta.href}
-              className="text-sm text-zinc-400 hover:text-red-400 underline-offset-4 hover:underline"
+              className="text-sm text-zinc-400 hover:text-saffron underline-offset-4 hover:underline"
             >
               {secondaryCta.label} ↓
             </a>

@@ -190,7 +190,7 @@ export default function ThreadsMarketingPage() {
             KOC가 제품을 써 보거나 매장을 방문한 뒤 그 경험을 Threads에 짧게 남기면, 브랜드 계정의 글보다
             자연스럽게 읽히고 댓글에서 대화가 이어집니다. 같은 시기에 여러 KOC가 글을 올리도록 일정을 맞추면
             브랜드 이야기가 한 번에 여러 곳에서 보이게 됩니다. KOC 모집과 선정 기준은{" "}
-            <Link href="/taiwan-marketing/koc" className="text-red-400 hover:underline underline-offset-4">
+            <Link href="/taiwan-marketing/koc" className="text-saffron hover:underline underline-offset-4">
               대만 KOC 마케팅
             </Link>
             에서 볼 수 있습니다.

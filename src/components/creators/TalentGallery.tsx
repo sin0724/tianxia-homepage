@@ -91,7 +91,7 @@ export default function TalentGallery({ images, name }: { images: TalentImage[];
             type="button"
             aria-label="닫기"
             onClick={() => setOpen(null)}
-            className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center text-zinc-200 hover:text-red-400"
+            className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center text-zinc-200 hover:text-saffron"
           >
             <X size={26} />
           </button>
@@ -104,7 +104,7 @@ export default function TalentGallery({ images, name }: { images: TalentImage[];
                   e.stopPropagation();
                   move(-1);
                 }}
-                className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-zinc-200 hover:text-red-400"
+                className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-zinc-200 hover:text-saffron"
               >
                 <CaretLeft size={30} />
               </button>
@@ -115,7 +115,7 @@ export default function TalentGallery({ images, name }: { images: TalentImage[];
                   e.stopPropagation();
                   move(1);
                 }}
-                className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-zinc-200 hover:text-red-400"
+                className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-zinc-200 hover:text-saffron"
               >
                 <CaretRight size={30} />
               </button>

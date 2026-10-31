@@ -40,9 +40,9 @@ export default function PrivacyPage() {
     <main className="min-h-screen bg-stone-50 px-5 py-10 text-zinc-950 md:px-10 md:py-16">
       <article className="mx-auto max-w-3xl">
         <header className="mb-10">
-          <Link href="/" className="text-sm font-bold tracking-widest text-zinc-600 hover:text-red-600">TIANXIA</Link>
-          <p className="mt-12 text-xs font-semibold tracking-widest text-red-700">PRIVACY POLICY</p>
-          <h1 className="mt-3 text-3xl font-black tracking-tight md:text-5xl">개인정보 처리방침</h1>
+          <Link href="/" className="text-sm font-bold tracking-widest text-zinc-600 hover:text-saffron">TIANXIA</Link>
+          <p className="mt-12 text-xs font-semibold tracking-widest text-saffron">PRIVACY POLICY</p>
+          <h1 className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">개인정보 처리방침</h1>
           <p className="mt-5 text-sm text-zinc-500">시행일: 2026년 9월 16일 · 운영자: (주)티엔샤</p>
           <p className="mt-6 leading-7 text-zinc-700">
             (주)티엔샤는 홈페이지와 Facebook·Instagram의 상담 신청 폼을 통해 받은 정보를
@@ -55,7 +55,7 @@ export default function PrivacyPage() {
           <p className="mb-4 text-sm font-bold">필요한 내용 바로 보기</p>
           <ol className="grid gap-3 text-sm sm:grid-cols-2">
             {sections.map((section, index) => (
-              <li key={section.id}><a href={`#${section.id}`} className="underline decoration-zinc-300 underline-offset-4 hover:text-red-700">{index + 1}. {section.title}</a></li>
+              <li key={section.id}><a href={`#${section.id}`} className="underline decoration-zinc-300 underline-offset-4 hover:text-saffron">{index + 1}. {section.title}</a></li>
             ))}
           </ol>
         </nav>
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
               <NaverBlogLogo size={16} />
               네이버 공식 블로그
             </a>
-            <Link href="/" className="underline underline-offset-4 hover:text-red-700">홈페이지로 돌아가기</Link>
+            <Link href="/" className="underline underline-offset-4 hover:text-saffron">홈페이지로 돌아가기</Link>
           </div>
         </footer>
       </article>

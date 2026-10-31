@@ -195,7 +195,7 @@ export default function WorkSection() {
           {/* 헤더 */}
           <div className="flex items-end justify-between mb-4 md:mb-6">
             <div>
-              <h2 className="text-2xl md:text-4xl font-black tracking-tight text-zinc-50">
+              <h2 className="text-2xl md:text-4xl font-normal tracking-tight text-zinc-50">
                 <MaskReveal delay={0.08}>Our Work</MaskReveal>
               </h2>
             </div>
@@ -279,7 +279,7 @@ export default function WorkSection() {
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                  <div className="w-16 h-16 rounded-full bg-iris flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
                     <Play size={24} weight="fill" className="text-white ml-1" />
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export default function WorkSection() {
                         className="object-cover grayscale-[30%] transition-all duration-700 group-hover:grayscale-0 group-hover:scale-[1.02]"
                       />
                       <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                        <div className="w-12 h-12 rounded-full bg-iris flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
                           <Play size={20} weight="fill" className="text-white ml-1" />
                         </div>
                       </div>
@@ -349,7 +349,7 @@ export default function WorkSection() {
                   key={i}
                   onClick={() => navigate(i)}
                   className={`h-[3px] rounded-full transition-all duration-300 ${
-                    i === current ? "w-8 bg-red-500" : "w-3 bg-zinc-700 hover:bg-zinc-500"
+                    i === current ? "w-8 bg-iris" : "w-3 bg-zinc-700 hover:bg-zinc-500"
                   }`}
                 />
               ))}
@@ -361,14 +361,14 @@ export default function WorkSection() {
                   key={i}
                   onClick={() => navigateD(i)}
                   className={`h-[3px] rounded-full transition-all duration-300 ${
-                    i === dPage ? "w-8 bg-red-500" : "w-3 bg-zinc-700 hover:bg-zinc-500"
+                    i === dPage ? "w-8 bg-iris" : "w-3 bg-zinc-700 hover:bg-zinc-500"
                   }`}
                 />
               ))}
             </div>
             <a
               href="#contact"
-              className="text-xs text-zinc-500 hover:text-red-500 transition-colors duration-200 font-medium underline-offset-4 hover:underline"
+              className="text-xs text-zinc-500 hover:text-saffron transition-colors duration-200 font-medium underline-offset-4 hover:underline"
             >
               더 많은 작업물이 궁금하다면 문의해 주세요
             </a>

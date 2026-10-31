@@ -82,7 +82,7 @@ const CHAR_VARIANTS = {
  * children을 글자 단위 motion.span으로 쪼갠다.
  *
  * - 문자열만 쪼개고 엘리먼트는 껍데기를 유지한 채 재귀한다.
- *   (`Together We <span className="text-red-600">Create Value</span>` 처럼
+ *   (`Together We <span className="text-saffron">Create Value</span>` 처럼
  *   색이 섞인 헤드라인에서 색을 잃지 않으려면 이래야 한다)
  * - 단어를 통째로 inline-block으로 감싸고 그 안에서 글자를 쪼갠다.
  *   글자마다 줄바꿈이 일어나 영어 단어가 중간에서 끊기는 걸 막는다.

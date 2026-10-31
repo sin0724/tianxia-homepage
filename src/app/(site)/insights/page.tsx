@@ -56,7 +56,7 @@ export default function InsightsPage() {
               <li key={item.slug}>
                 <Link
                   href={`${PATH}/${item.slug}`}
-                  className="block border border-zinc-800 p-6 hover:border-red-600/60 transition-colors"
+                  className="block border border-zinc-800 p-6 hover:border-iris/60 transition-colors"
                 >
                   <p className="text-[11px] font-mono text-zinc-500 mb-2">
                     <time dateTime={item.publishedAt}>{formatDate(item.publishedAt)}</time>

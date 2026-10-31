@@ -115,7 +115,7 @@ export function ContactModal({
       <div className="flex-1 px-6 md:px-16 py-12 md:py-16 max-w-[1100px] mx-auto w-full">
         {submitted ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-            <p className="text-4xl font-black text-zinc-50 mb-3">감사합니다!</p>
+            <p className="text-4xl font-normal text-zinc-50 mb-3">감사합니다!</p>
             <p className="text-zinc-400 text-sm mb-10">빠른 시일 내에 연락드리겠습니다.</p>
             <button
               onClick={onClose}
@@ -130,7 +130,7 @@ export function ContactModal({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.05, ease: EASE }}
-              className="text-4xl md:text-6xl font-black text-zinc-50 mb-12 md:mb-16 text-center tracking-tight"
+              className="text-4xl md:text-6xl font-normal text-zinc-50 mb-12 md:mb-16 text-center tracking-tight"
             >
               Solution Info
             </motion.h2>
@@ -152,7 +152,7 @@ export function ContactModal({
                 <div className="space-y-7">
                   <div>
                     <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      브랜드명 <span className="text-red-500">*</span>
+                      브랜드명 <span className="text-saffron">*</span>
                     </label>
                     <input
                       type="text"
@@ -165,7 +165,7 @@ export function ContactModal({
 
                   <div>
                     <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      담당자 이름 <span className="text-red-500">*</span>
+                      담당자 이름 <span className="text-saffron">*</span>
                     </label>
                     <input
                       type="text"
@@ -178,7 +178,7 @@ export function ContactModal({
 
                   <div>
                     <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      연락처 <span className="text-red-500">*</span>
+                      연락처 <span className="text-saffron">*</span>
                     </label>
                     <input
                       type="tel"
@@ -191,7 +191,7 @@ export function ContactModal({
 
                   <div>
                     <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      이메일 <span className="text-red-500">*</span>
+                      이메일 <span className="text-saffron">*</span>
                     </label>
                     <input
                       type="email"
@@ -234,7 +234,7 @@ export function ContactModal({
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <label className="text-sm font-semibold text-zinc-100">문의분야</label>
-                      <span className="text-[10px] text-red-500">
+                      <span className="text-[10px] text-saffron">
                         * 표시는 필수 입력 항목입니다.
                       </span>
                     </div>
@@ -249,7 +249,7 @@ export function ContactModal({
 
                   <div className="flex flex-col flex-1">
                     <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      내용 <span className="text-red-500">*</span>
+                      내용 <span className="text-saffron">*</span>
                     </label>
                     <textarea
                       name="message"
@@ -266,7 +266,7 @@ export function ContactModal({
               <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-zinc-800/60 pt-7">
                 <div className="flex flex-col gap-2">
                   <label className="flex items-center gap-2.5 text-xs text-zinc-500 cursor-pointer select-none">
-                    <input type="checkbox" required className="accent-red-600 w-3.5 h-3.5" />
+                    <input type="checkbox" required className="accent-iris w-3.5 h-3.5" />
                     개인정보 처리방침에 동의합니다.
                     <a
                       href="/privacy"
@@ -278,14 +278,14 @@ export function ContactModal({
                     </a>
                   </label>
                   {error && (
-                    <p className="text-xs text-red-400">{error}</p>
+                    <p className="text-xs text-saffron">{error}</p>
                   )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="h-12 px-12 bg-zinc-800 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-50 font-semibold text-sm tracking-wide transition-colors duration-300 rounded-xl active:scale-[0.98]"
+                  className="h-12 px-12 bg-zinc-800 hover:bg-iris-hover disabled:opacity-50 disabled:cursor-not-allowed text-zinc-50 font-semibold text-sm tracking-wide transition-colors duration-300 rounded-xl active:scale-[0.98]"
                 >
                   {loading ? "전송 중..." : "문의하기"}
                 </button>
@@ -312,7 +312,7 @@ export default function ContactSection() {
         {/* 메인: 타이포 + CTA */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 md:px-12 py-24 text-center">
           <div>
-            <h2 className="text-5xl md:text-7xl lg:text-[6.5rem] font-black tracking-tighter leading-[0.92] text-zinc-50 mb-8">
+            <h2 className="text-5xl md:text-7xl lg:text-[6.5rem] font-normal tracking-tighter leading-[0.92] text-zinc-50 mb-8">
               <MaskReveal delay={0.08} duration={0.9}>Next Move</MaskReveal>
             </h2>
             <Reveal delay={0.2}>
@@ -325,7 +325,7 @@ export default function ContactSection() {
               <Magnetic strength={0.25}>
                 <button
                   onClick={() => setFormOpen(true)}
-                  className="group relative overflow-hidden inline-flex items-center h-14 px-10 bg-red-600 text-white hover:text-red-600 font-semibold text-sm tracking-wide transition-colors duration-300 active:scale-[0.98]"
+                  className="group relative overflow-hidden inline-flex items-center h-14 px-10 bg-iris text-white hover:text-saffron font-semibold text-sm tracking-wide transition-colors duration-300 active:scale-[0.98] rounded-full"
                 >
                   <FillHover className="bg-white" />
                   <span className="relative z-10">문의하기</span>
@@ -345,10 +345,10 @@ export default function ContactSection() {
                 <p className="text-xs text-zinc-500 mb-3">이메일로 문의</p>
                 <a
                   href={`mailto:${SITE_CONFIG.company.email}`}
-                  className="group inline-block text-2xl md:text-4xl font-black tracking-tight text-zinc-50 hover:text-red-500 transition-colors duration-200 break-all"
+                  className="group inline-block text-2xl md:text-4xl font-normal tracking-tight text-zinc-50 hover:text-saffron transition-colors duration-200 break-all"
                 >
                   {SITE_CONFIG.company.email}
-                  <span className="block h-px bg-red-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+                  <span className="block h-px bg-iris origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
                 </a>
               </div>
 

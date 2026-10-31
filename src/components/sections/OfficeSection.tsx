@@ -16,7 +16,7 @@ export default function OfficeSection() {
         {/* 헤더 */}
         <div className="flex items-end justify-between mb-4">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-zinc-50">
+            <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-zinc-50">
               <MaskReveal delay={0.08}>타이베이 현지 오피스</MaskReveal>
             </h2>
           </div>

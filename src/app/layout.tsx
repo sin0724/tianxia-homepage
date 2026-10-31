@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans_KR } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import SiteNavLinks from "@/components/SiteNavLinks";
 import MetaConsent from "@/components/MetaConsent";
@@ -17,10 +17,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Dala 스타일 가이드: 라틴은 PPNeueMontreal(유료) 대신 지정 폴백인 Inter,
+// 본문 200 / 헤드라인 400 / 라벨 600 위주로 쓴다.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["200", "400", "600", "700"],
+});
+
 const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto-kr",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
+  weight: ["200", "300", "400", "500", "600", "700", "900"],
 });
 
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1713769906448027";
@@ -39,6 +47,7 @@ export const metadata: Metadata = {
     "Dcard 마케팅", "Dcard 바이럴", "Threads 마케팅", "KOC 시딩",
     "대만 바이럴 마케팅", "대만 커뮤니티 마케팅",
     "쇼피 입점", "쇼피 마케팅", "공동구매 마케팅", "대만 공동구매",
+    "라이브커머스", "대만 라이브커머스",
     "대만 SNS 마케팅", "대만 광고대행사", "스튜디오구프",
   ],
   alternates: {
@@ -120,7 +129,7 @@ const jsonLd = {
       areaServed: ["KR", "TW"],
       knowsAbout: [
         "대만 마케팅", "대만마케팅", "대만 마케팅 대행사", "KOL 마케팅", "KOC 시딩", "Dcard 마케팅",
-        "Threads 마케팅", "쇼피 입점", "공동구매 마케팅",
+        "Threads 마케팅", "쇼피 입점", "공동구매 마케팅", "라이브커머스", "대만 라이브커머스",
         "대만 바이럴 마케팅", "한국 브랜드 대만 진출",
         "대만 인플루언서 마케팅", "대만 체험단", "대만 디카드 마케팅", "대만 쓰레드 마케팅",
       ],
@@ -140,6 +149,17 @@ const jsonLd = {
               areaServed: "TW",
             },
           })),
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "대만 라이브커머스",
+              description:
+                "대만 현지 라이브 방송으로 제품을 소개하고 판매하는 라이브커머스 운영.",
+              provider: { "@id": `${BASE_URL}/#organization` },
+              areaServed: "TW",
+            },
+          },
           {
             "@type": "Offer",
             itemOffered: {
@@ -172,7 +192,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} ${notoSansKR.variable} antialiased`}
+      className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} ${notoSansKR.variable} antialiased`}
       // 아래 인라인 스크립트가 하이드레이션 전에 data-intro를 심는다.
       // 서버가 렌더한 적 없는 속성이라 경고가 나므로 이 노드만 예외 처리한다.
       suppressHydrationWarning

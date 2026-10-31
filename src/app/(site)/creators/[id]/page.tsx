@@ -88,7 +88,7 @@ export default async function TalentPage({ params }: Props) {
           >
             <Link
               href="/creators"
-              className="hover:text-red-400 transition-colors"
+              className="hover:text-saffron transition-colors"
             >
               ← Creators
             </Link>
@@ -110,10 +110,10 @@ export default async function TalentPage({ params }: Props) {
             </div>
 
             <div>
-              <p className="text-red-500/70 text-[11px] font-mono tracking-[0.3em] uppercase">
+              <p className="text-saffron/70 text-[11px] font-mono tracking-[0.3em] uppercase">
                 {role}
               </p>
-              <h1 className="mt-3 text-4xl md:text-6xl font-black tracking-tight leading-[1.05]">
+              <h1 className="mt-3 text-4xl md:text-6xl font-normal tracking-tight leading-[1.05]">
                 {t.nameEn || t.nameTw}
               </h1>
               {t.nameEn && (
@@ -153,7 +153,7 @@ export default async function TalentPage({ params }: Props) {
                         href={s.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 h-10 px-4 border border-zinc-700 text-sm text-zinc-300 hover:border-red-500 hover:text-red-400 transition-colors"
+                        className="inline-flex items-center gap-2 h-10 px-4 border border-zinc-700 text-sm text-zinc-300 hover:border-white/30 hover:text-white transition-colors rounded-full"
                       >
                         <Icon size={18} weight="fill" />
                         {s.type === "ig"
@@ -190,7 +190,7 @@ export default async function TalentPage({ params }: Props) {
                         return (
                           <p
                             key={i}
-                            className="mt-6 first:mt-0 mb-1 text-xs font-bold text-red-400"
+                            className="mt-6 first:mt-0 mb-1 text-xs font-bold text-saffron"
                           >
                             {heading[1]}
                           </p>
@@ -206,7 +206,7 @@ export default async function TalentPage({ params }: Props) {
 
           {t.gallery.length > 0 && (
             <section className="mt-20 md:mt-28">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-6 md:mb-8">
+              <h2 className="text-2xl md:text-3xl font-normal tracking-tight mb-6 md:mb-8">
                 Gallery
               </h2>
               <TalentGallery images={t.gallery} name={name} />
@@ -222,7 +222,7 @@ export default async function TalentPage({ params }: Props) {
                 <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-zinc-500">
                   ← Prev
                 </span>
-                <p className="mt-1 font-bold group-hover:text-red-400 transition-colors truncate">
+                <p className="mt-1 font-bold group-hover:text-saffron transition-colors truncate">
                   {displayName(prev)}
                 </p>
               </Link>
@@ -230,7 +230,7 @@ export default async function TalentPage({ params }: Props) {
                 <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-zinc-500">
                   Next →
                 </span>
-                <p className="mt-1 font-bold group-hover:text-red-400 transition-colors truncate">
+                <p className="mt-1 font-bold group-hover:text-saffron transition-colors truncate">
                   {displayName(next)}
                 </p>
               </Link>

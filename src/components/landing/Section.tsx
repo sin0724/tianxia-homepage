@@ -13,7 +13,7 @@ export default function Section({
 }) {
   return (
     <section id={id} className="mt-16 border-t border-zinc-800 pt-12 scroll-mt-24">
-      <h2 className="text-2xl font-black mb-2">{title}</h2>
+      <h2 className="text-2xl font-normal mb-2">{title}</h2>
       {lead && (
         <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-8">
           {lead}

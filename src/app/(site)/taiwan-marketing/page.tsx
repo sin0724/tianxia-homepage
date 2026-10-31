@@ -256,11 +256,11 @@ export default function TaiwanMarketingPage() {
           />
           <p className="mt-6 text-sm text-zinc-500 leading-relaxed">
             병원·의료기관은{" "}
-            <Link href="/taiwan-marketing/medical" className="text-red-400 hover:underline underline-offset-4">
+            <Link href="/taiwan-marketing/medical" className="text-saffron hover:underline underline-offset-4">
               대만 병원 마케팅
             </Link>
             , 피부과·성형외과는{" "}
-            <Link href="/taiwan-marketing/clinic" className="text-red-400 hover:underline underline-offset-4">
+            <Link href="/taiwan-marketing/clinic" className="text-saffron hover:underline underline-offset-4">
               대만 피부과·성형외과 마케팅
             </Link>
             에서 채널 구성과 진행 방식을 자세히 볼 수 있습니다.
@@ -287,7 +287,7 @@ export default function TaiwanMarketingPage() {
               <li key={item.slug}>
                 <Link
                   href={`/insights/${item.slug}`}
-                  className="block h-full border border-zinc-800 p-6 hover:border-red-600/60 transition-colors"
+                  className="block h-full border border-zinc-800 p-6 hover:border-iris/60 transition-colors"
                 >
                   <h3 className="text-base font-bold text-zinc-50 mb-2">{item.title}</h3>
                   <p className="text-sm text-zinc-500 leading-relaxed">{item.excerpt}</p>
@@ -295,7 +295,7 @@ export default function TaiwanMarketingPage() {
               </li>
             ))}
           </ul>
-          <Link href="/insights" className="mt-6 inline-block text-xs font-mono text-zinc-500 hover:text-red-400">
+          <Link href="/insights" className="mt-6 inline-block text-xs font-mono text-zinc-500 hover:text-saffron">
             대만 마케팅 인사이트 전체 보기 →
           </Link>
         </Section>

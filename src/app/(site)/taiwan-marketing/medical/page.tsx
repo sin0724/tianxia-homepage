@@ -135,7 +135,7 @@ export default function MedicalMarketingPage() {
           <p className="text-sm text-zinc-400 leading-relaxed max-w-2xl">
             병원은 직접 방문해 본 사람의 이야기가 중요한 분야입니다. 대만 KOC가 상담 과정, 통역, 대기, 공간
             분위기처럼 방문해야 알 수 있는 정보를 각자의 시선으로 남기도록 설계합니다. KOC 모집과 선정 기준은{" "}
-            <Link href="/taiwan-marketing/koc" className="text-red-400 hover:underline underline-offset-4">
+            <Link href="/taiwan-marketing/koc" className="text-saffron hover:underline underline-offset-4">
               대만 KOC 마케팅
             </Link>
             에서 볼 수 있습니다.
@@ -159,7 +159,7 @@ export default function MedicalMarketingPage() {
             같은 병원 마케팅이라도 진료 분야, 병원의 위치, 통역과 예약 체계, 대상으로 하는 연령대와 방문 목적에
             따라 맞는 채널과 콘텐츠가 다릅니다. 짧은 방문으로 경험을 보여 주기 좋은 분야가 있고 상담 과정을 차분히
             설명해야 하는 분야가 있습니다. 피부과·성형외과는{" "}
-            <Link href="/taiwan-marketing/clinic" className="text-red-400 hover:underline underline-offset-4">
+            <Link href="/taiwan-marketing/clinic" className="text-saffron hover:underline underline-offset-4">
               대만 피부과·성형외과 마케팅
             </Link>{" "}
             페이지에서 따로 다룹니다.

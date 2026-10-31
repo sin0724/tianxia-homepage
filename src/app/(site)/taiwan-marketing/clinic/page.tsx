@@ -167,7 +167,7 @@ export default function ClinicMarketingPage() {
             </p>
             <p>
               병원 마케팅 전반의 확인 항목은{" "}
-              <Link href="/taiwan-marketing/medical" className="text-red-400 hover:underline underline-offset-4">
+              <Link href="/taiwan-marketing/medical" className="text-saffron hover:underline underline-offset-4">
                 대만 병원 마케팅
               </Link>
               에서 볼 수 있습니다.

@@ -140,17 +140,17 @@ export default function ShopeePage() {
 
         <Link
           href="/"
-          className="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 hover:text-red-400 transition-colors"
+          className="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 hover:text-saffron transition-colors"
         >
           ← tianxia.kr
         </Link>
 
-        <p className="mt-10 text-red-500/70 text-[11px] font-mono tracking-[0.3em] uppercase">
+        <p className="mt-10 text-saffron/70 text-[11px] font-mono tracking-[0.3em] uppercase">
           Shopee & Co-Buy
         </p>
-        <h1 className="mt-3 text-4xl md:text-5xl font-black tracking-tight leading-[1.1]">
+        <h1 className="mt-3 text-4xl md:text-5xl font-normal tracking-tight leading-[1.1]">
           대만 쇼피 입점 지원<br />
-          <span className="text-red-500">공동구매 마케팅까지</span>
+          <span className="text-saffron">공동구매 마케팅까지</span>
         </h1>
 
         <p className="mt-6 text-zinc-400 text-base md:text-lg leading-relaxed max-w-2xl">
@@ -159,11 +159,11 @@ export default function ShopeePage() {
         </p>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-8">진행 프로세스</h2>
+          <h2 className="text-2xl font-normal mb-8">진행 프로세스</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {steps.map((s) => (
               <div key={s.num} className="border border-zinc-800 p-6">
-                <p className="text-red-500/60 text-[10px] font-mono tracking-[0.2em] mb-3">{s.num}</p>
+                <p className="text-saffron/60 text-[10px] font-mono tracking-[0.2em] mb-3">{s.num}</p>
                 <h3 className="text-base font-bold mb-2">{s.title}</h3>
                 <p className="text-sm text-zinc-500 leading-relaxed">{s.desc}</p>
               </div>
@@ -172,11 +172,11 @@ export default function ShopeePage() {
         </div>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-6">티엔샤 쇼피 입점 지원 혜택</h2>
+          <h2 className="text-2xl font-normal mb-6">티엔샤 쇼피 입점 지원 혜택</h2>
           <ul className="space-y-3">
             {benefits.map((b) => (
               <li key={b} className="flex items-start gap-3 text-sm text-zinc-400">
-                <span className="text-red-500 mt-0.5 flex-shrink-0">—</span>
+                <span className="text-saffron mt-0.5 flex-shrink-0">—</span>
                 {b}
               </li>
             ))}
@@ -184,7 +184,7 @@ export default function ShopeePage() {
         </div>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-2">대만 쇼피 시장 현황</h2>
+          <h2 className="text-2xl font-normal mb-2">대만 쇼피 시장 현황</h2>
           <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
             쇼피(Shopee)는 대만 최대 이커머스 플랫폼으로, 대만 온라인 쇼핑의 핵심 채널입니다.
             한국 브랜드에 대한 대만 소비자의 관심도 계속 높아지고 있습니다. KOL이 직접 공동구매를 열어
@@ -212,13 +212,13 @@ export default function ShopeePage() {
         <RelatedPages currentPath={PATH} />
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-4">쇼피 입점부터 공동구매까지, 지금 시작하세요</h2>
+          <h2 className="text-2xl font-normal mb-4">쇼피 입점부터 공동구매까지, 지금 시작하세요</h2>
           <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
             대만 쇼피 입점을 고려 중이시거나 공동구매 마케팅에 관심이 있으시면 티엔샤에 문의해 주세요.
           </p>
           <Link
             href="/#contact"
-            className="inline-block px-6 py-3 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors"
+            className="inline-block px-6 py-3 bg-iris text-white text-sm font-semibold hover:bg-iris-hover transition-colors rounded-full"
           >
             무료 상담 신청
           </Link>

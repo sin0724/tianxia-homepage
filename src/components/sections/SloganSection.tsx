@@ -28,7 +28,7 @@ function Slogan({ variant }: { variant: (typeof SET)[number] }) {
       >
         PLAY TAIWAN
       </span>
-      <span className="text-red-600 mx-8 md:mx-12" aria-hidden>
+      <span className="text-saffron mx-8 md:mx-12" aria-hidden>
         台
       </span>
     </span>
@@ -42,7 +42,7 @@ export default function SloganSection() {
       className="bg-zinc-950 border-y border-zinc-900 py-14 md:py-20 overflow-hidden"
     >
       <div
-        className="marquee-track marquee-keep-motion flex w-max whitespace-nowrap font-black tracking-tighter leading-none text-[13vw] md:text-[8vw]"
+        className="marquee-track marquee-keep-motion flex w-max whitespace-nowrap font-normal tracking-tighter leading-none text-[13vw] md:text-[8vw]"
         style={{ "--marquee-duration": `${SWEEP_SECONDS}s` } as React.CSSProperties}
       >
         {[...SET, ...SET].map((variant, i) => (

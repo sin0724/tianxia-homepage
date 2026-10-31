@@ -19,7 +19,7 @@ export default function FaqSection({
 }) {
   return (
     <section className="mt-16 border-t border-zinc-800 pt-12">
-      <h2 className="text-2xl font-black mb-8">{title}</h2>
+      <h2 className="text-2xl font-normal mb-8">{title}</h2>
       <dl className="space-y-6">
         {items.map((item) => (
           <div key={item.q} className="border border-zinc-800 p-6">

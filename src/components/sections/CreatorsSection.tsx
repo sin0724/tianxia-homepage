@@ -37,7 +37,7 @@ function CreatorCard({ creator }: { creator: CreatorCardItem }) {
         <span className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </span>
       <span className="block pt-3">
-        <span className="block text-sm font-bold text-zinc-50 truncate group-hover:text-red-400 transition-colors">
+        <span className="block text-sm font-bold text-zinc-50 truncate group-hover:text-saffron transition-colors">
           {creator.label}
         </span>
         {creator.sub && (
@@ -75,7 +75,7 @@ export default function CreatorsSection() {
       className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-6 md:px-12 py-24 md:py-32 overflow-hidden"
     >
       <div className="max-w-[1400px] w-full mx-auto">
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-zinc-50 mb-3 md:mb-4">
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50 mb-3 md:mb-4">
           <MaskReveal delay={0.08}>{title}</MaskReveal>
         </h2>
         <div className="mb-3 md:mb-8">
@@ -103,7 +103,7 @@ export default function CreatorsSection() {
                 <li key={c.href}>
                   <Link
                     href={c.href}
-                    className="inline-flex items-center h-9 px-4 border border-zinc-700 text-xs md:text-sm text-zinc-300 hover:border-red-500 hover:text-red-400 transition-colors"
+                    className="inline-flex items-center h-9 px-4 border border-zinc-700 text-xs md:text-sm text-zinc-300 hover:border-white/30 hover:text-white transition-colors rounded-full"
                   >
                     {c.label}
                   </Link>
@@ -114,10 +114,10 @@ export default function CreatorsSection() {
                 <InquiryButton
                   label="KOL 별도 문의"
                   inquiry="KOL 섭외"
-                  className="inline-flex items-center h-9 px-4 border border-dashed border-zinc-700 text-xs md:text-sm text-zinc-300 hover:border-red-500 hover:text-red-400 transition-colors"
+                  className="inline-flex items-center h-9 px-4 border border-dashed border-zinc-700 text-xs md:text-sm text-zinc-300 hover:border-white/30 hover:text-white transition-colors rounded-full"
                 >
                   KOL
-                  <span className="ml-2 text-[11px] text-red-400/80">
+                  <span className="ml-2 text-[11px] text-saffron/80">
                     별도 문의
                   </span>
                 </InquiryButton>
@@ -125,7 +125,7 @@ export default function CreatorsSection() {
             </ul>
             <Link
               href="/creators"
-              className="group inline-flex items-center justify-center gap-2 h-12 px-7 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors"
+              className="group inline-flex items-center justify-center gap-2 h-12 px-7 bg-iris text-white text-sm font-semibold hover:bg-iris-hover transition-colors rounded-full"
             >
               전체 크리에이터 보기
               <ArrowRight

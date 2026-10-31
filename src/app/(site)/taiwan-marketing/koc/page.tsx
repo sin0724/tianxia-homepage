@@ -134,7 +134,7 @@ export default function KocMarketingPage() {
           <CardGrid items={types} />
           <p className="mt-6 text-sm text-zinc-500 leading-relaxed">
             체험단 운영 형태(배송형, 대만 매장 방문형, 한국 방문형)와 모집·발송 과정은{" "}
-            <Link href="/taiwan-marketing/review-campaign" className="text-red-400 hover:underline underline-offset-4">
+            <Link href="/taiwan-marketing/review-campaign" className="text-saffron hover:underline underline-offset-4">
               대만 체험단
             </Link>{" "}
             페이지에서 자세히 볼 수 있습니다.
@@ -162,7 +162,7 @@ export default function KocMarketingPage() {
             </p>
             <p>
               KOL 섭외와 캠페인 운영은{" "}
-              <Link href="/kol-marketing" className="text-red-400 hover:underline underline-offset-4">
+              <Link href="/kol-marketing" className="text-saffron hover:underline underline-offset-4">
                 대만 인플루언서 마케팅
               </Link>
               에서 확인할 수 있습니다.

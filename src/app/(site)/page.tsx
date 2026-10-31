@@ -3,6 +3,7 @@ import IntroLoader from "@/components/IntroLoader";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL, HOME_URL } from "@/lib/seo";
 import HeroSection from "@/components/sections/HeroSection";
+import ShowreelSection from "@/components/sections/ShowreelSection";
 import BrandStripSection from "@/components/sections/BrandStripSection";
 import FilmSection from "@/components/sections/FilmSection";
 import CreatorsSection from "@/components/sections/CreatorsSection";
@@ -42,6 +43,7 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroSection />
+        <ShowreelSection />
         <BrandStripSection />
         <FilmSection />
         <CreatorsSection />

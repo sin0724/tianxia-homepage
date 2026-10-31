@@ -76,10 +76,10 @@ export default function ShopeeSection() {
         <div className="max-w-[1400px] w-full mx-auto flex flex-col flex-1">
 
           <div className="flex-1 flex flex-col justify-center py-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.05] text-zinc-50">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.05] text-zinc-50">
               <MaskReveal delay={0.08}>쇼피 입점 지원부터</MaskReveal>
               <MaskReveal delay={0.16}>
-                <span className="text-red-600">공동구매 마케팅</span>까지
+                <span className="text-saffron">공동구매 마케팅</span>까지
               </MaskReveal>
             </h2>
             <Reveal delay={0.24}>
@@ -102,7 +102,7 @@ export default function ShopeeSection() {
                   y={20}
                   className={`pr-8 ${i > 0 ? "pl-8 border-l border-zinc-700/40" : ""}`}
                 >
-                  <p className="text-red-500/70 text-[10px] font-mono tracking-[0.25em] mb-3">{step.num}</p>
+                  <p className="text-saffron/70 text-[10px] font-mono tracking-[0.25em] mb-3">{step.num}</p>
                   <h3 className="text-zinc-50 font-bold text-lg mb-2 leading-tight">{step.title}</h3>
                   <p className="text-zinc-500 text-xs leading-relaxed whitespace-pre-line">{step.desc}</p>
                 </Reveal>
@@ -114,7 +114,7 @@ export default function ShopeeSection() {
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 {STEPS.map((step) => (
                   <div key={step.num}>
-                    <p className="text-red-500/70 text-[10px] font-mono tracking-[0.25em] mb-2">{step.num}</p>
+                    <p className="text-saffron/70 text-[10px] font-mono tracking-[0.25em] mb-2">{step.num}</p>
                     <h3 className="text-zinc-50 font-bold text-sm mb-1.5 leading-tight">{step.title}</h3>
                     <p className="text-zinc-500 text-[11px] leading-relaxed whitespace-pre-line">{step.desc}</p>
                   </div>

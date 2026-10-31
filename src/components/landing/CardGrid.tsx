@@ -24,14 +24,14 @@ export default function CardGrid({
         const inner = (
           <>
             {item.eyebrow && (
-              <p className="text-[11px] font-mono text-red-500/70 mb-2">
+              <p className="text-[11px] font-mono text-saffron/70 mb-2">
                 {item.eyebrow}
               </p>
             )}
             <h3 className="text-base font-bold text-zinc-50 mb-2">{item.title}</h3>
             <p className="text-sm text-zinc-500 leading-relaxed">{item.desc}</p>
             {item.href && (
-              <p className="mt-3 text-xs font-mono text-red-400">자세히 보기 →</p>
+              <p className="mt-3 text-xs font-mono text-saffron">자세히 보기 →</p>
             )}
           </>
         );
@@ -39,7 +39,7 @@ export default function CardGrid({
           <Link
             key={item.title}
             href={item.href}
-            className="block border border-zinc-800 p-6 hover:border-red-600/60 transition-colors"
+            className="block border border-zinc-800 p-6 hover:border-iris/60 transition-colors"
           >
             {inner}
           </Link>

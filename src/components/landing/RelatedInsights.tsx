@@ -13,13 +13,13 @@ export default function RelatedInsights({ slugs }: { slugs: string[] }) {
 
   return (
     <section className="mt-16 border-t border-zinc-800 pt-12">
-      <h2 className="text-2xl font-black mb-8">관련 인사이트</h2>
+      <h2 className="text-2xl font-normal mb-8">관련 인사이트</h2>
       <ul className="grid md:grid-cols-2 gap-6">
         {items.map((item) => (
           <li key={item.slug}>
             <Link
               href={`/insights/${item.slug}`}
-              className="block h-full border border-zinc-800 p-6 hover:border-red-600/60 transition-colors"
+              className="block h-full border border-zinc-800 p-6 hover:border-iris/60 transition-colors"
             >
               <h3 className="text-base font-bold text-zinc-50 mb-2">{item.title}</h3>
               <p className="text-sm text-zinc-500 leading-relaxed">{item.excerpt}</p>

@@ -11,7 +11,7 @@ function VideoCard({ target }: { target: (typeof SITE_CONFIG.aboutTargets)[0] })
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden bg-zinc-900 flex flex-col group h-full"
+      className="relative overflow-hidden rounded-[24px] bg-zinc-900 flex flex-col group h-full"
     >
       <video
         ref={videoRef}
@@ -24,12 +24,12 @@ function VideoCard({ target }: { target: (typeof SITE_CONFIG.aboutTargets)[0] })
         className="absolute inset-0 w-full h-full object-cover opacity-70 transition-[opacity,transform] duration-700 group-hover:opacity-90 group-hover:scale-[1.04]"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent" />
-      <div className="relative z-10 mt-auto p-4 md:p-6 transition-transform duration-500 ease-out group-hover:-translate-y-1">
-        <h3 className="text-lg md:text-2xl font-bold text-zinc-50 mb-0.5 md:mb-1 group-hover:text-red-400 transition-colors duration-300">
+      <div className="relative z-10 mt-auto p-6 md:p-8 transition-transform duration-500 ease-out group-hover:-translate-y-1">
+        <h3 className="text-lg md:text-2xl font-bold text-zinc-50 mb-0.5 md:mb-1 group-hover:text-saffron transition-colors duration-300">
           {target.industry}
         </h3>
         <p className="text-xs text-zinc-500">{target.desc}</p>
-        <div className="h-px w-10 bg-red-500 mt-3 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
+        <div className="h-px w-10 bg-iris mt-3 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
       </div>
     </div>
   );
@@ -56,9 +56,9 @@ export default function AboutSection() {
 
         {/* 헤드라인 */}
         <div className="mb-3 md:mb-4">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-zinc-50">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50">
             <MaskReveal delay={0.08}>
-              Together We <span className="text-red-600">Create Value</span>
+              Together We <span className="text-saffron">Create Value</span>
             </MaskReveal>
           </h2>
         </div>
@@ -101,7 +101,7 @@ export default function AboutSection() {
                   scrollRef.current?.scrollTo({ left: i * scrollRef.current.clientWidth, behavior: "smooth" });
                 }}
                 className={`rounded-full transition-all duration-300 ${
-                  i === activeIndex ? "w-6 h-[3px] bg-red-500" : "w-[6px] h-[3px] bg-zinc-600"
+                  i === activeIndex ? "w-2 h-2 bg-iris" : "w-2 h-2 bg-zinc-700"
                 }`}
               />
             ))}

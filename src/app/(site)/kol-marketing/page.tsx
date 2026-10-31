@@ -158,17 +158,17 @@ export default function KolMarketingPage() {
 
         <Link
           href="/"
-          className="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 hover:text-red-400 transition-colors"
+          className="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 hover:text-saffron transition-colors"
         >
           ← tianxia.kr
         </Link>
 
-        <p className="mt-10 text-red-500/70 text-[11px] font-mono tracking-[0.3em] uppercase">
+        <p className="mt-10 text-saffron/70 text-[11px] font-mono tracking-[0.3em] uppercase">
           KOL · KOC · Viral Marketing
         </p>
-        <h1 className="mt-3 text-4xl md:text-5xl font-black tracking-tight leading-[1.1]">
+        <h1 className="mt-3 text-4xl md:text-5xl font-normal tracking-tight leading-[1.1]">
           대만 인플루언서 마케팅<br />
-          <span className="text-red-500">KOL · KOC · 체험단 · 공동구매</span>
+          <span className="text-saffron">KOL · KOC · 체험단 · 공동구매</span>
         </h1>
 
         <p className="mt-6 text-zinc-400 text-base md:text-lg leading-relaxed max-w-2xl">
@@ -178,7 +178,7 @@ export default function KolMarketingPage() {
         </p>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-8">대만 마케팅 채널 & 서비스</h2>
+          <h2 className="text-2xl font-normal mb-8">대만 마케팅 채널 & 서비스</h2>
           <div className="space-y-6">
             {channels.map((c) => (
               <div key={c.name} className="border border-zinc-800 p-6">
@@ -189,7 +189,7 @@ export default function KolMarketingPage() {
                   </div>
                   <div className="flex flex-wrap gap-1.5 justify-end">
                     {c.tags.map((t) => (
-                      <span key={t} className="text-[10px] font-mono px-2 py-0.5 border border-red-800/40 text-red-400/70">
+                      <span key={t} className="text-[10px] font-mono px-2 py-0.5 border border-white/30/40 text-white/70 rounded-full">
                         {t}
                       </span>
                     ))}
@@ -202,7 +202,7 @@ export default function KolMarketingPage() {
         </div>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-2">왜 대만 인플루언서 마케팅인가?</h2>
+          <h2 className="text-2xl font-normal mb-2">왜 대만 인플루언서 마케팅인가?</h2>
           <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl">
             대만 소비자는 광고보다 실제 사용자의 추천을 신뢰합니다. Dcard에서의 커뮤니티 반응,
             KOC의 진정성 있는 후기, KOL의 공동구매 추천이 구매 결정을 직접 움직입니다.
@@ -212,11 +212,11 @@ export default function KolMarketingPage() {
         </div>
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-8">진행 프로세스</h2>
+          <h2 className="text-2xl font-normal mb-8">진행 프로세스</h2>
           <div className="grid md:grid-cols-5 gap-4">
             {process.map((p) => (
               <div key={p.step}>
-                <p className="text-red-500/60 text-[10px] font-mono tracking-[0.2em] mb-2">{p.step}</p>
+                <p className="text-saffron/60 text-[10px] font-mono tracking-[0.2em] mb-2">{p.step}</p>
                 <h3 className="text-sm font-bold mb-1">{p.title}</h3>
                 <p className="text-xs text-zinc-500 leading-relaxed">{p.desc}</p>
               </div>
@@ -243,14 +243,14 @@ export default function KolMarketingPage() {
         <RelatedPages currentPath={PATH} />
 
         <div className="mt-16 border-t border-zinc-800 pt-12">
-          <h2 className="text-2xl font-black mb-4">대만 바이럴 마케팅 시작하기</h2>
+          <h2 className="text-2xl font-normal mb-4">대만 바이럴 마케팅 시작하기</h2>
           <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
             KOL·KOC·Dcard·Threads 중 어떤 채널이 우리 브랜드에 맞는지 모르셔도 됩니다.
             브랜드를 살펴본 뒤 맞는 채널 조합을 티엔샤가 제안드립니다.
           </p>
           <Link
             href="/#contact"
-            className="inline-block px-6 py-3 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors"
+            className="inline-block px-6 py-3 bg-iris text-white text-sm font-semibold hover:bg-iris-hover transition-colors rounded-full"
           >
             무료 상담 신청
           </Link>

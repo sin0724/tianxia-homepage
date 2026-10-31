@@ -12,13 +12,13 @@ export default function RelatedPages({ currentPath }: { currentPath: string }) {
 
   return (
     <section className="mt-16 border-t border-zinc-800 pt-12">
-      <h2 className="text-2xl font-black mb-8">함께 보면 좋은 서비스</h2>
+      <h2 className="text-2xl font-normal mb-8">함께 보면 좋은 서비스</h2>
       <div className="grid md:grid-cols-2 gap-6">
         {pages.map((page) => (
           <Link
             key={page.path}
             href={page.path}
-            className="block border border-zinc-800 p-6 hover:border-red-600/60 transition-colors"
+            className="block border border-zinc-800 p-6 hover:border-iris/60 transition-colors"
           >
             <h3 className="text-base font-bold text-zinc-50 mb-2">
               {page.label}

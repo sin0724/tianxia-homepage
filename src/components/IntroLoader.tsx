@@ -127,12 +127,12 @@ export default function IntroLoader() {
       <div className="flex-1 flex items-center justify-center">
         <span className="block overflow-hidden">
           <motion.span
-            className="block text-center font-black leading-[0.95] tracking-tighter text-zinc-50 text-[13vw] md:text-[9vw]"
+            className="block text-center font-normal leading-[0.95] tracking-tighter text-zinc-50 text-[13vw] md:text-[9vw]"
             initial={{ y: "110%" }}
             animate={{ y: "0%" }}
             transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            PLAY <span className="text-red-600">TAIWAN</span>
+            PLAY <span className="text-saffron">TAIWAN</span>
           </motion.span>
         </span>
       </div>
@@ -140,7 +140,7 @@ export default function IntroLoader() {
       {/* 자릿수가 바뀔 때 흔들리지 않도록 tabular-nums */}
       <div className="flex justify-end">
         <span
-          className="font-mono font-black leading-none text-zinc-50 text-[14vw] md:text-[7vw] tracking-tighter"
+          className="font-mono font-normal leading-none text-zinc-50 text-[14vw] md:text-[7vw] tracking-tighter"
           style={{ fontVariantNumeric: "tabular-nums" }}
         >
           {count}

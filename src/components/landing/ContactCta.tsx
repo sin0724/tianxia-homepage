@@ -12,13 +12,13 @@ export default function ContactCta({
 }) {
   return (
     <section className="mt-16 border-t border-zinc-800 pt-12">
-      <h2 className="text-2xl font-black mb-4">{title}</h2>
+      <h2 className="text-2xl font-normal mb-4">{title}</h2>
       <p className="text-zinc-400 text-sm leading-relaxed max-w-2xl mb-6">
         {desc}
       </p>
       <Link
         href="/#contact"
-        className="inline-block px-6 py-3 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors"
+        className="inline-block px-6 py-3 bg-iris text-white text-sm font-semibold hover:bg-iris-hover transition-colors rounded-full"
       >
         {label}
       </Link>

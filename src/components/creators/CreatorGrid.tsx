@@ -20,12 +20,12 @@ function KolTile() {
       inquiry="KOL 섭외"
       className="group block w-full text-left"
     >
-      <span className="relative aspect-[3/4] flex flex-col justify-between border border-dashed border-zinc-700 bg-zinc-900/40 p-5 transition-colors group-hover:border-red-500">
-        <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-red-500/80">
+      <span className="relative aspect-[3/4] flex flex-col justify-between border border-dashed border-zinc-700 bg-zinc-900/40 p-5 transition-colors group-hover:border-iris">
+        <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-saffron/80">
           KOL
         </span>
         <span className="block">
-          <span className="block text-2xl md:text-3xl font-black tracking-tight text-zinc-50">
+          <span className="block text-2xl md:text-3xl font-normal tracking-tight text-zinc-50">
             대만 KOL
           </span>
           <span className="block mt-2 text-xs md:text-sm text-zinc-400 leading-relaxed">
@@ -34,11 +34,11 @@ function KolTile() {
         </span>
         <ArrowUpRight
           size={22}
-          className="absolute top-5 right-5 text-zinc-500 group-hover:text-red-400 transition-colors"
+          className="absolute top-5 right-5 text-zinc-500 group-hover:text-saffron transition-colors"
         />
       </span>
       <span className="block pt-3 pb-1">
-        <span className="block text-sm md:text-[15px] font-bold text-zinc-50 group-hover:text-red-400 transition-colors">
+        <span className="block text-sm md:text-[15px] font-bold text-zinc-50 group-hover:text-saffron transition-colors">
           KOL 섭외
         </span>
         <span className="block mt-1 text-[11px] font-mono tracking-[0.2em] uppercase text-zinc-500">
@@ -70,7 +70,7 @@ function Card({
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </div>
       <div className="pt-3 pb-1">
-        <p className="text-sm md:text-[15px] font-bold text-zinc-50 truncate group-hover:text-red-400 transition-colors">
+        <p className="text-sm md:text-[15px] font-bold text-zinc-50 truncate group-hover:text-saffron transition-colors">
           {item.label}
         </p>
         {item.sub && (
@@ -134,7 +134,7 @@ function CreatorGridView({
               onClick={() => setTab(t.key)}
               className={`shrink-0 h-10 px-4 text-sm font-medium border transition-colors ${
                 active
-                  ? "bg-red-600 border-red-600 text-white"
+                  ? "bg-iris border-iris text-white"
                   : "border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-zinc-100"
               }`}
             >
@@ -146,9 +146,9 @@ function CreatorGridView({
         <InquiryButton
           label="KOL 별도 문의"
           inquiry="KOL 섭외"
-          className="shrink-0 h-10 px-4 text-sm font-medium border border-dashed border-zinc-700 text-zinc-300 hover:border-red-500 hover:text-red-400 transition-colors"
+          className="shrink-0 h-10 px-4 text-sm font-medium border border-dashed border-zinc-700 text-zinc-300 hover:border-white/30 hover:text-white transition-colors rounded-full"
         >
-          KOL<span className="ml-2 text-[11px] text-red-400/80">별도 문의</span>
+          KOL<span className="ml-2 text-[11px] text-saffron/80">별도 문의</span>
         </InquiryButton>
       </div>
 

@@ -1,111 +1,123 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { SpeakerSimpleX, SpeakerSimpleHigh } from "@phosphor-icons/react";
-import { SITE_CONFIG } from "@/lib/config";
 import { EASE_OUT } from "@/components/motion/Reveal";
-import ParallaxLayer from "@/components/motion/ParallaxLayer";
-import { useVideoInView } from "@/components/motion/useVideoInView";
+import Taipei101Particles from "@/components/hero/Taipei101Particles";
+
+/**
+ * 히어로 — Dala 스타일 가이드 적용.
+ *
+ * 가이드의 시그니처 비주얼(삼각 파티클로 된 '두뇌')을 타이베이 101로 바꿨다.
+ * 힉스필드로 만든 101 이미지에서 파티클 좌표를 뽑아 캔버스로 그린다 —
+ * 스크롤하면 흩어지고 올리면 다시 모인다 (Taipei101Particles).
+ * 101이 화면의 주인공. 슬로건(대만 진출은 티엔샤)과 CTA는 아래 구석에 작게 둔다.
+ */
+
+// 타워 주변을 떠다니는 삼각 파티클. 위치·색·속도를 고정값으로 둬서
+// SSR/CSR 결과가 같게 한다 (Math.random 금지 → 하이드레이션 불일치 방지).
+const PARTICLES = [
+  { x: 8, y: 18, s: 10, c: "#8052ff", d: 9 },
+  { x: 22, y: 72, s: 8, c: "#ffb829", d: 11 },
+  { x: 38, y: 12, s: 7, c: "#15846e", d: 8 },
+  { x: 46, y: 88, s: 9, c: "#ff5fc8", d: 12 },
+  { x: 58, y: 30, s: 6, c: "#34d6ff", d: 10 },
+  { x: 92, y: 22, s: 9, c: "#ffb829", d: 9.5 },
+  { x: 96, y: 64, s: 7, c: "#8052ff", d: 12.5 },
+  { x: 84, y: 90, s: 8, c: "#15846e", d: 10.5 },
+  { x: 4, y: 48, s: 6, c: "#ffffff", d: 13 },
+  { x: 30, y: 40, s: 5, c: "#ff5fc8", d: 11.5 },
+];
+
+function Triangle({ size, color }: { size: number; color: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 10 10" aria-hidden>
+      <path d="M5 1 L9.2 8.5 H0.8 Z" fill="none" stroke={color} strokeWidth="1" />
+    </svg>
+  );
+}
 
 export default function HeroSection() {
-  const [muted, setMuted] = useState(true);
   const reduce = useReducedMotion();
-  // 히어로는 첫 화면이라 지연 로드 대상이 아니다 (eager)
-  const { containerRef, videoRef, isActive } = useVideoInView({
-    amount: 0.25,
-    eager: true,
+  const fade = (delay: number) => ({
+    // initial은 SSR과 같아야 하므로 reduce에 따라 바꾸지 않는다 (시간만 0으로)
+    initial: { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: reduce ? { duration: 0 } : { duration: 0.9, delay, ease: EASE_OUT },
   });
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setMuted(videoRef.current.muted);
-  };
 
   return (
     <section
       id="home"
-      className="relative h-[100dvh] overflow-hidden bg-zinc-950"
+      className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-black"
     >
-      {/*
-        접근성·SEO: 영상만으로 구성된 히어로의 텍스트 대체.
-        sr-only(clip 방식)로 시각적으로는 숨기되 스크린리더·검색엔진에는
-        노출 — 화면이 전달하는 내용과 동일한 자연스러운 문장으로만 작성.
-      */}
-      <h1 className="sr-only">
-        대만 마케팅 전문 에이전시 (주)티엔샤 TIANXIA
-      </h1>
-      <p className="sr-only">
-        한국 브랜드의 대만 시장 진출 파트너. 대만 KOL·KOC 마케팅, 쇼피 입점
-        지원, 공동구매 마케팅으로 F&amp;B·뷰티·병원 브랜드의 대만 진출을 돕습니다.
-      </p>
+      {/* 배경 파티클 필드 */}
+      <div aria-hidden className="dala-particles absolute inset-0" />
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
+        {PARTICLES.map((p, i) => (
+          <motion.span
+            key={i}
+            className="absolute"
+            style={{ left: `${p.x}%`, top: `${p.y}%`, opacity: 0.7 }}
+            animate={reduce ? undefined : { y: [0, -18, 0], rotate: [0, 40, 0] }}
+            transition={{ duration: p.d, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Triangle size={p.s} color={p.c} />
+          </motion.span>
+        ))}
+      </div>
 
-      {/* 진입 연출: 영상 1.06→1 줌아웃 (동작 줄이기면 시간만 0으로) */}
+      {/* 메인: 101 파티클 — 데스크탑은 섹션 전체 높이로 가운데, 모바일은 위쪽 큰 영역 */}
       <motion.div
-        ref={containerRef}
-        className="absolute inset-0"
-        initial={{ scale: 1.06 }}
-        animate={{ scale: 1 }}
-        transition={reduce ? { duration: 0 } : { duration: 1.4, ease: EASE_OUT }}
+        className="relative mt-16 h-[64vh] w-full md:absolute md:inset-x-0 md:top-[72px] md:bottom-4 md:mt-0 md:h-auto"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={reduce ? { duration: 0 } : { duration: 1.6, ease: EASE_OUT }}
       >
-        {/* Ken Burns: 머무는 동안 아주 느린 줌 인-아웃 반복 */}
-        <motion.div
-          className="absolute inset-0"
-          animate={!reduce && isActive ? { scale: [1, 1.045] } : { scale: 1 }}
-          transition={
-            !reduce && isActive
-              ? {
-                  duration: 22,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                  delay: 1.5,
-                }
-              : { duration: 0.3 }
-          }
-        >
-          {/* 마우스 패럴랙스: 커서 반대 방향으로 미세하게 미끄러짐 */}
-          <ParallaxLayer strength={14} invert>
-            <video
-              ref={videoRef}
-              // 인트로 로더가 진행률 기준으로 삼는 표식
-              data-hero
-              src={SITE_CONFIG.heroVideo}
-              poster={SITE_CONFIG.heroPoster}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-label="대만 마케팅 에이전시 티엔샤 브랜드 소개 영상"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </ParallaxLayer>
-        </motion.div>
+        <Taipei101Particles />
       </motion.div>
 
-      {/* 오버레이: 진하게 시작해 옅어지며 영상이 드러남 */}
-      <motion.div
-        className="absolute inset-0 bg-black"
-        initial={{ opacity: 0.6 }}
-        animate={{ opacity: 0.2 }}
-        transition={reduce ? { duration: 0.3 } : { duration: 1.2, ease: EASE_OUT }}
-      />
+      {/* 슬로건·CTA — 101을 가리지 않게 아래 양쪽 구석에 작게 */}
+      <div className="pointer-events-none relative z-10 mx-auto mt-auto flex w-full max-w-[1280px] flex-col gap-6 px-4 pb-10 sm:px-6 md:flex-row md:items-end md:justify-between md:px-10 md:pb-12">
+        <div>
+          <motion.p
+            {...fade(0.15)}
+            className="mb-3 text-[12px] font-semibold uppercase tracking-[0.08em] text-saffron"
+          >
+            Taiwan Marketing Agency
+          </motion.p>
 
-      {/* 음소거 토글 버튼 */}
-      <motion.button
-        onClick={toggleMute}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="absolute bottom-6 right-6 md:bottom-8 md:right-8 z-10 w-10 h-10 flex items-center justify-center border border-white/30 bg-black/30 backdrop-blur-sm text-white/70 hover:text-white hover:border-white/60 transition-all duration-200"
-        aria-label={muted ? "소리 켜기" : "소리 끄기"}
-      >
-        {muted
-          ? <SpeakerSimpleX size={18} weight="bold" />
-          : <SpeakerSimpleHigh size={18} weight="bold" />
-        }
-      </motion.button>
+          <motion.h1
+            {...fade(0.25)}
+            className="font-normal text-white text-[28px] leading-[1.15] tracking-[-0.03em] break-keep sm:text-[32px] md:text-[36px]"
+          >
+            대만 진출은 티엔샤
+          </motion.h1>
+
+          <motion.p
+            {...fade(0.4)}
+            className="mt-3 max-w-[36ch] text-[14px] leading-[1.6] font-extralight text-mist md:text-[15px]"
+          >
+            대만 KOL·KOC 마케팅, 라이브커머스, 공동구매까지
+            현지 감각으로 대만 진출을 돕습니다.
+          </motion.p>
+        </div>
+
+        <motion.div {...fade(0.55)} className="pointer-events-auto flex flex-wrap items-center gap-x-6 gap-y-3">
+          <Link
+            href="/#contact"
+            className="inline-flex h-10 items-center rounded-full bg-iris px-6 text-[13px] font-semibold uppercase tracking-[0.04em] text-white transition-colors duration-300 hover:bg-iris-hover active:scale-[0.98]"
+          >
+            문의하기
+          </Link>
+          <Link
+            href="/#work"
+            className="text-[13px] font-semibold uppercase tracking-[0.04em] text-ash transition-colors duration-300 hover:text-white"
+          >
+            작업물 보기 →
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }

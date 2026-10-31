@@ -5,7 +5,7 @@ import { AnimatePresence } from "motion/react";
 import { ContactModal } from "@/components/sections/ContactSection";
 
 const DEFAULT_CLASS =
-  "inline-block px-6 py-3 bg-red-600 text-white text-sm font-bold hover:bg-red-500 transition-colors";
+  "inline-block px-6 py-3 bg-iris text-white text-sm font-bold hover:bg-iris-hover transition-colors";
 
 /**
  * 크리에이터 섭외 문의 버튼.

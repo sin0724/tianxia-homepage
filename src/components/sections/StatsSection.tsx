@@ -17,7 +17,7 @@ export default function StatsSection() {
               transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
               className="flex flex-col items-start border-l border-zinc-800 first:border-l-0 px-6 md:px-10 py-8"
             >
-              <p className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-50 mb-2">
+              <p className="text-4xl md:text-5xl font-normal tracking-tighter text-zinc-50 mb-2">
                 {stat.value}
               </p>
               <p className="text-xs text-zinc-500 uppercase tracking-wider">
