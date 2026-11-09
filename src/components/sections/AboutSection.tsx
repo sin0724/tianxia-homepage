@@ -56,9 +56,9 @@ export default function AboutSection() {
 
         {/* 헤드라인 */}
         <div className="mb-3 md:mb-4">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50 break-keep">
             <MaskReveal delay={0.08}>
-              Together We <span className="text-saffron">Create Value</span>
+              업종마다 <span className="text-saffron">대만 공략법</span>은 다릅니다
             </MaskReveal>
           </h2>
         </div>

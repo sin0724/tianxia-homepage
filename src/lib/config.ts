@@ -12,6 +12,14 @@ export const SITE_CONFIG = {
     email: "b-567@naver.com",
     phone: "02-000-0000",
     address: "서울특별시",
+    // 푸터 사업자 정보 — 값이 비어 있는 항목은 화면에 표시하지 않는다
+    business: {
+      ceo: "신현준, 이강산", // 대표자명
+      registrationNumber: "537-81-04055", // 사업자등록번호
+      // 상세 주소는 노출하지 않고 구 단위까지만 표시
+      addressKr: "강서구", // 서울 사무소
+      addressTw: "완화구", // 타이베이 오피스
+    },
     instagram: "https://www.instagram.com/tianxia_tw",
     // 스튜디오구프 채널 (@스튜디오구프) — 한글 핸들이라 퍼센트 인코딩된 형태로 둔다
     youtube: "https://www.youtube.com/@%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4%EA%B5%AC%ED%94%84",
@@ -130,7 +138,7 @@ export const SITE_CONFIG = {
   // 통계
   // -------------------------------------------------------
   stats: [
-    { value: "70+", label: "브랜드 파트너" },
+    { value: "200+", label: "브랜드 파트너" },
     { value: "200+", label: "캠페인 진행" },
     { value: "5+", label: "대만 마케팅 경력(년)" },
     { value: "3", label: "핵심 타겟 산업" },

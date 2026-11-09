@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SITE_CONFIG } from "@/lib/config";
 import { SOCIALS } from "@/components/socials";
@@ -9,9 +9,18 @@ import { Reveal, MaskReveal } from "@/components/motion/Reveal";
 import Magnetic from "@/components/motion/Magnetic";
 import FillHover from "@/components/motion/FillHover";
 import { trackMetaLead } from "@/lib/metaPixel";
-import { LANDING_PAGES } from "@/lib/landing-pages";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
+// 문의분야 선택지 — 자유입력 대신 골라서 리드 분류를 쉽게 한다
+const INQUIRY_OPTIONS = [
+  "KOL 섭외",
+  "KOL·인플루언서 마케팅",
+  "쇼피 입점 지원",
+  "공동구매 마케팅",
+  "병원·의료 마케팅",
+  "기타 문의",
+];
 
 // 브라우저 픽셀과 서버 CAPI가 같은 이벤트임을 알리는 중복 제거 키
 const newEventId = () =>
@@ -35,8 +44,6 @@ export function ContactModal({
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [fileName, setFileName] = useState("선택된 파일 없음");
-  const fileRef = useRef<HTMLInputElement>(null);
 
   // 모달이 떠 있는 동안 뒤 페이지가 같이 스크롤되지 않도록 잠금
   useEffect(() => {
@@ -59,7 +66,7 @@ export function ContactModal({
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      inquiry: (form.elements.namedItem("inquiry") as HTMLInputElement).value,
+      inquiry: (form.elements.namedItem("inquiry") as HTMLSelectElement).value,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
       // 허니팟 — 사람은 비워두고 봇만 채움
       company: (form.elements.namedItem("company") as HTMLInputElement).value,
@@ -116,7 +123,7 @@ export function ContactModal({
         {submitted ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
             <p className="text-4xl font-normal text-zinc-50 mb-3">감사합니다!</p>
-            <p className="text-zinc-400 text-sm mb-10">빠른 시일 내에 연락드리겠습니다.</p>
+            <p className="text-zinc-400 text-sm mb-10">영업일 기준 1일 내에 담당자가 연락드립니다.</p>
             <button
               onClick={onClose}
               className="text-xs text-zinc-500 hover:text-zinc-200 underline underline-offset-4 transition-colors"
@@ -132,7 +139,7 @@ export function ContactModal({
               transition={{ duration: 0.5, delay: 0.05, ease: EASE }}
               className="text-4xl md:text-6xl font-normal text-zinc-50 mb-12 md:mb-16 text-center tracking-tight"
             >
-              Solution Info
+              대만 진출 상담 신청
             </motion.h2>
 
             <form onSubmit={handleSubmit}>
@@ -202,31 +209,21 @@ export function ContactModal({
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-zinc-100 mb-2">
-                      첨부파일
-                    </label>
-                    <div className="flex gap-2">
-                      <div className="flex-1 h-13 bg-zinc-900 rounded-xl px-4 flex items-center text-sm text-zinc-600 truncate">
-                        {fileName}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => fileRef.current?.click()}
-                        className="h-13 px-5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium rounded-xl transition-colors duration-200 whitespace-nowrap"
-                      >
-                        파일선택
-                      </button>
-                      <input
-                        ref={fileRef}
-                        type="file"
-                        className="hidden"
-                        onChange={(e) =>
-                          setFileName(e.target.files?.[0]?.name ?? "선택된 파일 없음")
-                        }
-                      />
-                    </div>
-                  </div>
+                  {/*
+                    첨부파일 필드는 뺐다: 파일명만 화면에 보이고 실제 파일은 API로
+                    전송되지 않아, 고객은 보냈다고 믿는데 자료가 사라지고 있었다.
+                    업로드 저장소를 붙이기 전까지는 이메일로 받는다.
+                  */}
+                  <p className="text-xs leading-relaxed text-zinc-500">
+                    회사소개서·제품 자료가 있다면{" "}
+                    <a
+                      href={`mailto:${SITE_CONFIG.company.email}`}
+                      className="text-zinc-300 underline underline-offset-4 hover:text-zinc-50"
+                    >
+                      {SITE_CONFIG.company.email}
+                    </a>
+                    로 보내주세요.
+                  </p>
                 </div>
 
                 {/* 오른쪽 열 */}
@@ -238,13 +235,21 @@ export function ContactModal({
                         * 표시는 필수 입력 항목입니다.
                       </span>
                     </div>
-                    <input
-                      type="text"
+                    <select
                       name="inquiry"
-                      defaultValue={defaultInquiry}
-                      placeholder="ex) 견적문의, 영업문의"
-                      className="w-full h-13 bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all"
-                    />
+                      defaultValue={defaultInquiry ?? ""}
+                      className="w-full h-13 bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all"
+                    >
+                      <option value="">선택해 주세요</option>
+                      {(defaultInquiry && !INQUIRY_OPTIONS.includes(defaultInquiry)
+                        ? [defaultInquiry, ...INQUIRY_OPTIONS]
+                        : INQUIRY_OPTIONS
+                      ).map((o) => (
+                        <option key={o} value={o}>
+                          {o}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="flex flex-col flex-1">
@@ -255,7 +260,7 @@ export function ContactModal({
                       name="message"
                       required
                       defaultValue={defaultMessage}
-                      placeholder="내용을 입력하세요."
+                      placeholder="브랜드·제품 소개, 희망 일정, 예산 범위를 적어주시면 더 정확한 제안을 드릴 수 있어요."
                       className="flex-1 min-h-[220px] bg-zinc-900 rounded-xl px-4 py-3 text-zinc-50 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-600 transition-all resize-none"
                     />
                   </div>
@@ -301,6 +306,13 @@ export function ContactModal({
 export default function ContactSection() {
   const [formOpen, setFormOpen] = useState(false);
   const year = new Date().getFullYear();
+  const biz = SITE_CONFIG.company.business;
+  const businessInfo = [
+    biz.ceo && `대표 ${biz.ceo}`,
+    biz.registrationNumber && `사업자등록번호 ${biz.registrationNumber}`,
+    biz.addressKr && `서울 ${biz.addressKr}`,
+    biz.addressTw && `타이베이 ${biz.addressTw}`,
+  ].filter(Boolean) as string[];
 
   return (
     <>
@@ -317,8 +329,8 @@ export default function ContactSection() {
             </h2>
             <Reveal delay={0.2}>
               <p className="text-zinc-500 text-sm md:text-base max-w-[36ch] mx-auto mb-10 leading-relaxed">
-                대만 시장 진출의 첫 걸음.<br />
-                지금 바로 티엔샤와 함께 시작하세요.
+                대만 진출, 어디서부터 시작할지<br />
+                티엔샤가 같이 정해드립니다.
               </p>
             </Reveal>
             <Reveal delay={0.3} y={16}>
@@ -328,7 +340,7 @@ export default function ContactSection() {
                   className="group relative overflow-hidden inline-flex items-center h-14 px-10 bg-iris text-white hover:text-saffron font-semibold text-sm tracking-wide transition-colors duration-300 active:scale-[0.98] rounded-full"
                 >
                   <FillHover className="bg-white" />
-                  <span className="relative z-10">문의하기</span>
+                  <span className="relative z-10">무료 대만 진출 상담 받기</span>
                 </button>
               </Magnetic>
             </Reveal>
@@ -345,7 +357,7 @@ export default function ContactSection() {
                 <p className="text-xs text-zinc-500 mb-3">이메일로 문의</p>
                 <a
                   href={`mailto:${SITE_CONFIG.company.email}`}
-                  className="group inline-block text-2xl md:text-4xl font-normal tracking-tight text-zinc-50 hover:text-saffron transition-colors duration-200 break-all"
+                  className="group inline-flex flex-col justify-center h-12 text-base md:text-lg font-medium tracking-tight text-zinc-50 hover:text-saffron transition-colors duration-200 break-all"
                 >
                   {SITE_CONFIG.company.email}
                   <span className="block h-px bg-iris origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
@@ -374,20 +386,19 @@ export default function ContactSection() {
             </div>
           </Reveal>
 
-          {/* 서비스 링크 — 홈에서 랜딩으로 가는 눈에 보이는 내부 링크(앵커 = 타겟 키워드) */}
-          <nav aria-label="서비스" className="border-t border-zinc-900 px-6 md:px-12 py-5">
-            <ul className="max-w-[1400px] mx-auto flex flex-wrap gap-x-6 gap-y-2">
-              {[...LANDING_PAGES.map((p) => ({ href: p.path, label: p.label })), { href: "/insights", label: "대만 마케팅 인사이트" }].map((link) => (
-                <li key={link.href}>
-                  <a href={link.href} className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/*
+            서비스 랜딩 링크 목록(대만 마케팅, 대만 인플루언서 마케팅 …)은 화면에서 뺐다.
+            크롤 경로는 layout의 SiteNavLinks(sr-only)가 전 페이지에서 계속 제공한다.
+          */}
 
           <div className="border-t border-zinc-900 px-6 md:px-12 py-5">
+            {businessInfo.length > 0 && (
+              <p className="max-w-[1400px] mx-auto mb-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] leading-relaxed text-zinc-600">
+                {businessInfo.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </p>
+            )}
             <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <p className="text-xs text-zinc-500">
                 {SITE_CONFIG.company.name} {SITE_CONFIG.company.nameEn}

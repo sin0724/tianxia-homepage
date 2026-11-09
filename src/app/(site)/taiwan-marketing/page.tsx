@@ -306,7 +306,7 @@ export default function TaiwanMarketingPage() {
 
         <ContactCta
           title="대만 마케팅 파트너 티엔샤와 함께하세요"
-          desc="70개 이상의 브랜드와 대만 시장에서 일해 온 티엔샤가 귀사 브랜드의 대만 진출을 함께 준비합니다."
+          desc="200개 이상의 브랜드와 대만 시장에서 일해 온 티엔샤가 귀사 브랜드의 대만 진출을 함께 준비합니다."
         />
 
       </div>

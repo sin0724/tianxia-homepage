@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { ContactModal } from "@/components/sections/ContactSection";
 import { EASE_OUT } from "@/components/motion/Reveal";
 import Taipei101Particles from "@/components/hero/Taipei101Particles";
 
@@ -39,6 +41,8 @@ function Triangle({ size, color }: { size: number; color: string }) {
 
 export default function HeroSection() {
   const reduce = useReducedMotion();
+  // 히어로 CTA는 #contact로 스크롤시키지 않고 문의 폼을 바로 연다 (클릭 1회 절감)
+  const [formOpen, setFormOpen] = useState(false);
   const fade = (delay: number) => ({
     // initial은 SSR과 같아야 하므로 reduce에 따라 바꾸지 않는다 (시간만 0으로)
     initial: { opacity: 0, y: 24 },
@@ -98,18 +102,19 @@ export default function HeroSection() {
             {...fade(0.4)}
             className="mt-3 max-w-[36ch] text-[14px] leading-[1.6] font-extralight text-mist md:text-[15px]"
           >
-            대만 KOL·KOC 마케팅, 라이브커머스, 공동구매까지
-            현지 감각으로 대만 진출을 돕습니다.
+            200개 한국 브랜드의 대만 진출, KOL 섭외부터
+            쇼피 판매까지 한 팀이 맡습니다.
           </motion.p>
         </div>
 
         <motion.div {...fade(0.55)} className="pointer-events-auto flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Link
-            href="/#contact"
-            className="inline-flex h-10 items-center rounded-full bg-iris px-6 text-[13px] font-semibold uppercase tracking-[0.04em] text-white transition-colors duration-300 hover:bg-iris-hover active:scale-[0.98]"
+          <button
+            type="button"
+            onClick={() => setFormOpen(true)}
+            className="inline-flex h-10 items-center rounded-full bg-iris px-6 text-[13px] font-semibold tracking-[0.02em] text-white transition-colors duration-300 hover:bg-iris-hover active:scale-[0.98]"
           >
-            문의하기
-          </Link>
+            무료 대만 진출 상담 받기
+          </button>
           <Link
             href="/#work"
             className="text-[13px] font-semibold uppercase tracking-[0.04em] text-ash transition-colors duration-300 hover:text-white"
@@ -118,6 +123,10 @@ export default function HeroSection() {
           </Link>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {formOpen && <ContactModal onClose={() => setFormOpen(false)} />}
+      </AnimatePresence>
     </section>
   );
 }

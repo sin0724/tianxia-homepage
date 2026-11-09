@@ -202,13 +202,14 @@ export default function RootLayout({
           첫 페인트 전에 로더를 띄울지 정한다. useEffect로 미루면 로더가
           한 프레임 번쩍인다 (Next.js "preventing flash before hydration").
 
-          홈에 들어올 때마다 재생한다. 지시서의 "세션당 1회 / 동작 줄이기 시 생략"은
-          이 사이트의 첫인상을 매번 같게 보여달라는 요청에 따라 걷어냈다.
+          홈에서 세션당 1회만 재생한다 (CRO 검토: 매 방문 1.4~3초 화면 잠김이
+          광고 유입 이탈 요인). 재방문·내부 이동으로 홈에 돌아오면 바로 본문을 보여준다.
+          sessionStorage를 못 쓰는 환경(사생활 모드 등)에서는 매번 재생된다.
           랜딩 페이지는 검색 유입이라 로더가 방해가 되므로 홈에서만 돈다.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{document.documentElement.dataset.intro=location.pathname==="/"?"run":"skip";}catch(e){document.documentElement.dataset.intro="skip";}})();`,
+            __html: `(function(){var d=document.documentElement;try{if(location.pathname!=="/"){d.dataset.intro="skip";return;}var k="tx-intro-seen";try{if(sessionStorage.getItem(k)){d.dataset.intro="skip";return;}sessionStorage.setItem(k,"1");}catch(e){}d.dataset.intro="run";}catch(e){d.dataset.intro="skip";}})();`,
           }}
         />
         <script
