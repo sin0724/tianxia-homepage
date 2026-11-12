@@ -119,6 +119,22 @@ h2 {
   text-transform: uppercase;
 }
 
+/*
+  히어로 높이 — 주소창이 보일 때의 화면 높이(svh)로 고정한다.
+  dvh는 모바일에서 스크롤로 주소창이 접히는 동안 값이 계속 바뀌어 히어로가 출렁인다.
+  svh를 모르는 옛 브라우저는 아래 @supports의 vh를 쓴다.
+  (한 규칙 안에 vh와 svh를 나란히 적으면 빌드가 vh 줄을 지워 버려서 따로 뺐다.)
+*/
+.hero-h {
+  height: 100svh;
+}
+
+@supports not (height: 100svh) {
+  .hero-h {
+    height: 100vh;
+  }
+}
+
 /* 배경에 흩뿌려진 희미한 삼각 파티클 */
 .dala-particles {
   background-image:

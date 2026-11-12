@@ -9,6 +9,7 @@ import {
   type SkeletonKind,
 } from "./taipei101Skeleton";
 import { HERO_READY, INTRO_HANDOFF, type IntroHandoffDetail } from "./introHandoff";
+import { createParticleGL, GL_DYNAMIC_STRIDE, GL_STATIC_STRIDE } from "./particleGL";
 
 /**
  * 타이베이 101 파티클 컨스텔레이션 (Dala 히어로의 '두뇌' 대체).
@@ -29,9 +30,9 @@ import { HERO_READY, INTRO_HANDOFF, type IntroHandoffDetail } from "./introHando
  *    타워로 조립된다 (introHandoff.ts)
  *  - 로더가 없으면 흩어진 상태에서 모여든다
  *
- * 영상이 아니라 실시간 렌더라 스크롤 위치에 정확히 반응한다. 같은 색끼리 묶어 한 번에
- * 그리기 때문에 파티클 수를 늘려도 그리기 호출은 수십 번이고, 프레임이 떨어지는 기기에서는
- * 속 파티클부터 줄인다.
+ * 영상이 아니라 실시간 렌더라 스크롤 위치에 정확히 반응한다. 그리기는 WebGL이 맡는다
+ * (particleGL.ts) — 파티클이 화면 전체로 흩어져도 비용이 같다. WebGL을 못 쓰는 환경에서는
+ * 2D 캔버스로 같은 색끼리 묶어 그린다. 프레임이 떨어지는 기기에서는 속 파티클부터 줄인다.
  */
 
 // 시드 고정 난수 — 새로고침해도 같은 배치
@@ -102,8 +103,10 @@ export default function Taipei101Particles({
     const wrap = wrapRef.current;
     const canvas = canvasRef.current;
     if (!wrap || !canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
+    // WebGL을 먼저 시도하고, 안 되면 2D 캔버스로 그린다 (한 캔버스는 한 종류만 가질 수 있다)
+    const gl = createParticleGL(canvas);
+    const ctx = gl ? null : canvas.getContext("2d");
+    if (!gl && !ctx) {
       setFailed(true);
       return;
     }
@@ -136,6 +139,8 @@ export default function Taipei101Particles({
     // 동작 줄이기 환경에서 넘겨받았을 때: 날아가는 대신 제자리에서 서서히 나타난다
     let fadeAt = -1;
     let buckets: Bucket[] = [];
+    // WebGL로 넘기는 프레임별 값 (x, y, 회전, 크기)
+    let dyn = new Float32Array(0);
 
     let imgAspect = 688 / 1024; // w/h
     let W = 0;
@@ -178,7 +183,16 @@ export default function Taipei101Particles({
       const data = octx.getImageData(0, 0, SW, SH).data;
       const rand = mulberry32(101);
 
-      type Seed = { x: number; y: number; r: number; g: number; b: number; skeleton: boolean };
+      type Seed = {
+        x: number;
+        y: number;
+        r: number;
+        g: number;
+        b: number;
+        skeleton: boolean;
+        // 밝기를 끌어올린 최종 색 (0~255)
+        c?: [number, number, number];
+      };
       const seeds: Seed[] = [];
 
       // --- 속: 밝을수록 많이, 타워 실루엣 안에서만 ---
@@ -297,6 +311,7 @@ export default function Taipei101Particles({
         const r = Math.min(255, s.r * k) * (1 - lift) + 255 * lift;
         const g = Math.min(255, s.g * k) * (1 - lift) + 255 * lift;
         const b = Math.min(255, s.b * k) * (1 - lift) + 255 * lift;
+        s.c = [r, g, b];
         const key = `${s.skeleton ? "s" : "f"}${r >> 6}${g >> 6}${b >> 6}`;
         let grp = groups.get(key);
         if (!grp) {
@@ -325,6 +340,8 @@ export default function Taipei101Particles({
       depth = new Float32Array(n);
       ox = new Float32Array(n);
       oy = new Float32Array(n);
+      dyn = new Float32Array(n * GL_DYNAMIC_STRIDE);
+      const fixed = new Float32Array(n * GL_STATIC_STRIDE);
       buckets = [];
 
       // 속을 먼저, 뼈대를 나중에 그려서 윤곽이 위에 얹히게 한다
@@ -364,9 +381,19 @@ export default function Taipei101Particles({
           const off = clamp01(Math.abs(s.x - T101_CX) / half);
           const front = Math.sqrt(1 - off * off) * half;
           depth[i] = s.skeleton || rand() > 0.25 ? front : -front;
+          const f = i * GL_STATIC_STRIDE;
+          const c = s.c ?? [255, 255, 255];
+          fixed[f] = c[0] / 255;
+          fixed[f + 1] = c[1] / 255;
+          fixed[f + 2] = c[2] / 255;
+          fixed[f + 3] = s.skeleton ? 1 : 0;
+          fixed[f + 4] = s.y;
           i++;
         }
       }
+      // 묶음은 속이 먼저, 뼈대가 나중이다 → 첫 뼈대 묶음의 시작이 곧 속 파티클 수
+      const firstLine = buckets.find((b) => b.skeleton);
+      gl?.setParticles(fixed, n, firstLine ? firstLine.start : n);
       // 첫 위치는 흩어진 상태 → 진입 시 모여든다 (동작 줄이기면 처음부터 제자리)
       layoutInitial();
       // 인트로 로더는 이 신호를 받기 전까지 92에서 기다린다
@@ -447,10 +474,16 @@ export default function Taipei101Particles({
       dpr = Math.min(2, window.devicePixelRatio || 1);
       W = rect.width;
       H = rect.height;
-      canvas!.width = Math.round(W * dpr);
-      canvas!.height = Math.round(H * dpr);
-      canvas!.style.width = `${W}px`;
-      canvas!.style.height = `${H}px`;
+      // 크기가 그대로면 건드리지 않는다. width/height를 다시 넣으면 값이 같아도
+      // 캔버스가 통째로 지워지고 다시 잡혀서 그 프레임이 튄다.
+      const cw = Math.round(W * dpr);
+      const ch = Math.round(H * dpr);
+      if (canvas!.width !== cw || canvas!.height !== ch) {
+        canvas!.width = cw;
+        canvas!.height = ch;
+        canvas!.style.width = `${W}px`;
+        canvas!.style.height = `${H}px`;
+      }
       // 이미지는 좌우 여백이 넓다(타워는 가운데 절반쯤). 폭은 타워만 들어오면 되므로
       // 세로로 긴 화면에서는 이미지가 캔버스보다 넓어져도 타워를 높이에 맞춰 키운다.
       const bh = Math.min(H, W / (imgAspect * TOWER_SPAN));
@@ -504,6 +537,8 @@ export default function Taipei101Particles({
         if (++slowFrames > 45 && quality > 0.4) {
           quality = Math.max(0.4, quality - 0.15);
           slowFrames = 0;
+          // 덜어 낸 파티클은 더 갱신하지 않는다 → 크기를 0으로 지워 안 보이게
+          dyn.fill(0);
         }
       } else {
         slowFrames = 0;
@@ -537,12 +572,15 @@ export default function Taipei101Particles({
         const st = (t - 4) % SWEEP_EVERY;
         if (st < SWEEP_TAKES) sweepY = 1.06 - (st / SWEEP_TAKES) * 1.12;
       }
-      const sweepCore = sweepY >= -0.1 ? new Path2D() : null;
+      // 2D 캔버스일 때만: 훑는 빛에 걸린 삼각형을 따로 모아 흰색으로 덧그린다
+      const sweepCore = ctx && sweepY >= -0.1 ? new Path2D() : null;
       const sweepHalo = sweepCore ? new Path2D() : null;
 
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx!.clearRect(0, 0, W, H);
-      ctx!.lineWidth = 0.9;
+      if (ctx) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+        ctx.lineWidth = 0.9;
+      }
       const fadeIn = fadeAt >= 0 ? clamp01((now - fadeAt) / 600) : 1;
       const fade = (1 - scroll * 0.75) * fadeIn;
 
@@ -556,7 +594,7 @@ export default function Taipei101Particles({
         const end = skeleton
           ? bucket.end
           : bucket.start + Math.ceil((bucket.end - bucket.start) * quality);
-        ctx!.beginPath();
+        if (ctx) ctx.beginPath();
         for (let i = bucket.start; i < end; i++) {
           // 층별 시차: 위(hy 작음)일수록 먼저 흩어지고 나중에 모인다
           const s = clamp01(scatter * (1 + STAGGER) - hy[i] * STAGGER);
@@ -611,6 +649,14 @@ export default function Taipei101Particles({
           if (!reduce) rot[i] += spin[i] * 0.016 * k * ((skeleton ? 0 : 1) + s * 3);
 
           const r = size[i] * (1 + s * (skeleton ? 1.5 : 0.6));
+          if (gl) {
+            const o = i * GL_DYNAMIC_STRIDE;
+            dyn[o] = px[i];
+            dyn[o + 1] = py[i];
+            dyn[o + 2] = rot[i];
+            dyn[o + 3] = r;
+            continue;
+          }
           const c = Math.cos(rot[i]) * r;
           const sn = Math.sin(rot[i]) * r;
           // 꼭짓점 3개: -90°, 30°, 150°
@@ -636,30 +682,46 @@ export default function Taipei101Particles({
             }
           }
         }
+        if (!ctx) continue;
         if (skeleton) {
           // 뼈대는 속을 채운 작은 삼각형 — 선이 또렷하게 이어진다.
           // 속처럼 빛을 더하면(lighter) 겹친 곳이 하얗게 날아가므로 그대로 덮어 그린다.
-          ctx!.globalCompositeOperation = "source-over";
-          ctx!.globalAlpha = fade;
-          ctx!.fillStyle = bucket.color;
-          ctx!.fill();
+          ctx.globalCompositeOperation = "source-over";
+          ctx.globalAlpha = fade;
+          ctx.fillStyle = bucket.color;
+          ctx.fill();
         } else {
-          ctx!.globalCompositeOperation = "lighter";
-          ctx!.globalAlpha = fade * 0.85;
-          ctx!.strokeStyle = bucket.color;
-          ctx!.stroke();
+          ctx.globalCompositeOperation = "lighter";
+          ctx.globalAlpha = fade * 0.85;
+          ctx.strokeStyle = bucket.color;
+          ctx.stroke();
         }
       }
 
-      if (sweepCore && sweepHalo) {
-        ctx!.globalCompositeOperation = "lighter";
-        ctx!.strokeStyle = "#ffffff";
-        ctx!.globalAlpha = 0.3;
-        ctx!.stroke(sweepHalo);
-        ctx!.globalAlpha = 0.85;
-        ctx!.stroke(sweepCore);
+      if (gl) {
+        gl.draw(dyn, {
+          width: W,
+          height: H,
+          dpr,
+          // 2D에서는 같은 색 묶음 안의 겹침이 한 번만 칠해지지만, 여기서는 파티클마다
+          // 빛이 더해진다. 같은 값(0.85)을 쓰면 촘촘한 처마가 하얗게 뜨므로 낮춘다.
+          fillAlpha: fade * 0.56,
+          lineAlpha: fade,
+          // 빛이 지나가지 않을 땐 어떤 높이와도 겹치지 않는 값을 넘긴다
+          sweepY: sweepY >= -0.1 ? sweepY : -9,
+        });
+        return;
       }
-      ctx!.globalAlpha = 1;
+      if (!ctx) return;
+      if (sweepCore && sweepHalo) {
+        ctx.globalCompositeOperation = "lighter";
+        ctx.strokeStyle = "#ffffff";
+        ctx.globalAlpha = 0.3;
+        ctx.stroke(sweepHalo);
+        ctx.globalAlpha = 0.85;
+        ctx.stroke(sweepCore);
+      }
+      ctx.globalAlpha = 1;
     }
 
     function loop(now: number) {
@@ -678,6 +740,9 @@ export default function Taipei101Particles({
     io.observe(wrap);
 
     const onMove = (e: PointerEvent) => {
+      // 터치는 받지 않는다. 손가락을 대는 순간 그 자리에 구멍이 나고 타워가 돌아가서,
+      // 스크롤을 시작할 때마다 화면이 튀어 보였다. 모바일의 상호작용은 스크롤이 맡는다.
+      if (e.pointerType === "touch") return;
       const r = canvas.getBoundingClientRect();
       mouse.x = e.clientX - r.left;
       mouse.y = e.clientY - r.top;
@@ -703,6 +768,7 @@ export default function Taipei101Particles({
       host.removeEventListener("pointerleave", onLeave);
       window.removeEventListener(INTRO_HANDOFF, onHandoff);
       window.__tx101Ready = false;
+      gl?.dispose();
     };
   }, [src]);
 

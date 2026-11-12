@@ -340,8 +340,8 @@ export default function WorkSection() {
             </AnimatePresence>
           </Reveal>
 
-          {/* 하단 도트 + CTA */}
-          <Reveal delay={0.3} y={12} className="mt-6 flex items-center justify-between">
+          {/* 하단 도트 */}
+          <Reveal delay={0.3} y={12} className="mt-6 flex items-center">
             {/* 모바일 도트 */}
             <div className="flex md:hidden items-center gap-1.5">
               {works.map((_, i) => (
@@ -366,12 +366,6 @@ export default function WorkSection() {
                 />
               ))}
             </div>
-            <a
-              href="#contact"
-              className="text-xs text-zinc-500 hover:text-saffron transition-colors duration-200 font-medium underline-offset-4 hover:underline"
-            >
-              더 많은 작업물이 궁금하다면 문의해 주세요
-            </a>
           </Reveal>
 
         </div>

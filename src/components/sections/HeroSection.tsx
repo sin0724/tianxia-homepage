@@ -42,7 +42,9 @@ export default function HeroSection() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="home" className="relative h-[100dvh] min-h-[560px] overflow-hidden bg-black">
+    // 높이는 hero-h(100svh). dvh를 쓰면 모바일에서 스크롤로 주소창이 접힐 때마다 높이가
+    // 바뀌어, 그때마다 캔버스 크기와 타워 크기가 다시 잡히며 화면이 튄다.
+    <section id="home" className="hero-h relative min-h-[560px] overflow-hidden bg-black">
       {/* 화면에는 문구를 두지 않지만 페이지 제목은 있어야 한다 (검색·스크린리더용) */}
       <h1 className="sr-only">대만 마케팅 에이전시 티엔샤 TIANXIA</h1>
 
