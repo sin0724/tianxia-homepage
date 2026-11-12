@@ -11,7 +11,7 @@ function VideoCard({ target }: { target: (typeof SITE_CONFIG.aboutTargets)[0] })
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-[24px] bg-zinc-900 flex flex-col group h-full"
+      className="relative overflow-hidden rounded-[16px] sm:rounded-[24px] bg-zinc-900 flex flex-col group h-full"
     >
       <video
         ref={videoRef}
@@ -25,7 +25,7 @@ function VideoCard({ target }: { target: (typeof SITE_CONFIG.aboutTargets)[0] })
       />
       <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent" />
       <div className="relative z-10 mt-auto p-6 md:p-8 transition-transform duration-500 ease-out group-hover:-translate-y-1">
-        <h3 className="text-lg md:text-2xl font-bold text-zinc-50 mb-0.5 md:mb-1 group-hover:text-saffron transition-colors duration-300">
+        <h3 className="text-lg md:text-2xl font-normal tracking-tight text-zinc-50 mb-0.5 md:mb-1 group-hover:text-saffron transition-colors duration-300">
           {target.industry}
         </h3>
         <p className="text-xs text-zinc-500">{target.desc}</p>
@@ -50,13 +50,13 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-6 md:px-12 py-24 md:py-32 overflow-hidden"
+      className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-4 sm:px-6 md:px-10 py-24 md:py-32 overflow-hidden"
     >
-      <div className="max-w-[1400px] w-full mx-auto">
+      <div className="max-w-[1280px] w-full mx-auto">
 
         {/* 헤드라인 */}
         <div className="mb-3 md:mb-4">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50 break-keep">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50 break-keep">
             <MaskReveal delay={0.08}>
               업종마다 <span className="text-saffron">대만 공략법</span>은 다릅니다
             </MaskReveal>

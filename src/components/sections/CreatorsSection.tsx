@@ -26,7 +26,7 @@ const CATEGORY_LINKS = [
 function CreatorCard({ creator }: { creator: CreatorCardItem }) {
   const body = (
     <>
-      <span className="relative block aspect-[3/4] overflow-hidden bg-zinc-900">
+      <span className="relative block aspect-[3/4] overflow-hidden rounded-[16px] sm:rounded-[24px] bg-zinc-900">
         <Image
           src={creator.photo}
           alt={creator.label}
@@ -37,7 +37,7 @@ function CreatorCard({ creator }: { creator: CreatorCardItem }) {
         <span className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </span>
       <span className="block pt-3">
-        <span className="block text-sm font-bold text-zinc-50 truncate group-hover:text-saffron transition-colors">
+        <span className="block text-sm font-semibold text-zinc-50 truncate group-hover:text-saffron transition-colors">
           {creator.label}
         </span>
         {creator.sub && (
@@ -72,10 +72,10 @@ export default function CreatorsSection() {
   return (
     <section
       id="creators"
-      className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-6 md:px-12 py-24 md:py-32 overflow-hidden"
+      className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-4 sm:px-6 md:px-10 py-24 md:py-32 overflow-hidden"
     >
-      <div className="max-w-[1400px] w-full mx-auto">
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50 mb-3 md:mb-4">
+      <div className="max-w-[1280px] w-full mx-auto">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight leading-[1.1] text-zinc-50 mb-3 md:mb-4">
           <MaskReveal delay={0.08}>{title}</MaskReveal>
         </h2>
         <div className="mb-3 md:mb-8">

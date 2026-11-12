@@ -277,7 +277,7 @@ export function ContactModal({
                       href="/privacy"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-1 border border-zinc-700 hover:border-zinc-500 px-2.5 py-1 text-[10px] text-zinc-400 hover:text-zinc-200 transition-colors rounded"
+                      className="ml-1 border border-zinc-700 hover:border-zinc-500 px-2.5 py-1 text-[10px] text-zinc-400 hover:text-zinc-200 transition-colors rounded-full"
                     >
                       전문보기
                     </a>
@@ -290,7 +290,7 @@ export function ContactModal({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="h-12 px-12 bg-zinc-800 hover:bg-iris-hover disabled:opacity-50 disabled:cursor-not-allowed text-zinc-50 font-semibold text-sm tracking-wide transition-colors duration-300 rounded-xl active:scale-[0.98]"
+                  className="h-12 px-12 bg-iris hover:bg-iris-hover disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-sm tracking-wide transition-colors duration-300 rounded-full active:scale-[0.98]"
                 >
                   {loading ? "전송 중..." : "문의하기"}
                 </button>
@@ -322,7 +322,7 @@ export default function ContactSection() {
       >
 
         {/* 메인: 타이포 + CTA */}
-        <div className="flex-1 flex flex-col items-center justify-center px-6 md:px-12 py-24 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-24 text-center">
           <div>
             <h2 className="text-5xl md:text-7xl lg:text-[6.5rem] font-normal tracking-tighter leading-[0.92] text-zinc-50 mb-8">
               <MaskReveal delay={0.08} duration={0.9}>Next Move</MaskReveal>
@@ -349,8 +349,8 @@ export default function ContactSection() {
 
         {/* 하단 푸터 */}
         <footer className="mt-auto border-t border-zinc-800/60">
-          <Reveal delay={0.4} y={16} className="px-6 md:px-12 py-10 md:py-14">
-            <div className="max-w-[1400px] mx-auto flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <Reveal delay={0.4} y={16} className="px-4 sm:px-6 md:px-10 py-10 md:py-14">
+            <div className="max-w-[1280px] mx-auto flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
 
               {/* 이메일 — 푸터에서 가장 크게 */}
               <div>
@@ -374,7 +374,7 @@ export default function ContactSection() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group relative overflow-hidden inline-flex items-center gap-2.5 h-12 px-5 border border-zinc-700 text-zinc-200 font-medium text-sm hover:text-white hover:border-transparent transition-colors duration-300 ${hoverBorder}`}
+                      className={`group relative overflow-hidden inline-flex items-center gap-2.5 h-12 px-5 rounded-full border border-zinc-700 text-zinc-200 font-medium text-sm hover:text-white hover:border-transparent transition-colors duration-300 ${hoverBorder}`}
                     >
                       <FillHover className={fill} />
                       <Icon size={20} weight="fill" className="relative z-10" />
@@ -391,15 +391,15 @@ export default function ContactSection() {
             크롤 경로는 layout의 SiteNavLinks(sr-only)가 전 페이지에서 계속 제공한다.
           */}
 
-          <div className="border-t border-zinc-900 px-6 md:px-12 py-5">
+          <div className="border-t border-zinc-900 px-4 sm:px-6 md:px-10 py-5">
             {businessInfo.length > 0 && (
-              <p className="max-w-[1400px] mx-auto mb-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] leading-relaxed text-zinc-600">
+              <p className="max-w-[1280px] mx-auto mb-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] leading-relaxed text-zinc-600">
                 {businessInfo.map((item) => (
                   <span key={item}>{item}</span>
                 ))}
               </p>
             )}
-            <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <p className="text-xs text-zinc-500">
                 {SITE_CONFIG.company.name} {SITE_CONFIG.company.nameEn}
               </p>

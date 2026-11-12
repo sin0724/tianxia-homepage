@@ -45,10 +45,11 @@ export default function Home() {
         <HeroSection />
         <ShowreelSection />
         <BrandStripSection />
-        <FilmSection />
         <CreatorsSection />
         <AboutSection />
         <ShopeeSection />
+        {/* 필름은 쇼릴과 붙어 있으면 영상이 연달아 나온다 → 서비스 설명이 끝난 자리로 내렸다 */}
+        <FilmSection />
         <OfficeSection />
         <SloganSection />
         <WorkSection />

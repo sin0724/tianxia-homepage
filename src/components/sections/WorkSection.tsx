@@ -188,14 +188,14 @@ export default function WorkSection() {
     <>
       <section
         id="work"
-        className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-6 md:px-12 py-24 md:py-32 overflow-hidden"
+        className="scroll-mt-16 md:scroll-mt-[68px] bg-zinc-950 px-4 sm:px-6 md:px-10 py-24 md:py-32 overflow-hidden"
       >
-        <div className="max-w-[1400px] w-full mx-auto">
+        <div className="max-w-[1280px] w-full mx-auto">
 
           {/* 헤더 */}
           <div className="flex items-end justify-between mb-4 md:mb-6">
             <div>
-              <h2 className="text-2xl md:text-4xl font-normal tracking-tight text-zinc-50">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight text-zinc-50">
                 <MaskReveal delay={0.08}>Our Work</MaskReveal>
               </h2>
             </div>
@@ -205,7 +205,7 @@ export default function WorkSection() {
               <button
                 onClick={() => navigate(current - 1)}
                 disabled={!canPrev}
-                className="w-10 h-10 border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
+                className="w-10 h-10 rounded-full border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
               >
                 <ArrowLeft size={15} />
               </button>
@@ -215,7 +215,7 @@ export default function WorkSection() {
               <button
                 onClick={() => navigate(current + 1)}
                 disabled={!canNext}
-                className="w-10 h-10 border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
+                className="w-10 h-10 rounded-full border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
               >
                 <ArrowRight size={15} />
               </button>
@@ -226,7 +226,7 @@ export default function WorkSection() {
               <button
                 onClick={() => navigateD(dPage - 1)}
                 disabled={!canDPrev}
-                className="w-10 h-10 border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
+                className="w-10 h-10 rounded-full border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
               >
                 <ArrowLeft size={15} />
               </button>
@@ -236,7 +236,7 @@ export default function WorkSection() {
               <button
                 onClick={() => navigateD(dPage + 1)}
                 disabled={!canDNext}
-                className="w-10 h-10 border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
+                className="w-10 h-10 rounded-full border border-zinc-700 hover:border-zinc-400 disabled:opacity-25 disabled:cursor-default flex items-center justify-center text-zinc-400 hover:text-zinc-50 transition-all duration-200"
               >
                 <ArrowRight size={15} />
               </button>
@@ -248,7 +248,7 @@ export default function WorkSection() {
           {/* 모바일: 단일 카드 슬라이더 */}
           <Reveal delay={0.2} y={20} className="md:hidden">
           <div
-            className="relative w-full aspect-video overflow-hidden"
+            className="relative w-full aspect-video overflow-hidden rounded-[16px]"
             onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
             onTouchEnd={(e) => {
               const delta = touchStart - e.changedTouches[0].clientX;
@@ -316,7 +316,7 @@ export default function WorkSection() {
                           ? { duration: 0.3, y: { duration: 0 } }
                           : { duration: 0.45, ease: EASE, delay: idx * 0.05 }
                       }
-                      className="aspect-video relative overflow-hidden cursor-pointer group bg-zinc-900"
+                      className="aspect-video relative overflow-hidden rounded-[24px] cursor-pointer group bg-zinc-900"
                       data-cursor="play"
                       onClick={() => w.youtubeUrl && setPlaying(w)}
                     >
@@ -334,7 +334,7 @@ export default function WorkSection() {
                   );
                 })}
                 {Array.from({ length: DESKTOP_PAGE_SIZE - pageWorks.length }).map((_, i) => (
-                  <div key={`ghost-${i}`} className="aspect-video bg-zinc-900/20" />
+                  <div key={`ghost-${i}`} className="aspect-video rounded-[24px] bg-zinc-900/20" />
                 ))}
               </motion.div>
             </AnimatePresence>

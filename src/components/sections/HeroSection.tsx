@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { ContactModal } from "@/components/sections/ContactSection";
+import { motion, useReducedMotion } from "motion/react";
 import { EASE_OUT } from "@/components/motion/Reveal";
 import Taipei101Particles from "@/components/hero/Taipei101Particles";
 
@@ -11,9 +8,11 @@ import Taipei101Particles from "@/components/hero/Taipei101Particles";
  * 히어로 — Dala 스타일 가이드 적용.
  *
  * 가이드의 시그니처 비주얼(삼각 파티클로 된 '두뇌')을 타이베이 101로 바꿨다.
- * 힉스필드로 만든 101 이미지에서 파티클 좌표를 뽑아 캔버스로 그린다 —
+ * 파티클 좌표는 101 이미지와 구워 둔 뼈대 선에서 뽑아 캔버스로 그린다 —
  * 스크롤하면 흩어지고 올리면 다시 모인다 (Taipei101Particles).
- * 101이 화면의 주인공. 슬로건(대만 진출은 티엔샤)과 CTA는 아래 구석에 작게 둔다.
+ *
+ * 첫 화면에는 101만 둔다. 슬로건·설명·CTA는 빼고 바로 아래 쇼릴로 이어지게 했다.
+ * 문의 동선은 상단 네비와 맨 아래 문의 섹션이 맡는다.
  */
 
 // 타워 주변을 떠다니는 삼각 파티클. 위치·색·속도를 고정값으로 둬서
@@ -41,20 +40,12 @@ function Triangle({ size, color }: { size: number; color: string }) {
 
 export default function HeroSection() {
   const reduce = useReducedMotion();
-  // 히어로 CTA는 #contact로 스크롤시키지 않고 문의 폼을 바로 연다 (클릭 1회 절감)
-  const [formOpen, setFormOpen] = useState(false);
-  const fade = (delay: number) => ({
-    // initial은 SSR과 같아야 하므로 reduce에 따라 바꾸지 않는다 (시간만 0으로)
-    initial: { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: reduce ? { duration: 0 } : { duration: 0.9, delay, ease: EASE_OUT },
-  });
 
   return (
-    <section
-      id="home"
-      className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-black"
-    >
+    <section id="home" className="relative h-[100dvh] min-h-[560px] overflow-hidden bg-black">
+      {/* 화면에는 문구를 두지 않지만 페이지 제목은 있어야 한다 (검색·스크린리더용) */}
+      <h1 className="sr-only">대만 마케팅 에이전시 티엔샤 TIANXIA</h1>
+
       {/* 배경 파티클 필드 */}
       <div aria-hidden className="dala-particles absolute inset-0" />
       <div aria-hidden className="absolute inset-0 pointer-events-none">
@@ -71,9 +62,9 @@ export default function HeroSection() {
         ))}
       </div>
 
-      {/* 메인: 101 파티클 — 데스크탑은 섹션 전체 높이로 가운데, 모바일은 위쪽 큰 영역 */}
+      {/* 101 파티클 — 네비 아래부터 섹션 바닥까지 꽉 채운다 */}
       <motion.div
-        className="relative mt-16 h-[64vh] w-full md:absolute md:inset-x-0 md:top-[72px] md:bottom-4 md:mt-0 md:h-auto"
+        className="absolute inset-x-0 top-16 bottom-5 md:top-[72px] md:bottom-4"
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={reduce ? { duration: 0 } : { duration: 1.6, ease: EASE_OUT }}
@@ -81,52 +72,23 @@ export default function HeroSection() {
         <Taipei101Particles />
       </motion.div>
 
-      {/* 슬로건·CTA — 101을 가리지 않게 아래 양쪽 구석에 작게 */}
-      <div className="pointer-events-none relative z-10 mx-auto mt-auto flex w-full max-w-[1280px] flex-col gap-6 px-4 pb-10 sm:px-6 md:flex-row md:items-end md:justify-between md:px-10 md:pb-12">
-        <div>
-          <motion.p
-            {...fade(0.15)}
-            className="mb-3 text-[12px] font-semibold uppercase tracking-[0.08em] text-saffron"
-          >
-            Taiwan Marketing Agency
-          </motion.p>
-
-          <motion.h1
-            {...fade(0.25)}
-            className="font-normal text-white text-[28px] leading-[1.15] tracking-[-0.03em] break-keep sm:text-[32px] md:text-[36px]"
-          >
-            대만 진출은 티엔샤
-          </motion.h1>
-
-          <motion.p
-            {...fade(0.4)}
-            className="mt-3 max-w-[36ch] text-[14px] leading-[1.6] font-extralight text-mist md:text-[15px]"
-          >
-            200개 한국 브랜드의 대만 진출, KOL 섭외부터
-            쇼피 판매까지 한 팀이 맡습니다.
-          </motion.p>
-        </div>
-
-        <motion.div {...fade(0.55)} className="pointer-events-auto flex flex-wrap items-center gap-x-6 gap-y-3">
-          <button
-            type="button"
-            onClick={() => setFormOpen(true)}
-            className="inline-flex h-10 items-center rounded-full bg-iris px-6 text-[13px] font-semibold tracking-[0.02em] text-white transition-colors duration-300 hover:bg-iris-hover active:scale-[0.98]"
-          >
-            무료 대만 진출 상담 받기
-          </button>
-          <Link
-            href="/#work"
-            className="text-[13px] font-semibold uppercase tracking-[0.04em] text-ash transition-colors duration-300 hover:text-white"
-          >
-            작업물 보기 →
-          </Link>
-        </motion.div>
-      </div>
-
-      <AnimatePresence>
-        {formOpen && <ContactModal onClose={() => setFormOpen(false)} />}
-      </AnimatePresence>
+      {/* 스크롤 안내 — 타워 밑동과 왼쪽 아래 개인정보 설정 버튼을 피해 오른쪽 아래 구석에 */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute bottom-6 right-4 flex flex-row-reverse items-center gap-3 sm:right-6 md:bottom-8 md:right-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={reduce ? { duration: 0 } : { duration: 0.9, delay: 1.2, ease: EASE_OUT }}
+      >
+        <span className="relative block h-9 w-px overflow-hidden bg-white/15">
+          <motion.span
+            className="absolute inset-x-0 top-0 h-3 bg-saffron"
+            animate={reduce ? undefined : { y: [-12, 36] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </span>
+        <span className="dala-label text-[11px] text-ash">Scroll</span>
+      </motion.div>
     </section>
   );
 }

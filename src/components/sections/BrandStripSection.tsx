@@ -97,7 +97,7 @@ export default function BrandStripSection() {
       </div>
 
       {/* 띠만 두면 맥락이 사라져서, 한 줄로만 붙인다 */}
-      <p className="max-w-[1400px] mx-auto px-6 md:px-12 mt-8 md:mt-10 text-xs md:text-sm text-zinc-500">
+      <p className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-10 mt-8 md:mt-10 text-xs md:text-sm text-zinc-500">
         F&amp;B·뷰티·의료 분야{" "}
         <CountUp to={200} suffix="+" className="text-zinc-300 font-semibold" />{" "}
         브랜드와 대만 시장에서 함께 일했습니다.
