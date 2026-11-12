@@ -72,10 +72,11 @@ export default function HeroSection() {
         <Taipei101Particles />
       </motion.div>
 
-      {/* 스크롤 안내 — 타워 밑동과 왼쪽 아래 개인정보 설정 버튼을 피해 오른쪽 아래 구석에 */}
+      {/* 스크롤 안내 — 글자 없이 흐르는 선만. 타워 밑동과 왼쪽 아래 개인정보 설정 버튼을
+          피해 오른쪽 아래 구석에 둔다 */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute bottom-6 right-4 flex flex-row-reverse items-center gap-3 sm:right-6 md:bottom-8 md:right-10"
+        className="pointer-events-none absolute bottom-6 right-4 sm:right-6 md:bottom-8 md:right-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={reduce ? { duration: 0 } : { duration: 0.9, delay: 1.2, ease: EASE_OUT }}
@@ -87,7 +88,6 @@ export default function HeroSection() {
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           />
         </span>
-        <span className="dala-label text-[11px] text-ash">Scroll</span>
       </motion.div>
     </section>
   );

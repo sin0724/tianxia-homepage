@@ -8,6 +8,7 @@ import {
   T101_LINES,
   type SkeletonKind,
 } from "./taipei101Skeleton";
+import { HERO_READY, INTRO_HANDOFF, type IntroHandoffDetail } from "./introHandoff";
 
 /**
  * 타이베이 101 파티클 컨스텔레이션 (Dala 히어로의 '두뇌' 대체).
@@ -21,7 +22,12 @@ import {
  * 매 프레임:
  *  - 스크롤을 내리면 꼭대기부터 흩어지고, 올리면 아래층부터 다시 쌓인다
  *  - 마우스 근처 파티클은 밀려났다가 스프링으로 돌아오고, 타워가 마우스 쪽으로 살짝 돈다
- *  - 진입 시 흩어진 상태에서 모여들고, 가끔 빛이 아래에서 위로 훑고 지나간다
+ *  - 가끔 빛이 아래에서 위로 훑고 지나간다
+ *
+ * 진입:
+ *  - 인트로 로더가 있으면(첫 방문) 로더의 숫자 101을 넘겨받아, 그 숫자 모양에서 날아와
+ *    타워로 조립된다 (introHandoff.ts)
+ *  - 로더가 없으면 흩어진 상태에서 모여든다
  *
  * 영상이 아니라 실시간 렌더라 스크롤 위치에 정확히 반응한다. 같은 색끼리 묶어 한 번에
  * 그리기 때문에 파티클 수를 늘려도 그리기 호출은 수십 번이고, 프레임이 떨어지는 기기에서는
@@ -64,6 +70,10 @@ const STAGGER = 0.7;
 /** 빛이 훑고 지나가는 주기·소요 시간(초) */
 const SWEEP_EVERY = 7;
 const SWEEP_TAKES = 1.7;
+/** 인트로 숫자 101 → 타워: 숫자 모양으로 서 있는 시간, 날아가 조립되는 시간(초), 층별 시차 */
+const MORPH_HOLD = 0.4;
+const MORPH_TAKES = 2.4;
+const MORPH_STAGGER = 0.55;
 
 /** 행(y: 0~1)의 타워 반폭(0~1) */
 function halfWidthAt(y: number) {
@@ -118,6 +128,13 @@ export default function Taipei101Particles({
     let spin = new Float32Array(0);
     let phase = new Float32Array(0);
     let depth = new Float32Array(0); // 앞(+)·뒤(-) 깊이, 타워 반폭 대비
+    let ox = new Float32Array(0); // 인트로 숫자 101 안에서의 출발 자리 (캔버스 px)
+    let oy = new Float32Array(0);
+    // 인트로 로더에게서 숫자를 넘겨받은 시각. -1이면 넘겨받지 않음(로더 없이 진입 등).
+    let morphAt = -1;
+    let usedDigits = false;
+    // 동작 줄이기 환경에서 넘겨받았을 때: 날아가는 대신 제자리에서 서서히 나타난다
+    let fadeAt = -1;
     let buckets: Bucket[] = [];
 
     let imgAspect = 688 / 1024; // w/h
@@ -306,6 +323,8 @@ export default function Taipei101Particles({
       spin = new Float32Array(n);
       phase = new Float32Array(n);
       depth = new Float32Array(n);
+      ox = new Float32Array(n);
+      oy = new Float32Array(n);
       buckets = [];
 
       // 속을 먼저, 뼈대를 나중에 그려서 윤곽이 위에 얹히게 한다
@@ -350,8 +369,75 @@ export default function Taipei101Particles({
       }
       // 첫 위치는 흩어진 상태 → 진입 시 모여든다 (동작 줄이기면 처음부터 제자리)
       layoutInitial();
+      // 인트로 로더는 이 신호를 받기 전까지 92에서 기다린다
+      window.__tx101Ready = true;
+      window.dispatchEvent(new Event(HERO_READY));
     };
     img.src = src;
+
+    // ---------- 1-2) 인트로 숫자 넘겨받기 ----------
+    // 로더가 101에 닿으면 그 숫자를 그린 캔버스를 보내온다. 글자 픽셀을 읽어
+    // 파티클을 그 자리에 세우면, 로더가 사라지는 순간 숫자가 파티클로 바뀌어 보인다.
+    const onHandoff = (e: Event) => {
+      const detail = (e as CustomEvent<IntroHandoffDetail>).detail;
+      if (!detail || n === 0 || W < 2 || H < 2) return;
+      if (reduce) {
+        fadeAt = performance.now();
+        usedDigits = true;
+        detail.accepted = true;
+        return;
+      }
+      const sctx = detail.canvas.getContext("2d", { willReadFrequently: true });
+      const { box: b, scale } = detail;
+      if (!sctx || b.w < 4 || b.h < 4) return;
+      let data: Uint8ClampedArray;
+      try {
+        data = sctx.getImageData(b.x, b.y, b.w, b.h).data;
+      } catch {
+        return;
+      }
+      // 글자 안쪽 픽셀을 2px 간격으로 모은다 (화면 좌표)
+      const pts: number[] = [];
+      for (let y = 0; y < b.h; y += 2) {
+        for (let x = 0; x < b.w; x += 2) {
+          if (data[(y * b.w + x) * 4 + 3] > 128) pts.push((b.x + x) / scale, (b.y + y) / scale);
+        }
+      }
+      const count = pts.length / 2;
+      if (count < 60) return;
+
+      // 화면 좌표 → 이 캔버스 좌표 (부모가 scale 애니메이션 중일 수 있어 비율로 환산)
+      const rect = canvas!.getBoundingClientRect();
+      const kx = W / rect.width;
+      const ky = H / rect.height;
+
+      // 왼쪽 글자는 타워의 왼쪽으로, 오른쪽 글자는 오른쪽으로 — 가로 순서를 맞춰 짝지으면
+      // 날아가는 길이 서로 덜 엇갈려 숫자가 접히듯 타워가 된다.
+      const order = new Uint32Array(count);
+      for (let i = 0; i < count; i++) order[i] = i;
+      order.sort((a, c) => pts[a * 2] - pts[c * 2]);
+      const byHome = new Uint32Array(n);
+      for (let i = 0; i < n; i++) byHome[i] = i;
+      byHome.sort((a, c) => hx[a] - hx[c]);
+      const rand = mulberry32(7);
+      // 같은 가로 구간 안에서는 무작위로 골라 세로로 고르게 퍼뜨린다
+      const span = Math.max(1, Math.floor(count / 24));
+      for (let rank = 0; rank < n; rank++) {
+        const i = byHome[rank];
+        const at = Math.floor((rank / n) * count + (rand() - 0.5) * span);
+        const j = order[Math.min(count - 1, Math.max(0, at))];
+        ox[i] = (pts[j * 2] - rect.left + rand() * 2 - 1) * kx;
+        oy[i] = (pts[j * 2 + 1] - rect.top + rand() * 2 - 1) * ky;
+        px[i] = ox[i];
+        py[i] = oy[i];
+        vx[i] = 0;
+        vy[i] = 0;
+      }
+      morphAt = performance.now();
+      usedDigits = true;
+      detail.accepted = true;
+    };
+    window.addEventListener(INTRO_HANDOFF, onHandoff);
 
     // ---------- 2) 크기 ----------
     // 101을 캔버스 안에 contain으로 맞춘 사각형
@@ -423,8 +509,16 @@ export default function Taipei101Particles({
         slowFrames = 0;
       }
 
-      // 진입: 0~2.4초 동안 흩어진 상태(1)에서 모임(0)으로
-      const intro = reduce ? 0 : 1 - easeInOut(clamp01((t - 0.2) / 2.4));
+      // 진입: 0~2.4초 동안 흩어진 상태(1)에서 모임(0)으로.
+      // 인트로 숫자를 넘겨받았으면 흩어진 데서 모이지 않고 숫자에서 날아온다.
+      const intro = reduce || usedDigits ? 0 : 1 - easeInOut(clamp01((t - 0.2) / 2.4));
+      // 숫자 → 타워 진행도 (0: 숫자 모양, 1: 타워)
+      let morph = 1;
+      if (morphAt >= 0) {
+        morph = clamp01(((now - morphAt) / 1000 - MORPH_HOLD) / MORPH_TAKES);
+        if (morph >= 1) morphAt = -1;
+      }
+      const morphing = morphAt >= 0;
       const scroll = easeInOut(scrollProgress());
       const scatter = Math.max(intro, scroll);
       const spread = Math.max(W, H);
@@ -449,7 +543,8 @@ export default function Taipei101Particles({
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx!.clearRect(0, 0, W, H);
       ctx!.lineWidth = 0.9;
-      const fade = 1 - scroll * 0.75;
+      const fadeIn = fadeAt >= 0 ? clamp01((now - fadeAt) / 600) : 1;
+      const fade = (1 - scroll * 0.75) * fadeIn;
 
       const R = Math.min(W, H) * 0.14; // 마우스 영향 반경
       const R2 = R * R;
@@ -467,18 +562,37 @@ export default function Taipei101Particles({
           const s = clamp01(scatter * (1 + STAGGER) - hy[i] * STAGGER);
           // 숨 쉬듯 미세하게 떠다님 — 뼈대는 거의 고정해서 윤곽이 흔들리지 않게
           const breathe = reduce ? 0 : (skeleton ? 0.3 : 1) + s * 6;
-          const tx =
+          let tx =
             cxPx +
             ((hx[i] - T101_CX) * cosY + depth[i] * sinY) * box.w +
             sx[i] * spread * s +
             Math.sin(tx8 + phase[i]) * breathe;
-          const ty = box.y + hy[i] * box.h + sy[i] * spread * s + Math.cos(ty7 + phase[i]) * breathe;
+          let ty = box.y + hy[i] * box.h + sy[i] * spread * s + Math.cos(ty7 + phase[i]) * breathe;
+
+          // 숫자 → 타워: 아래층으로 갈 파티클부터 떠나서 타워가 밑에서부터 쌓인다.
+          // 가는 길 중간에 살짝 부풀었다 모이게 해서 직선으로 끌려가는 느낌을 지운다.
+          let pinned = false;
+          if (morphing) {
+            const e = easeInOut(clamp01(morph * (1 + MORPH_STAGGER) - (1 - hy[i]) * MORPH_STAGGER));
+            if (e <= 0) {
+              // 아직 출발 전: 스프링 없이 숫자 자리에 못 박아 둔다 (글자가 흐려지지 않게)
+              pinned = true;
+              px[i] = ox[i];
+              py[i] = oy[i];
+              vx[i] = 0;
+              vy[i] = 0;
+            } else {
+              const arc = Math.sin(Math.PI * e) * spread * 0.06;
+              tx = ox[i] + (tx - ox[i]) * e + sx[i] * arc;
+              ty = oy[i] + (ty - oy[i]) * e + sy[i] * arc;
+            }
+          }
 
           // 스프링으로 목표 위치 추적
-          let ax = (tx - px[i]) * 0.06;
-          let ay = (ty - py[i]) * 0.06;
+          let ax = pinned ? 0 : (tx - px[i]) * 0.06;
+          let ay = pinned ? 0 : (ty - py[i]) * 0.06;
           // 마우스 반발
-          if (mouse.active) {
+          if (mouse.active && !pinned) {
             const dx = px[i] - mouse.x;
             const dy = py[i] - mouse.y;
             const d2 = dx * dx + dy * dy;
@@ -587,6 +701,8 @@ export default function Taipei101Particles({
       io.disconnect();
       host.removeEventListener("pointermove", onMove as EventListener);
       host.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener(INTRO_HANDOFF, onHandoff);
+      window.__tx101Ready = false;
     };
   }, [src]);
 
